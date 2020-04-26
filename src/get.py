@@ -19,300 +19,6 @@ MAXSTEMS = 2
 DEBUG    = False
 
 
-class Xor:
-    
-    def __init__(self):
-        self.vectors = []
-        self.set_vectors()
-    
-    def get_shift(self,pos1,pos2):
-        f = '[MTExtractor] get.Xor.get_shift'
-        min_ = min(pos1,pos2) + 1
-        max_ = max(pos1,pos2)
-        shift = 0
-        while min_ <= max_:
-            vector = self.vectors[min_]
-            mes = _('Position: {}; vector: {}').format(min_,vector)
-            sh.objs.get_mes(f,mes,True).show_debug()
-            if pos2 > pos1:
-                shift -= vector
-            else:
-                shift += vector
-            min_ += 1
-        if DEBUG:
-            sh.objs.get_mes(f,shift,True).show_debug()
-        return shift
-    
-    def overflow(self,pos):
-        f = '[MTExtractor] get.Xor.overflow'
-        if not 0 <= pos <= 255:
-            old = pos = abs(pos)
-            overhead = pos - (pos // 255) * 255 - 1
-            pos = 255 - overhead
-            if DEBUG:
-                mes = _('Overflow: {} -> {}').format(old,pos)
-                sh.objs.get_mes(f,mes,True).show_debug()
-        return pos
-    
-    def xor(self,byte,pos,start):
-        f = '[MTExtractor] get.Xor.xor'
-        if byte:
-            if 0 <= byte[0] <= 255:
-                shift = self.get_shift(pos1,pos2)
-                #pos = 
-                vector = self.vectors[byte[0]]
-                pos = -vector + start + byte[0]
-                pos = self.overflow(pos)
-                byte2 = bytes([pos])
-                if DEBUG:
-                    mes = _('Original byte: "{}"; original position: {}; vector: {}; final byte: "{}"; final position: {}')
-                    mes = mes.format (com.get_string(byte)
-                                     ,byte[0],vector
-                                     ,com.get_string(byte2)
-                                     ,pos
-                                     )
-                    sh.objs.get_mes(f,mes,True).show_debug()
-                return byte2
-            else:
-                sub = '0 <= {} <= 255'.format(byte[0])
-                mes = _('The condition "{}" is not observed!')
-                mes = mes.format(sub)
-                sh.objs.get_mes(f,mes,True).show_warning()
-        else:
-            sh.com.rep_empty(f)
-    
-    def set_vectors(self):
-        ''' MT's XOR algorithm is basically shifting positions by
-            -2, -2, -2, +6, -2, -2, -2, +10... with a few exceptions.
-        '''
-        i = 0
-        while i < 256:
-            if (i + 1) % 4 == 0:
-                if (i + 1) % 8 == 0:
-                    self.vectors.append(-10)
-                else:
-                    self.vectors.append(6)
-            else:
-                self.vectors.append(-2)
-            i += 1
-        
-        self.vectors[163] = 48
-        self.vectors[164] = -44
-        self.vectors[255] = 246
-
-
-
-class Ending:
-    # Parse files like 'sik.eng'
-    def __init__(self,file):
-        self.set_values()
-        self.file = file
-        self.load()
-        self.parse()
-    
-    def overflow(self,no):
-        f = '[MTExtractor] get.Ending.overflow'
-        new = no
-        if self.Success:
-            new = com.overflowh(new)
-            if not new in self.ordered and len(self.ordered) > 1:
-                i = 1
-                while i < len(self.ordered):
-                    if self.ordered[i-1] <= no < self.ordered[i]:
-                        break
-                    i += 1
-                i -= 1
-                new = self.ordered[i]
-                if DEBUG:
-                    mes = '{} -> {}'.format(no,new)
-                    sh.objs.get_mes(f,mes,True).show_debug()
-        else:
-            sh.com.cancel(f)
-        return new
-    
-    def has_match(self,no,pattern):
-        f = '[MTExtractor] get.Ending.has_match'
-        if self.Success:
-            no = self.overflow(no)
-            #TODO: implement 'X' (full pattern match)
-            if not pattern:
-                # An empty ending
-                pattern = '#'
-            # MT (at least demo) can have negatives for some reason
-            if no < 0:
-                # Redirection to an empty class
-                no = 0
-            try:
-                index_ = self.nos.index(no)
-                match  = pattern in self.ends[index_]
-                if match:
-                    sub = _('Yes')
-                else:
-                    sub = _('No')
-                if DEBUG:
-                    mes = _('#: {}; Pattern: "{}"; Match: {}')
-                    mes = mes.format(no,pattern,sub)
-                    sh.objs.get_mes(f,mes,True).show_debug()
-                return match
-            except ValueError:
-                mes = _('Wrong input data: "{}"!').format(no)
-                sh.objs.get_mes(f,mes,True).show_warning()
-        else:
-            sh.com.cancel(f)
-    
-    def load(self):
-        f = '[MTExtractor] get.Ending.load'
-        if self.Success:
-            self.text = sh.ReadTextFile(self.file).get()
-            if not self.text:
-                self.Success = False
-                mes = _('Empty output is not allowed!')
-                sh.objs.get_mes(f,mes,True).show_warning()
-        else:
-            sh.com.cancel(f)
-    
-    def parse(self):
-        f = '[MTExtractor] get.Ending.parse'
-        if self.Success:
-            lines = self.text.splitlines()
-            lines = [line for line in lines if line]
-            if len(lines) > 1:
-                if lines[0] == 'SIK PORTION':
-                    lines = lines[1:]
-                for i in range(len(lines)):
-                    line = lines[i].strip()
-                    line = sh.Text(line).delete_duplicate_spaces()
-                    # Remove comments
-                    line = line.split(';')[0]
-                    # Empty input means the entire line is a comment
-                    if line:
-                        if len(line) < 2:
-                            mes = _('Wrong input data: "{}"!')
-                            mes = mes.format(line)
-                            sh.objs.get_mes(f,mes,True).show_warning()
-                        else:
-                            # Remove a gender separator
-                            line = line.replace('/',' ')
-                            line = line.replace(',',' ')
-                            line = line.split(' ')
-                            line = [item for item in line if item]
-                            no   = sh.Input(f,line[0]).get_integer()
-                            ends = line[1:]
-                            self.nos.append(no)
-                            self.ends.append(ends)
-                self.ordered = sorted(set(self.nos))
-            else:
-                sub = '{} > 1'.format(len(lines))
-                mes = _('The condition "{}" is not observed!')
-                mes = mes.format(sub)
-                sh.objs.get_mes(f,mes,True).show_warning()
-        else:
-            sh.com.cancel(f)
-    
-    def set_values(self):
-        self.file    = ''
-        self.text    = ''
-        self.Success = True
-        self.nos     = []
-        self.ends    = []
-        self.ordered = []
-
-
-
-class Subject:
-    # Parse files like 'SUBJECTS.TXT'
-    def __init__(self,file):
-        self.set_values()
-        self.file = file
-        self.get_locale()
-        self.load()
-        self.parse()
-    
-    def get_pair(self,code):
-        f = '[MTExtractor] get.Subject.get_pair'
-        if self.Success:
-            if code in self.dic_nos:
-                ind = self.dic_nos.index(code)
-                if self.lang == 'ru':
-                    pair = (self.ru_dic[ind],self.ru_dicf[ind])
-                else:
-                    pair = (self.en_dic[ind],self.en_dicf[ind])
-                mes = '{} -> {}'.format(code,pair)
-                sh.objs.get_mes(f,mes,True).show_debug()
-                return pair
-            else:
-                mes = _('Wrong input data: "{}"!').format(code)
-                sh.objs.get_mes(f,mes,True).show_warning()
-        else:
-            sh.com.cancel(f)
-    
-    def get_locale(self):
-        f = '[MTExtractor] get.Subject.get_locale'
-        if self.Success:
-            info = locale.getdefaultlocale()
-            if info:
-                # 'en' is set in 'set_values' by default
-                if info[0] in ('ru_RU','ru_UA'):
-                    self.lang = 'ru'
-        else:
-            sh.com.cancel(f)
-    
-    def set_values(self):
-        self.Success = True
-        self.file    = ''
-        self.text    = ''
-        self.dic_nos = []
-        self.en_dicf = []
-        self.ru_dicf = []
-        self.en_dic  = []
-        self.ru_dic  = []
-        self.lang    = 'en'
-    
-    def parse(self):
-        f = '[MTExtractor] get.Subject.parse'
-        if self.Success:
-            lst = self.text.splitlines()
-            # This should not be needed. We do that just to be safe.
-            lst = [item for item in lst if item]
-            for line in lst:
-                items = line.split(';')
-                # Delete comments (which also start with ';')
-                items = items[0:5]
-                # Fail if items < 5
-                if len(items) == 5:
-                    dic_no = sh.Input(f,items[0]).get_integer()
-                    self.dic_nos.append(dic_no)
-                    self.en_dicf.append(items[1])
-                    self.en_dic.append(items[2])
-                    self.ru_dicf.append(items[3])
-                    self.ru_dic.append(items[4])
-                else:
-                    self.Success = False
-                    mes = _('Wrong input data: "{}"!').format(line)
-                    sh.objs.get_mes(f,mes).show_warning()
-                    break
-        else:
-            sh.com.cancel(f)
-    
-    def load(self):
-        f = '[MTExtractor] get.Subject.load'
-        if self.Success:
-            # We need silent logging here
-            if os.path.exists(self.file):
-                self.text = sh.ReadTextFile(self.file).get()
-                if not self.text:
-                    self.Success = False
-                    mes = _('Empty output is not allowed!')
-                    sh.objs.get_mes(f,mes).show_warning()
-            else:
-                self.Success = False
-                mes = _('File "{}" does not exist!').format(self.file)
-                sh.objs.get_mes(f,mes,True).show_warning()
-        else:
-            sh.com.cancel(f)
-
-
-
 class Binary:
     
     def __init__(self,file):
@@ -732,6 +438,507 @@ class Binary:
             sh.objs.get_mes(f,mes,True).show_info()
             self.imap.flush()
             self.bin.close()
+        else:
+            sh.com.cancel(f)
+
+
+
+class Parser(Binary):
+    
+    def __init__(self,*args,**kwargs):
+        super().__init__(*args,**kwargs)
+        self.chunks1 = []
+        self.chunks2 = []
+        self.xplain1 = []
+        self.xplain2 = []
+    
+    def parsel23(self,chunk):
+        f = '[MTExtractor] get.Parser.parsel23'
+        if self.Success:
+            # 2 bytes + multiple sequences of 3 bytes
+            if len(chunk) > 4 and (len(chunk) - 2) % 3 == 0:
+                add = [struct.unpack('<h',chunk[0:2])[0]]
+                for tmp in com.get_chunks(chunk[2:],3):
+                    tmp += b'\x00'
+                    add.append(struct.unpack('<L',tmp)[0])
+                return add
+        else:
+            sh.com.cancel(f)
+    
+    def chunk3(self,chunk):
+        f = '[MTExtractor] get.Parser.chunk3'
+        if self.Success:
+            if len(chunk) % 3 == 0:
+                chunks = com.get_chunks(chunk,3)
+                vals = []
+                for chunk in chunks:
+                    chunk += b'\x00'
+                    vals.append(struct.unpack('<L',chunk)[0])
+                return vals
+        else:
+            sh.com.cancel(f)
+    
+    def parse_glue(self):
+        f = '[MTExtractor] get.Parser.parse_glue'
+        if self.Success:
+            for chunk in self.chunks1:
+                tmp = self.chunk3(chunk)
+                if tmp:
+                    self.xplain1.append(tmp)
+                else:
+                    self.xplain1.append([_('UNKNOWN')])
+            for chunk in self.chunks2:
+                tmp = self.parsel23(chunk)
+                if tmp:
+                    self.xplain2.append(tmp)
+                else:
+                    self.xplain2.append([_('UNKNOWN')])
+        else:
+            sh.com.cancel(f)
+    
+    def parse_article(self):
+        f = '[MTExtractor] get.Parser.parse_article'
+        if self.Success:
+            for chunk in self.chunks1:
+                chunk = com.get_string(chunk,0)
+                self.xplain1.append(chunk)
+            for chunk in self.chunks2:
+                chunk = com.get_string(chunk,0)
+                self.xplain2.append(chunk)
+        else:
+            sh.com.cancel(f)
+    
+    def debug(self,maxrow=70,maxrows=1000):
+        f = '[MTExtractor] get.Parser.debug'
+        if self.Success:
+            if self.xplain1 and self.xplain2:
+                if len(self.xplain1) == len(self.xplain2):
+                    nos = [i + 1 for i in range(len(self.xplain1))]
+                    len1 = [len(chunk) for chunk in self.chunks1]
+                    len2 = [len(chunk) for chunk in self.chunks2]
+                    headers = ('NOS','LEN1','PART1','LEN2','PART2')
+                    iterable = (nos,len1,self.xplain1,len2,self.xplain2)
+                    mes = sh.FastTable (headers  = headers
+                                       ,iterable = iterable
+                                       ,maxrow   = maxrow
+                                       ,maxrows  = maxrows
+                                       ).run()
+                    if mes:
+                        sub = _('File: "{}"').format(self.file)
+                        sub += '\n\n'
+                        mes = sub + mes
+                        sh.com.run_fast_debug(mes)
+                    else:
+                        sh.com.rep_empty(f)
+                else:
+                    self.Success = False
+                    sub = '{} == {}'.format (len(self.xplain1)
+                                            ,len(self.xplain2)
+                                            )
+                    mes = _('The condition "{}" is not observed!')
+                    mes = mes.format(sub)
+                    sh.objs.get_mes(f,mes,True).show_warning()
+            else:
+                sh.com.rep_empty(f)
+        else:
+            sh.com.cancel(f)
+        
+    def get_chunk7(self,chunk):
+        f = '[MTExtractor] get.Parser.chunk7'
+        ''' According to "libmtquery-0.0.1alpha3/doc/README.rus":
+            the 1st byte - a type designating the use of capital letters
+            (not used), further - a vector of 7-byte codes, each code
+            including:
+            3 bytes - a word number (4-byte long type compressed to
+            3 bytes)
+            2 bytes - sik (terminations)
+            2 bytes - lgk (speech part codes)
+        '''
+        if self.Success:
+            if chunk and (len(chunk) - 1) % 7 == 0:
+                tmp    = []
+                chunks = com.get_chunks(chunk[1:],7)
+                for item in chunks:
+                    delta = 7 - len(item)
+                    item  = item + b'\x00' * delta
+                    word  = item[0:3] + b'\x00'
+                    sik   = item[3:5]
+                    lgk   = item[5:7]
+                    tmp.append(struct.unpack('<L',word)[0])
+                    tmp.append(struct.unpack('<h',sik)[0])
+                    tmp.append(struct.unpack('<h',lgk)[0])
+                return tmp
+        else:
+            sh.com.cancel(f)
+    
+    def parsel1(self):
+        f = '[MTExtractor] get.Parser.parsel1'
+        if self.Success:
+            for chunk in self.chunks1:
+                chunk = chunk.decode(CODING,'replace')
+                self.xplain1.append(chunk)
+        else:
+            sh.com.cancel(f)
+    
+    def parse_stem(self):
+        f = '[MTExtractor] get.Parser.parse_stem'
+        if self.Success:
+            self.parsel1()
+            for chunk in self.chunks2:
+                tmp = self.get_chunk7(chunk)
+                if tmp:
+                    self.xplain2.append(tmp)
+                else:
+                    self.xplain2.append([_('UNKNOWN')])
+        else:
+            sh.com.cancel(f)
+    
+    def parse(self):
+        f = '[MTExtractor] get.Parser.parse'
+        if self.Success:
+            #FIX: Why base names are not lowercased?
+            bname = self.bname.lower()
+            if bname.startswith('stem'):
+                self.parse_stem()
+            elif bname.startswith('dict') and bname.endswith('d'):
+                self.parse_glue()
+            elif bname.startswith('dict') and bname.endswith('t'):
+                self.parse_article()
+            else:
+                mes = '"{}"'.format(self.bname)
+                sh.objs.get_mes(f,mes,True).show_debug()
+                mes = _('Not implemented yet!')
+                sh.objs.get_mes(f,mes).show_info()
+        else:
+            sh.com.cancel(f)
+    
+    def run_reader(self,pos1,pos2):
+        f = '[MTExtractor] get.Parser.reader'
+        if self.Success:
+            stream = self.read(pos1,pos2)
+            if stream:
+                pos = 0
+                while pos + 2 < len(stream):
+                    ''' #NOTE: indexing returns integers, slicing
+                               returns bytes.
+                    '''
+                    read = stream[pos:pos+2]
+                    pos += 2
+                    len1, len2 = struct.unpack('<2b',read)
+                    len1 = com.overflowb(len1)
+                    len2 = com.overflowb(len2)
+                    if pos + len1 + len2 < len(stream):
+                        ''' Do this only after checking the condition,
+                            otherwise, resulting lists will have
+                            a different length.
+                        '''
+                        chunk1 = stream[pos:pos+len1]
+                        pos += len1
+                        chunk2 = stream[pos:pos+len2]
+                        pos += len2
+                        # Zero-length chunks should be allowed
+                        if chunk2:
+                            self.chunks1.append(chunk1)
+                            self.chunks2.append(chunk2)
+                    else:
+                        com.report_status(pos,stream)
+                        break
+            else:
+                sh.com.rep_empty(f)
+        else:
+            sh.com.cancel(f)
+
+
+
+class Xor:
+    
+    def __init__(self):
+        self.vectors = []
+        self.set_vectors()
+    
+    def get_shift(self,pos1,pos2):
+        f = '[MTExtractor] get.Xor.get_shift'
+        min_ = min(pos1,pos2) + 1
+        max_ = max(pos1,pos2)
+        shift = 0
+        while min_ <= max_:
+            vector = self.vectors[min_]
+            mes = _('Position: {}; vector: {}').format(min_,vector)
+            sh.objs.get_mes(f,mes,True).show_debug()
+            if pos2 > pos1:
+                shift -= vector
+            else:
+                shift += vector
+            min_ += 1
+        if DEBUG:
+            sh.objs.get_mes(f,shift,True).show_debug()
+        return shift
+    
+    def overflow(self,pos):
+        f = '[MTExtractor] get.Xor.overflow'
+        if not 0 <= pos <= 255:
+            old = pos = abs(pos)
+            overhead = pos - (pos // 255) * 255 - 1
+            pos = 255 - overhead
+            if DEBUG:
+                mes = _('Overflow: {} -> {}').format(old,pos)
+                sh.objs.get_mes(f,mes,True).show_debug()
+        return pos
+    
+    def xor(self,byte,pos,start):
+        f = '[MTExtractor] get.Xor.xor'
+        if byte:
+            if 0 <= byte[0] <= 255:
+                shift = self.get_shift(pos1,pos2)
+                #pos = 
+                vector = self.vectors[byte[0]]
+                pos = -vector + start + byte[0]
+                pos = self.overflow(pos)
+                byte2 = bytes([pos])
+                if DEBUG:
+                    mes = _('Original byte: "{}"; original position: {}; vector: {}; final byte: "{}"; final position: {}')
+                    mes = mes.format (com.get_string(byte)
+                                     ,byte[0],vector
+                                     ,com.get_string(byte2)
+                                     ,pos
+                                     )
+                    sh.objs.get_mes(f,mes,True).show_debug()
+                return byte2
+            else:
+                sub = '0 <= {} <= 255'.format(byte[0])
+                mes = _('The condition "{}" is not observed!')
+                mes = mes.format(sub)
+                sh.objs.get_mes(f,mes,True).show_warning()
+        else:
+            sh.com.rep_empty(f)
+    
+    def set_vectors(self):
+        ''' MT's XOR algorithm is basically shifting positions by
+            -2, -2, -2, +6, -2, -2, -2, +10... with a few exceptions.
+        '''
+        i = 0
+        while i < 256:
+            if (i + 1) % 4 == 0:
+                if (i + 1) % 8 == 0:
+                    self.vectors.append(-10)
+                else:
+                    self.vectors.append(6)
+            else:
+                self.vectors.append(-2)
+            i += 1
+        
+        self.vectors[163] = 48
+        self.vectors[164] = -44
+        self.vectors[255] = 246
+
+
+
+class Ending:
+    # Parse files like 'sik.eng'
+    def __init__(self,file):
+        self.set_values()
+        self.file = file
+        self.load()
+        self.parse()
+    
+    def overflow(self,no):
+        f = '[MTExtractor] get.Ending.overflow'
+        new = no
+        if self.Success:
+            new = com.overflowh(new)
+            if not new in self.ordered and len(self.ordered) > 1:
+                i = 1
+                while i < len(self.ordered):
+                    if self.ordered[i-1] <= no < self.ordered[i]:
+                        break
+                    i += 1
+                i -= 1
+                new = self.ordered[i]
+                if DEBUG:
+                    mes = '{} -> {}'.format(no,new)
+                    sh.objs.get_mes(f,mes,True).show_debug()
+        else:
+            sh.com.cancel(f)
+        return new
+    
+    def has_match(self,no,pattern):
+        f = '[MTExtractor] get.Ending.has_match'
+        if self.Success:
+            no = self.overflow(no)
+            #TODO: implement 'X' (full pattern match)
+            if not pattern:
+                # An empty ending
+                pattern = '#'
+            # MT (at least demo) can have negatives for some reason
+            if no < 0:
+                # Redirection to an empty class
+                no = 0
+            try:
+                index_ = self.nos.index(no)
+                match  = pattern in self.ends[index_]
+                if match:
+                    sub = _('Yes')
+                else:
+                    sub = _('No')
+                if DEBUG:
+                    mes = _('#: {}; Pattern: "{}"; Match: {}')
+                    mes = mes.format(no,pattern,sub)
+                    sh.objs.get_mes(f,mes,True).show_debug()
+                return match
+            except ValueError:
+                mes = _('Wrong input data: "{}"!').format(no)
+                sh.objs.get_mes(f,mes,True).show_warning()
+        else:
+            sh.com.cancel(f)
+    
+    def load(self):
+        f = '[MTExtractor] get.Ending.load'
+        if self.Success:
+            self.text = sh.ReadTextFile(self.file).get()
+            if not self.text:
+                self.Success = False
+                mes = _('Empty output is not allowed!')
+                sh.objs.get_mes(f,mes,True).show_warning()
+        else:
+            sh.com.cancel(f)
+    
+    def parse(self):
+        f = '[MTExtractor] get.Ending.parse'
+        if self.Success:
+            lines = self.text.splitlines()
+            lines = [line for line in lines if line]
+            if len(lines) > 1:
+                if lines[0] == 'SIK PORTION':
+                    lines = lines[1:]
+                for i in range(len(lines)):
+                    line = lines[i].strip()
+                    line = sh.Text(line).delete_duplicate_spaces()
+                    # Remove comments
+                    line = line.split(';')[0]
+                    # Empty input means the entire line is a comment
+                    if line:
+                        if len(line) < 2:
+                            mes = _('Wrong input data: "{}"!')
+                            mes = mes.format(line)
+                            sh.objs.get_mes(f,mes,True).show_warning()
+                        else:
+                            # Remove a gender separator
+                            line = line.replace('/',' ')
+                            line = line.replace(',',' ')
+                            line = line.split(' ')
+                            line = [item for item in line if item]
+                            no   = sh.Input(f,line[0]).get_integer()
+                            ends = line[1:]
+                            self.nos.append(no)
+                            self.ends.append(ends)
+                self.ordered = sorted(set(self.nos))
+            else:
+                sub = '{} > 1'.format(len(lines))
+                mes = _('The condition "{}" is not observed!')
+                mes = mes.format(sub)
+                sh.objs.get_mes(f,mes,True).show_warning()
+        else:
+            sh.com.cancel(f)
+    
+    def set_values(self):
+        self.file    = ''
+        self.text    = ''
+        self.Success = True
+        self.nos     = []
+        self.ends    = []
+        self.ordered = []
+
+
+
+class Subject:
+    # Parse files like 'SUBJECTS.TXT'
+    def __init__(self,file):
+        self.set_values()
+        self.file = file
+        self.get_locale()
+        self.load()
+        self.parse()
+    
+    def get_pair(self,code):
+        f = '[MTExtractor] get.Subject.get_pair'
+        if self.Success:
+            if code in self.dic_nos:
+                ind = self.dic_nos.index(code)
+                if self.lang == 'ru':
+                    pair = (self.ru_dic[ind],self.ru_dicf[ind])
+                else:
+                    pair = (self.en_dic[ind],self.en_dicf[ind])
+                mes = '{} -> {}'.format(code,pair)
+                sh.objs.get_mes(f,mes,True).show_debug()
+                return pair
+            else:
+                mes = _('Wrong input data: "{}"!').format(code)
+                sh.objs.get_mes(f,mes,True).show_warning()
+        else:
+            sh.com.cancel(f)
+    
+    def get_locale(self):
+        f = '[MTExtractor] get.Subject.get_locale'
+        if self.Success:
+            info = locale.getdefaultlocale()
+            if info:
+                # 'en' is set in 'set_values' by default
+                if info[0] in ('ru_RU','ru_UA'):
+                    self.lang = 'ru'
+        else:
+            sh.com.cancel(f)
+    
+    def set_values(self):
+        self.Success = True
+        self.file    = ''
+        self.text    = ''
+        self.dic_nos = []
+        self.en_dicf = []
+        self.ru_dicf = []
+        self.en_dic  = []
+        self.ru_dic  = []
+        self.lang    = 'en'
+    
+    def parse(self):
+        f = '[MTExtractor] get.Subject.parse'
+        if self.Success:
+            lst = self.text.splitlines()
+            # This should not be needed. We do that just to be safe.
+            lst = [item for item in lst if item]
+            for line in lst:
+                items = line.split(';')
+                # Delete comments (which also start with ';')
+                items = items[0:5]
+                # Fail if items < 5
+                if len(items) == 5:
+                    dic_no = sh.Input(f,items[0]).get_integer()
+                    self.dic_nos.append(dic_no)
+                    self.en_dicf.append(items[1])
+                    self.en_dic.append(items[2])
+                    self.ru_dicf.append(items[3])
+                    self.ru_dic.append(items[4])
+                else:
+                    self.Success = False
+                    mes = _('Wrong input data: "{}"!').format(line)
+                    sh.objs.get_mes(f,mes).show_warning()
+                    break
+        else:
+            sh.com.cancel(f)
+    
+    def load(self):
+        f = '[MTExtractor] get.Subject.load'
+        if self.Success:
+            # We need silent logging here
+            if os.path.exists(self.file):
+                self.text = sh.ReadTextFile(self.file).get()
+                if not self.text:
+                    self.Success = False
+                    mes = _('Empty output is not allowed!')
+                    sh.objs.get_mes(f,mes).show_warning()
+            else:
+                self.Success = False
+                mes = _('File "{}" does not exist!').format(self.file)
+                sh.objs.get_mes(f,mes,True).show_warning()
         else:
             sh.com.cancel(f)
 

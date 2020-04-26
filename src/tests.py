@@ -138,8 +138,8 @@ class Binary(gt.Binary):
         else:
             sh.com.cancel(f)
     
-    def info(self):
-        f = '[MTExtractor] tests.Binary.info'
+    def show_info(self):
+        f = '[MTExtractor] tests.Binary.show_info'
         self.get_block_size()
         self.get_file_size()
         self.get_pages()
@@ -308,11 +308,11 @@ class Tests:
         mes = '"{};{}"'.format(get.speech,get.spabbr)
         sh.objs.get_mes(f,mes,True).show_debug()
     
-    def ending(self):
+    def run_ending(self):
         subj = Ending(gt.objs.get_files().iwalker.get_ending())
         subj.debug()
     
-    def subject(self):
+    def run_subject(self):
         subj = Subject(gt.objs.get_files().iwalker.get_subject())
         subj.debug()
     
@@ -617,7 +617,14 @@ if __name__ == '__main__':
     #Tests().translate('DARE')
     #Binary(gt.objs.get_files().iwalker.get_glue1()).show_info()
     gt.DEBUG = True
-    #gt.com.overflowh(-1841)
-    #Tests().xor()
-    #Tests().get_shift()
-    Xor().debug()
+    # creeping Coxsackies
+    pattern = 'rabal'
+    iget = gt.Get(pattern)
+    iget.check()
+    iget.strip()
+    gt.objs.get_files().reset()
+    iget.get_stems()
+    iget.get_combos()
+    iget.set_speech()
+    mes = iget.search()
+    sh.objs.get_mes(f,mes,True).show_debug()

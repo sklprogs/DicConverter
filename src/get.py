@@ -22,13 +22,81 @@ DEBUG    = False
 class Binary:
     
     def __init__(self,file):
-        self.fsize   = 0
-        self.bsize   = 0
-        self.file    = file
-        self.bname   = sh.Path(file).get_basename()
+        self.set_values()
+        self.file = file
+        self.bname = sh.Path(file).get_basename()
         # We need silent logging here (not 'sh.File.Success')
         self.Success = os.path.exists(self.file)
         self.open()
+    
+    def set_values(self):
+        self.fsize = 0
+        self.bsize = 0
+        self.pages = []
+        self.upages = []
+        self.lpages = []
+        self.zpages = []
+        self.file = ''
+        self.bname = ''
+        self.Success = True
+    
+    def get_pages(self):
+        f = '[MTExtractor] get.Binary.get_pages'
+        self.get_block_size()
+        if self.Success:
+            if not self.pages:
+                limits = self.get_page_limit()
+                if limits:
+                    ''' These limits are based on the binary size, so
+                        we can read it without fearing an empty input.
+                        'if limit' skips 'M' area (page 0).
+                    '''
+                    limits = [limit * self.bsize \
+                              for limit in range(limits) \
+                              if limit
+                             ]
+                    for limit in limits:
+                        node = self.read(limit,limit+1)
+                        if node == b'U':
+                            self.upages.append(limit)
+                        elif node == b'L':
+                            self.lpages.append(limit)
+                        elif node == b'Z':
+                            self.zpages.append(limit)
+                        else:
+                            sub = sh.com.set_figure_commas(limit)
+                            messages = []
+                            mes = _('Position: {}').format(sub)
+                            messages.append(mes)
+                            mes = _('Wrong input data: "{}"!')
+                            mes = mes.format(node)
+                            messages.append(mes)
+                            mes = '\n'.join(messages)
+                            sh.objs.get_mes(f,mes).show_warning()
+                            break
+                    if DEBUG:
+                        upages = [sh.com.set_figure_commas(item) \
+                                  for item in self.upages
+                                 ]
+                        lpages = [sh.com.set_figure_commas(item) \
+                                  for item in self.lpages
+                                 ]
+                        zpages = [sh.com.set_figure_commas(item) \
+                                  for item in self.zpages
+                                 ]
+                        mes = _('U pages: {}').format(upages)
+                        sh.objs.get_mes(f,mes,True).show_debug()
+                        mes = _('L pages: {}').format(lpages)
+                        sh.objs.get_mes(f,mes,True).show_debug()
+                        mes = _('Z pages: {}').format(zpages)
+                        sh.objs.get_mes(f,mes,True).show_debug()
+                    self.pages = self.upages + self.lpages + self.zpages
+                    self.pages.sort()
+                else:
+                    sh.com.rep_empty(f)
+        else:
+            sh.com.cancel(f)
+        return self.pages
     
     def get_zero(self,start,end):
         f = '[MTExtractor] get.Binary.get_zero'
@@ -451,6 +519,31 @@ class Parser(Binary):
         self.chunks2 = []
         self.xplain1 = []
         self.xplain2 = []
+    
+    def parsel_loop(self):
+        f = '[MTExtractor] get.Parser.parsel_loop'
+        if self.Success:
+            if self.get_pages():
+                mes = _('Read "{}"').format(self.bname)
+                sh.objs.get_mes(f,mes,True).show_info()
+                for i in range(len(self.lpages)):
+                    if i % 100 == 0:
+                        mes = _('{}/{} pages have been read')
+                        mes = mes.format(i,len(self.lpages))
+                        sh.objs.get_mes(f,mes,True).show_debug()
+                    result = self.get_page_limits(self.lpages[i])
+                    if result:
+                        self.run_reader(result[0],result[1])
+                    else:
+                        sh.com.rep_empty(f)
+                        break
+                mes = _('Parse "{}"').format(self.bname)
+                sh.objs.get_mes(f,mes,True).show_info()
+                self.parse()
+            else:
+                sh.com.rep_empty(f)
+        else:
+            sh.com.cancel(f)
     
     def parsel23(self,chunk):
         f = '[MTExtractor] get.Parser.parsel23'
@@ -1716,17 +1809,17 @@ class Commands:
     
     def report_status(self,pos,stream):
         f = '[MTExtractor] get.Commands.report_status'
-        if stream:
-            mes = _('{}/{} bytes have been processed')
-            mes = mes.format(pos,len(stream))
-            sh.objs.get_mes(f,mes,True).show_info()
-            if DEBUG:
+        if DEBUG:
+            if stream:
+                mes = _('{}/{} bytes have been processed')
+                mes = mes.format(pos,len(stream))
+                sh.objs.get_mes(f,mes,True).show_info()
                 remains = stream[pos:len(stream)]
                 remains = com.get_string(remains)
                 mes = _('Unprocessed fragment: "{}"').format(remains)
                 sh.objs.get_mes(f,mes,True).show_debug()
-        else:
-            sh.com.rep_empty(f)
+            else:
+                sh.com.rep_empty(f)
     
     def unpackh(self,chno):
         return self.unpack(chno,'<h')

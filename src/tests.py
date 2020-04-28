@@ -110,10 +110,6 @@ class Binary(gt.Binary):
     
     def __init__(self,*args,**kwargs):
         super().__init__(*args,**kwargs)
-        self.pages  = []
-        self.upages = []
-        self.lpages = []
-        self.zpages = []
     
     def get_max_limits(self,page_no):
         ''' Return positions of a page based on a block size.
@@ -201,63 +197,6 @@ class Binary(gt.Binary):
             sh.com.run_fast_debug(mes)
         else:
             sh.com.cancel(f)
-    
-    def get_pages(self):
-        f = '[MTExtractor] tests.Binary.get_pages'
-        self.get_block_size()
-        if self.Success:
-            if not self.pages:
-                limits = self.get_page_limit()
-                if limits:
-                    ''' These limits are based on the binary size, so
-                        we can read it without fearing an empty input.
-                        'if limit' skips 'M' area (page 0).
-                    '''
-                    limits = [limit * self.bsize \
-                              for limit in range(limits) \
-                              if limit
-                             ]
-                    for limit in limits:
-                        node = self.read(limit,limit+1)
-                        if node == b'U':
-                            self.upages.append(limit)
-                        elif node == b'L':
-                            self.lpages.append(limit)
-                        elif node == b'Z':
-                            self.zpages.append(limit)
-                        else:
-                            sub = sh.com.set_figure_commas(limit)
-                            messages = []
-                            mes = _('Position: {}').format(sub)
-                            messages.append(mes)
-                            mes = _('Wrong input data: "{}"!')
-                            mes = mes.format(node)
-                            messages.append(mes)
-                            mes = '\n'.join(messages)
-                            sh.objs.get_mes(f,mes).show_warning()
-                            break
-                    upages = [sh.com.set_figure_commas(item) \
-                              for item in self.upages
-                             ]
-                    lpages = [sh.com.set_figure_commas(item) \
-                              for item in self.lpages
-                             ]
-                    zpages = [sh.com.set_figure_commas(item) \
-                              for item in self.zpages
-                             ]
-                    mes = _('U pages: {}').format(upages)
-                    sh.objs.get_mes(f,mes,True).show_debug()
-                    mes = _('L pages: {}').format(lpages)
-                    sh.objs.get_mes(f,mes,True).show_debug()
-                    mes = _('Z pages: {}').format(zpages)
-                    sh.objs.get_mes(f,mes,True).show_debug()
-                    self.pages = self.upages + self.lpages + self.zpages
-                    self.pages.sort()
-                else:
-                    sh.com.rep_empty(f)
-        else:
-            sh.com.cancel(f)
-        return self.pages
 
 
 

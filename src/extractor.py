@@ -9,11 +9,14 @@ import get as gt
 if __name__ == '__main__':
     f = '[MTExtractor] tests.__main__'
     gt.PATH = '/home/pete/.config/mclient/dics'
-    gt.DEBUG = False
+    gt.DEBUG = True
     timer = sh.Timer(f)
     timer.start()
     iparse = gt.Parser(gt.objs.get_files().iwalker.get_stems1())
-    iparse.run_reader(557059,561358)
-    iparse.parse()
+    iparse.parsel_loop()
     timer.end()
     iparse.debug(75)
+    mes = 'Chunks1: {}; chunks2: {}'.format (len(iparse.chunks1)
+                                            ,len(iparse.chunks2)
+                                            )
+    sh.objs.get_mes(f,mes,True).show_debug()

@@ -9,7 +9,7 @@ import get as gt
 if __name__ == '__main__':
     f = '[MTExtractor] tests.__main__'
     gt.PATH = '/home/pete/.config/mclient/dics'
-    gt.DEBUG = True
+    gt.DEBUG = False
     timer = sh.Timer(f)
     timer.start()
     iparse = gt.Parser(gt.objs.get_files().iwalker.get_stems1())

@@ -52,8 +52,7 @@ class Binary:
                         'if limit' skips 'M' area (page 0).
                     '''
                     limits = [limit * self.bsize \
-                              for limit in range(limits) \
-                              if limit
+                              for limit in range(limits) if limit
                              ]
                     for limit in limits:
                         node = self.read(limit,limit+1)
@@ -531,7 +530,7 @@ class Parser(Binary):
                         mes = _('{}/{} pages have been read')
                         mes = mes.format(i,len(self.lpages))
                         sh.objs.get_mes(f,mes,True).show_debug()
-                    result = self.get_page_limits(self.lpages[i])
+                    result = self.get_page_limits(i)
                     if result:
                         self.run_reader(result[0],result[1])
                     else:

@@ -549,7 +549,7 @@ class Parser(Binary):
                     count += 1
                     i -= 1
                 i += 1
-            sh.objs.get_mes(f,count,True).show_debug()
+            sh.objs.get_mes(f,count,True).show_warning()
         else:
             sh.com.cancel(f)
     
@@ -560,14 +560,14 @@ class Parser(Binary):
                 mes = _('Read "{}"').format(self.bname)
                 sh.objs.get_mes(f,mes,True).show_info()
                 #cur
-                #self.lpages = self.lpages[:1000]
-                self.lpages = self.lpages[:3]
+                #self.lpages = self.lpages[:10]
                 for i in range(len(self.lpages)):
-                    if i % 100 == 0:
+                    if i % 1000 == 0:
                         mes = _('{}/{} pages have been read')
                         mes = mes.format(i,len(self.lpages))
                         sh.objs.get_mes(f,mes,True).show_debug()
-                    result = self.get_page_limits(i)
+                    page_no = self.pages.index(self.lpages[i])
+                    result = self.get_page_limits(page_no)
                     if result:
                         self.run_reader(result[0],result[1])
                     else:

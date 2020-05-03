@@ -553,15 +553,17 @@ class Parser(Binary):
         else:
             sh.com.cancel(f)
     
-    def parsel_loop(self):
+    def parsel_loop(self,limit=0):
         f = '[MTExtractor] get.Parser.parsel_loop'
         if self.Success:
             if self.get_pages():
+                if limit:
+                    max_ = limit
+                else:
+                    max_ = len(self.lpages)
                 mes = _('Read "{}"').format(self.bname)
                 sh.objs.get_mes(f,mes,True).show_info()
-                #cur
-                #self.lpages = self.lpages[:10]
-                for i in range(len(self.lpages)):
+                for i in range(max_):
                     if i % 1000 == 0:
                         mes = _('{}/{} pages have been read')
                         mes = mes.format(i,len(self.lpages))

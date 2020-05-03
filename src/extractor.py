@@ -15,10 +15,8 @@ if __name__ == '__main__':
     #get_stems1
     #get_typein1
     iparse = gt.Parser(gt.objs.get_files().iwalker.get_typein2())
-    iparse.parsel_loop()
+    iparse.parsel_loop(1)
     timer.end()
     iparse.debug(75)
-    mes = 'Chunks1: {}; chunks2: {}'.format (len(iparse.chunks1)
-                                            ,len(iparse.chunks2)
-                                            )
+    mes = _('Number of chunks: {}').format(len(iparse.chunks1))
     sh.objs.get_mes(f,mes,True).show_debug()

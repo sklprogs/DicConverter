@@ -54,20 +54,22 @@ class Extractor:
         else:
             sh.com.cancel(f)
     
-    def parse_typein(self):
+    def parse_typein(self,limit=0):
         f = '[MTExtractor] extractor.Extractor.parse_typein'
         if self.Success:
-            self.iparse = gt.Parser(gt.objs.get_files().iwalker.get_typein1())
-            self.iparse.parsel_loop(10)
+            file = gt.objs.get_files().iwalker.get_typein1()
+            self.iparse = gt.Parser(file)
+            self.iparse.parsel_loop(limit)
             self.subjects = list(self.iparse.xplain2)
-            mes = _('Number of chunks: {}').format(len(self.iparse.chunks1))
+            mes = _('Number of chunks: {}')
+            mes = mes.format(len(self.iparse.chunks1))
             sh.objs.get_mes(f,mes,True).show_debug()
             self.Success = self.iparse.Success
         else:
             sh.com.cancel(f)
     
     def run(self):
-        self.parse_typein()
+        self.parse_typein(10)
         self.set_phrases()
 
 

@@ -12,7 +12,9 @@ if __name__ == '__main__':
     gt.DEBUG = False
     timer = sh.Timer(f)
     timer.start()
-    iparse = gt.Parser(gt.objs.get_files().iwalker.get_stems1())
+    #get_stems1
+    #get_typein1
+    iparse = gt.Parser(gt.objs.get_files().iwalker.get_typein1())
     iparse.parsel_loop()
     timer.end()
     iparse.debug(75)

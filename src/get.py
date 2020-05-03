@@ -519,12 +519,49 @@ class Parser(Binary):
         self.xplain1 = []
         self.xplain2 = []
     
+    def parse2div2(self):
+        f = '[MTExtractor] get.Parser.parse2div2'
+        if self.Success:
+            for chunk in self.chunks2:
+                if len(chunk) % 2 == 0:
+                    chunks = com.get_chunks(chunk,2)
+                    add = []
+                    for chunk in chunks:
+                        add.append(struct.unpack('<h',chunk)[0])
+                    self.xplain2.append(add)
+                else:
+                    self.xplain2.append([_('UNKNOWN')])
+        else:
+            sh.com.cancel(f)
+    
+    def delete_invalid(self):
+        f = '[MTExtractor] get.Parser.delete_invalid'
+        if self.Success:
+            i = 0
+            count = 0
+            while i < len(self.chunks1):
+                if self.xplain1[i] == [_('UNKNOWN')] \
+                or self.xplain2[i] == [_('UNKNOWN')]:
+                    del self.chunks1[i]
+                    del self.chunks2[i]
+                    del self.xplain1[i]
+                    del self.xplain2[i]
+                    count += 1
+                    i -= 1
+                i += 1
+            sh.objs.get_mes(f,count,True).show_debug()
+        else:
+            sh.com.cancel(f)
+    
     def parsel_loop(self):
         f = '[MTExtractor] get.Parser.parsel_loop'
         if self.Success:
             if self.get_pages():
                 mes = _('Read "{}"').format(self.bname)
                 sh.objs.get_mes(f,mes,True).show_info()
+                #cur
+                #self.lpages = self.lpages[:1000]
+                self.lpages = self.lpages[:3]
                 for i in range(len(self.lpages)):
                     if i % 100 == 0:
                         mes = _('{}/{} pages have been read')
@@ -539,52 +576,49 @@ class Parser(Binary):
                 mes = _('Parse "{}"').format(self.bname)
                 sh.objs.get_mes(f,mes,True).show_info()
                 self.parse()
+                self.delete_invalid()
             else:
                 sh.com.rep_empty(f)
         else:
             sh.com.cancel(f)
     
-    def parsel23(self,chunk):
-        f = '[MTExtractor] get.Parser.parsel23'
+    def parse2div3(self):
+        f = '[MTExtractor] get.Parser.parse2div3'
         if self.Success:
-            # 2 bytes + multiple sequences of 3 bytes
-            if len(chunk) > 4 and (len(chunk) - 2) % 3 == 0:
-                add = [struct.unpack('<h',chunk[0:2])[0]]
-                for tmp in com.get_chunks(chunk[2:],3):
-                    tmp += b'\x00'
-                    add.append(struct.unpack('<L',tmp)[0])
-                return add
+            for chunk in self.chunks2:
+                # 2 bytes + multiple sequences of 3 bytes
+                if len(chunk) > 4 and (len(chunk) - 2) % 3 == 0:
+                    add = [struct.unpack('<h',chunk[0:2])[0]]
+                    for tmp in com.get_chunks(chunk[2:],3):
+                        tmp += b'\x00'
+                        add.append(struct.unpack('<L',tmp)[0])
+                    self.xplain2.append(add)
+                else:
+                    self.xplain2.append([_('UNKNOWN')])
         else:
             sh.com.cancel(f)
     
-    def chunk3(self,chunk):
-        f = '[MTExtractor] get.Parser.chunk3'
+    def parse1div3(self):
+        f = '[MTExtractor] get.Parser.parse1div3'
         if self.Success:
-            if len(chunk) % 3 == 0:
-                chunks = com.get_chunks(chunk,3)
-                vals = []
-                for chunk in chunks:
-                    chunk += b'\x00'
-                    vals.append(struct.unpack('<L',chunk)[0])
-                return vals
+            for chunk in self.chunks1:
+                if len(chunk) % 3 == 0:
+                    chunks = com.get_chunks(chunk,3)
+                    add = []
+                    for chunk in chunks:
+                        chunk += b'\x00'
+                        add.append(struct.unpack('<L',chunk)[0])
+                    self.xplain1.append(add)
+                else:
+                    self.xplain1.append([_('UNKNOWN')])
         else:
             sh.com.cancel(f)
     
     def parse_glue(self):
         f = '[MTExtractor] get.Parser.parse_glue'
         if self.Success:
-            for chunk in self.chunks1:
-                tmp = self.chunk3(chunk)
-                if tmp:
-                    self.xplain1.append(tmp)
-                else:
-                    self.xplain1.append([_('UNKNOWN')])
-            for chunk in self.chunks2:
-                tmp = self.parsel23(chunk)
-                if tmp:
-                    self.xplain2.append(tmp)
-                else:
-                    self.xplain2.append([_('UNKNOWN')])
+            self.parse1div3()
+            self.parse2div3()
         else:
             sh.com.cancel(f)
     
@@ -635,8 +669,8 @@ class Parser(Binary):
         else:
             sh.com.cancel(f)
         
-    def get_chunk7(self,chunk):
-        f = '[MTExtractor] get.Parser.chunk7'
+    def parse2div7(self):
+        f = '[MTExtractor] get.Parser.parse2div7'
         ''' According to "libmtquery-0.0.1alpha3/doc/README.rus":
             the 1st byte - a type designating the use of capital letters
             (not used), further - a vector of 7-byte codes, each code
@@ -647,19 +681,22 @@ class Parser(Binary):
             2 bytes - lgk (speech part codes)
         '''
         if self.Success:
-            if chunk and (len(chunk) - 1) % 7 == 0:
-                tmp    = []
-                chunks = com.get_chunks(chunk[1:],7)
-                for item in chunks:
-                    delta = 7 - len(item)
-                    item  = item + b'\x00' * delta
-                    word  = item[0:3] + b'\x00'
-                    sik   = item[3:5]
-                    lgk   = item[5:7]
-                    tmp.append(struct.unpack('<L',word)[0])
-                    tmp.append(struct.unpack('<h',sik)[0])
-                    tmp.append(struct.unpack('<h',lgk)[0])
-                return tmp
+            for chunk in self.chunks2:
+                if chunk and (len(chunk) - 1) % 7 == 0:
+                    add = []
+                    chunks = com.get_chunks(chunk[1:],7)
+                    for item in chunks:
+                        delta = 7 - len(item)
+                        item = item + b'\x00' * delta
+                        word = item[0:3] + b'\x00'
+                        sik = item[3:5]
+                        lgk = item[5:7]
+                        add.append(struct.unpack('<L',word)[0])
+                        add.append(struct.unpack('<h',sik)[0])
+                        add.append(struct.unpack('<h',lgk)[0])
+                    self.xplain2.append(add)
+                else:
+                    self.xplain2.append([_('UNKNOWN')])
         else:
             sh.com.cancel(f)
     
@@ -672,16 +709,19 @@ class Parser(Binary):
         else:
             sh.com.cancel(f)
     
+    def parse_typein(self):
+        f = '[MTExtractor] get.Parser.parse_typein'
+        if self.Success:
+            self.parsel1()
+            self.parse2div2()
+        else:
+            sh.com.cancel(f)
+    
     def parse_stem(self):
         f = '[MTExtractor] get.Parser.parse_stem'
         if self.Success:
             self.parsel1()
-            for chunk in self.chunks2:
-                tmp = self.get_chunk7(chunk)
-                if tmp:
-                    self.xplain2.append(tmp)
-                else:
-                    self.xplain2.append([_('UNKNOWN')])
+            self.parse2div7()
         else:
             sh.com.cancel(f)
     
@@ -690,7 +730,9 @@ class Parser(Binary):
         if self.Success:
             #FIX: Why base names are not lowercased?
             bname = self.bname.lower()
-            if bname.startswith('stem'):
+            if bname.startswith('typein'):
+                self.parse_typein()
+            elif bname.startswith('stem'):
                 self.parse_stem()
             elif bname.startswith('dict') and bname.endswith('d'):
                 self.parse_glue()

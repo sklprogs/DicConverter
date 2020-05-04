@@ -15,7 +15,6 @@ CODING   = 'windows-1251'
 LANG1    = 'English'
 LANG2    = 'Russian'
 PATH     = ''
-MAXSTEMS = 2
 DEBUG    = False
 
 
@@ -1742,44 +1741,6 @@ class AllDics:
 
 
 
-class Articles(UPage):
-    # Parse files like 'dict.ert'
-    def __init__(self,*args,**kwargs):
-        super().__init__(*args,**kwargs)
-    
-    def parse(self,chunk):
-        f = '[MTExtractor] get.Articles.parse'
-        if self.Success:
-            if chunk:
-                return Xor (data   = chunk
-                           ,offset = -251
-                           ).dexor()
-            else:
-                sh.com.rep_empty(f)
-        else:
-            sh.com.cancel(f)
-    
-    def search(self,coded):
-        # Do not fail the whole class upon a failed search
-        f = '[MTExtractor] get.Articles.search'
-        if self.Success:
-            if coded:
-                poses = self.searchu(coded)
-                if poses:
-                    chunk = self.get_part2 (pattern = coded
-                                           ,start   = poses[0]
-                                           ,end     = poses[1]
-                                           )
-                    return self.parse(chunk)
-                else:
-                    sh.com.rep_empty(f)
-            else:
-                sh.com.rep_empty(f)
-        else:
-            sh.com.cancel(f)
-
-
-
 class Glue(UPage):
     # Parse files like 'dict.erd'
     def __init__(self,*args,**kwargs):
@@ -2002,11 +1963,6 @@ class Files:
             self.glue2 = Glue(self.iwalker.get_glue2())
         return self.glue2
     
-    def get_article(self):
-        if self.article is None:
-            self.article = Articles(self.iwalker.get_article())
-        return self.article
-    
     def open(self):
         f = '[MTExtractor] get.Files.open'
         if self.Success:
@@ -2016,7 +1972,6 @@ class Files:
             self.get_stems2()
             self.get_glue1()
             self.get_glue2()
-            self.get_article()
         else:
             sh.com.cancel(f)
     
@@ -2029,7 +1984,6 @@ class Files:
             self.get_stems2().close()
             self.get_glue1().close()
             self.get_glue2().close()
-            self.get_article().close()
         else:
             sh.com.cancel(f)
     
@@ -2047,7 +2001,6 @@ class Files:
         self.stems2  = None
         self.glue1   = None
         self.glue2   = None
-        self.article = None
         self.subject = None
         self.ending  = None
 
@@ -2224,11 +2177,12 @@ class Stems(UPage):
 
 class Get:
     
-    def __init__(self,pattern):
+    def __init__(self,pattern,maxstems=1):
         self.set_values()
         self.pattern = pattern
-        self.speech  = ''
-        self.spabbr  = ''
+        self.speech = ''
+        self.spabbr = ''
+        self.maxstems = maxstems
     
     def set_speech(self):
         f = '[MTExtractor] get.Get.set_speech'
@@ -2356,8 +2310,8 @@ class Get:
                 while i >= 0:
                     #NOTE: nltk: according -> accord -> No matches!
                     stem = word[0:i]
-                    end  = word[i:]
-                    mes  = _('Try for "{}|{}"').format(stem,end)
+                    end = word[i:]
+                    mes = _('Try for "{}|{}"').format(stem,end)
                     sh.objs.get_mes(f,mes,True).show_info()
                     ''' Since we swap languages, the needed stems will
                         always be stored in stem file #1.
@@ -2374,7 +2328,7 @@ class Get:
                             performance, we allow only 2 valid stems
                             of the same word.
                         '''
-                        if len(word_stems) == MAXSTEMS:
+                        if len(word_stems) >= self.maxstems:
                             break
                     i -= 1
                 self.stemnos.append(word_stems)
@@ -2398,27 +2352,11 @@ class Get:
                 art_no = objs.get_files().get_glue1().search(combo)
                 if art_no:
                     art_nos += art_no
-            if art_nos:
-                mes = _('Found articles: {}').format(art_nos)
-            else:
-                mes = _('No articles have been found!')
-            sh.objs.get_mes(f,mes,True).show_info()
             return art_nos
-            '''
-            articles = []
-            for art_no in art_nos:
-                article = objs.get_files().get_article().search(art_no)
-                if article:
-                    articles.append(article)
-            return articles
-            '''
         else:
             sh.com.cancel(f)
     
     def run(self):
-        self.check()
-        self.strip()
-        objs.get_files().reset()
         self.get_stems()
         self.get_combos()
         self.set_speech()

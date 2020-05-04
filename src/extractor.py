@@ -86,6 +86,14 @@ if __name__ == '__main__':
     gt.DEBUG = False
     timer = sh.Timer(f)
     timer.start()
-    iextract = Extractor()
-    iextract.run()
+    #iextract = Extractor()
+    #iextract.run()
+    pattern = 'acceleration measured in g'
+    #pattern = 'absolute measurements'
+    iget = gt.Get(pattern)
+    result = iget.run()
+    if not result:
+        iget = gt.Get(pattern,2)
+        result = iget.run()
+    print(result)
     timer.end()

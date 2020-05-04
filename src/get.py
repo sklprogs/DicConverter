@@ -513,10 +513,18 @@ class Parser(Binary):
     
     def __init__(self,*args,**kwargs):
         super().__init__(*args,**kwargs)
+        self.set_ps_values()
+    
+    def reset(self):
+        self.set_ps_values()
+    
+    def set_ps_values(self):
+        # 'Success' is passed in 'Binary'
         self.chunks1 = []
         self.chunks2 = []
         self.xplain1 = []
         self.xplain2 = []
+        self.origcnt = 0
     
     def parse2div2(self):
         f = '[MTExtractor] get.Parser.parse2div2'
@@ -577,6 +585,7 @@ class Parser(Binary):
                 mes = _('Parse "{}"').format(self.bname)
                 sh.objs.get_mes(f,mes,True).show_info()
                 self.parse()
+                self.origcnt = len(self.chunks1)
                 self.delete_invalid()
             else:
                 sh.com.rep_empty(f)
@@ -1799,6 +1808,24 @@ class Glue(UPage):
 
 
 class Commands:
+    
+    def parse3(self,chunks):
+        f = '[MTExtractor] get.Commands.parse3'
+        xplain = []
+        if chunks:
+            for chunk in chunks:
+                if len(chunk) % 3 == 0:
+                    chunks = com.get_chunks(chunk,3)
+                    add = []
+                    for chunk in chunks:
+                        chunk += b'\x00'
+                        add.append(struct.unpack('<L',chunk)[0])
+                    xplain.append(add)
+                else:
+                    xplain.append([_('UNKNOWN')])
+        else:
+            sh.com.rep_empty(f)
+        return xplain
     
     def strip(self,pattern):
         if pattern is None:

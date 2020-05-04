@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: shared\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-05-03 23:51+0300\n"
-"PO-Revision-Date: 2020-05-03 23:54+0300\n"
+"POT-Creation-Date: 2020-05-04 19:46+0300\n"
+"PO-Revision-Date: 2020-05-04 19:47+0300\n"
 "Last-Translator: Peter Sklyar <skl.progs@gmail.com>\n"
 "Language-Team: Peter Sklyar <skl.progs@gmail.com>\n"
 "Language: ru_RU\n"
@@ -19,10 +19,10 @@ msgstr ""
 "X-Poedit-SearchPath-0: base/bin/MTExtractor/src\n"
 "X-Poedit-SearchPath-1: bin/skl_shared/src\n"
 
-#: base/bin/MTExtractor/src/elems.py:135 base/bin/MTExtractor/src/get.py:70
-#: base/bin/MTExtractor/src/get.py:923 base/bin/MTExtractor/src/get.py:955
-#: base/bin/MTExtractor/src/get.py:1009 base/bin/MTExtractor/src/get.py:1056
-#: base/bin/MTExtractor/src/get.py:1828 base/bin/MTExtractor/src/get.py:2151
+#: base/bin/MTExtractor/src/elems.py:135 base/bin/MTExtractor/src/get.py:69
+#: base/bin/MTExtractor/src/get.py:933 base/bin/MTExtractor/src/get.py:965
+#: base/bin/MTExtractor/src/get.py:1019 base/bin/MTExtractor/src/get.py:1066
+#: base/bin/MTExtractor/src/get.py:1800 base/bin/MTExtractor/src/get.py:2133
 #: base/bin/MTExtractor/src/tags.py:169 bin/skl_shared/src/logic.py:414
 #: bin/skl_shared/src/logic.py:442 bin/skl_shared/src/logic.py:2098
 #: bin/skl_shared/src/logic.py:2565 bin/skl_shared/src/logic.py:3829
@@ -36,49 +36,60 @@ msgstr "Недопустимые входные данные: \"{}\"!"
 msgid "Debug table:"
 msgstr "Таблица для отладки:"
 
-#: base/bin/MTExtractor/src/get.py:68
+#: base/bin/MTExtractor/src/extractor.py:105
+#: base/bin/MTExtractor/src/extractor.py:112
+#: base/bin/MTExtractor/src/tests.py:173 base/bin/MTExtractor/src/tests.py:185
+#: base/bin/MTExtractor/src/tests.py:186 base/bin/MTExtractor/src/tests.py:187
+msgid "N/A"
+msgstr "Н/Д"
+
+#: base/bin/MTExtractor/src/extractor.py:109
+msgid "Processed chunks (total/parsed/translated): {}/{}/{}"
+msgstr "Обработано фрагментов (всего/разобрано/переведено): {}/{}/{}"
+
+#: base/bin/MTExtractor/src/get.py:67
 msgid "Position: {}"
 msgstr "Позиция: {}"
 
-#: base/bin/MTExtractor/src/get.py:86
+#: base/bin/MTExtractor/src/get.py:85
 msgid "U pages: {}"
 msgstr "Страницы U: {}"
 
-#: base/bin/MTExtractor/src/get.py:88
+#: base/bin/MTExtractor/src/get.py:87
 msgid "L pages: {}"
 msgstr "Страницы L: {}"
 
-#: base/bin/MTExtractor/src/get.py:90
+#: base/bin/MTExtractor/src/get.py:89
 msgid "Z pages: {}"
 msgstr "Страницы Z: {}"
 
-#: base/bin/MTExtractor/src/get.py:165 base/bin/MTExtractor/src/get.py:222
-#: base/bin/MTExtractor/src/get.py:2146 base/bin/MTExtractor/src/get.py:2213
+#: base/bin/MTExtractor/src/get.py:164 base/bin/MTExtractor/src/get.py:221
+#: base/bin/MTExtractor/src/get.py:2128 base/bin/MTExtractor/src/get.py:2195
 msgid "No debug info"
 msgstr "Нет информации для отладки"
 
-#: base/bin/MTExtractor/src/get.py:268
+#: base/bin/MTExtractor/src/get.py:267
 msgid "File \"{}\" has the size of {}"
 msgstr "Файл \"{}\" имеет размер в {}"
 
-#: base/bin/MTExtractor/src/get.py:274 base/bin/MTExtractor/src/get.py:934
-#: base/bin/MTExtractor/src/get.py:1070
+#: base/bin/MTExtractor/src/get.py:273 base/bin/MTExtractor/src/get.py:944
+#: base/bin/MTExtractor/src/get.py:1080
 msgid "Empty output is not allowed!"
 msgstr "Пустые выходные данные не допускаются!"
 
-#: base/bin/MTExtractor/src/get.py:289 base/bin/MTExtractor/src/get.py:308
+#: base/bin/MTExtractor/src/get.py:288 base/bin/MTExtractor/src/get.py:307
 msgid "Page size: {}"
 msgstr "Размер страницы: {}"
 
-#: base/bin/MTExtractor/src/get.py:294 base/bin/MTExtractor/src/get.py:315
+#: base/bin/MTExtractor/src/get.py:293 base/bin/MTExtractor/src/get.py:314
 #: base/bin/MTExtractor/src/tests.py:131
 msgid "Page limits: [{}:{}]"
 msgstr "Пределы страницы: [{}:{}]"
 
-#: base/bin/MTExtractor/src/get.py:321 base/bin/MTExtractor/src/get.py:326
-#: base/bin/MTExtractor/src/get.py:422 base/bin/MTExtractor/src/get.py:446
-#: base/bin/MTExtractor/src/get.py:664 base/bin/MTExtractor/src/get.py:843
-#: base/bin/MTExtractor/src/get.py:971 base/bin/MTExtractor/src/get.py:1270
+#: base/bin/MTExtractor/src/get.py:320 base/bin/MTExtractor/src/get.py:325
+#: base/bin/MTExtractor/src/get.py:421 base/bin/MTExtractor/src/get.py:445
+#: base/bin/MTExtractor/src/get.py:674 base/bin/MTExtractor/src/get.py:853
+#: base/bin/MTExtractor/src/get.py:981 base/bin/MTExtractor/src/get.py:1280
 #: base/bin/MTExtractor/src/utils.py:47 base/bin/MTExtractor/src/utils.py:539
 #: base/bin/MTExtractor/src/utils.py:951 bin/skl_shared/src/logic.py:169
 #: bin/skl_shared/src/logic.py:968 bin/skl_shared/src/logic.py:987
@@ -88,8 +99,8 @@ msgstr "Пределы страницы: [{}:{}]"
 msgid "The condition \"{}\" is not observed!"
 msgstr "Условие \"{}\" не выполнено!"
 
-#: base/bin/MTExtractor/src/get.py:344 base/bin/MTExtractor/src/get.py:495
-#: base/bin/MTExtractor/src/get.py:1904 bin/skl_shared/src/shared.py:2294
+#: base/bin/MTExtractor/src/get.py:343 base/bin/MTExtractor/src/get.py:494
+#: base/bin/MTExtractor/src/get.py:1894 bin/skl_shared/src/shared.py:2294
 msgid ""
 "Third-party module has failed!\n"
 "\n"
@@ -99,58 +110,59 @@ msgstr ""
 "\n"
 "Детали: {}"
 
-#: base/bin/MTExtractor/src/get.py:364 base/bin/MTExtractor/src/get.py:1304
+#: base/bin/MTExtractor/src/get.py:363 base/bin/MTExtractor/src/get.py:1314
 msgid "The check has failed!"
 msgstr "Проверка завершилась неуспешно!"
 
-#: base/bin/MTExtractor/src/get.py:413 base/bin/MTExtractor/src/get.py:415
+#: base/bin/MTExtractor/src/get.py:412 base/bin/MTExtractor/src/get.py:414
 msgid "Part #{} length: {}"
 msgstr "Длина части №{}: {}"
 
-#: base/bin/MTExtractor/src/get.py:485
+#: base/bin/MTExtractor/src/get.py:484
 msgid "Open \"{}\""
 msgstr "Открытие \"{}\""
 
-#: base/bin/MTExtractor/src/get.py:504
+#: base/bin/MTExtractor/src/get.py:503
 msgid "Close \"{}\""
 msgstr "Закрытие \"{}\""
 
-#: base/bin/MTExtractor/src/get.py:533 base/bin/MTExtractor/src/get.py:543
-#: base/bin/MTExtractor/src/get.py:544 base/bin/MTExtractor/src/get.py:597
-#: base/bin/MTExtractor/src/get.py:613 base/bin/MTExtractor/src/get.py:699
+#: base/bin/MTExtractor/src/get.py:540 base/bin/MTExtractor/src/get.py:550
+#: base/bin/MTExtractor/src/get.py:551 base/bin/MTExtractor/src/get.py:607
+#: base/bin/MTExtractor/src/get.py:623 base/bin/MTExtractor/src/get.py:709
+#: base/bin/MTExtractor/src/get.py:1825
 msgid "UNKNOWN"
 msgstr "НЕИЗВЕСТНО"
 
-#: base/bin/MTExtractor/src/get.py:560
+#: base/bin/MTExtractor/src/get.py:571
 msgid "Read \"{}\""
 msgstr "Чтение \"{}\""
 
-#: base/bin/MTExtractor/src/get.py:566
+#: base/bin/MTExtractor/src/get.py:575
 msgid "{}/{} pages have been read"
 msgstr "{}/{} страниц прочитано"
 
-#: base/bin/MTExtractor/src/get.py:576
+#: base/bin/MTExtractor/src/get.py:585
 msgid "Parse \"{}\""
 msgstr "Разбор \"{}\""
 
-#: base/bin/MTExtractor/src/get.py:653 base/bin/MTExtractor/src/tests.py:77
+#: base/bin/MTExtractor/src/get.py:663 base/bin/MTExtractor/src/tests.py:77
 #: base/bin/MTExtractor/src/tests.py:101
 msgid "File: \"{}\""
 msgstr "Файл: \"{}\""
 
-#: base/bin/MTExtractor/src/get.py:744 bin/skl_shared/src/logic.py:5115
+#: base/bin/MTExtractor/src/get.py:754 bin/skl_shared/src/logic.py:5115
 msgid "Not implemented yet!"
 msgstr "Еще не реализовано!"
 
-#: base/bin/MTExtractor/src/get.py:800
+#: base/bin/MTExtractor/src/get.py:810
 msgid "Position: {}; vector: {}"
 msgstr "Позиция: {}; вектор: {}"
 
-#: base/bin/MTExtractor/src/get.py:818
+#: base/bin/MTExtractor/src/get.py:828
 msgid "Overflow: {} -> {}"
 msgstr "Переполнение: {} -> {}"
 
-#: base/bin/MTExtractor/src/get.py:833
+#: base/bin/MTExtractor/src/get.py:843
 msgid ""
 "Original byte: \"{}\"; original position: {}; vector: {}; final byte: "
 "\"{}\"; final position: {}"
@@ -158,28 +170,28 @@ msgstr ""
 "Первоначальный байт: \"{}\"; первоначальная позиция: {}; вектор: {}; "
 "конечный байт: \"{}\"; конечная позиция: {}"
 
-#: base/bin/MTExtractor/src/get.py:914 bin/skl_shared/src/shared.py:4247
+#: base/bin/MTExtractor/src/get.py:924 bin/skl_shared/src/shared.py:4247
 msgid "Yes"
 msgstr "Да"
 
-#: base/bin/MTExtractor/src/get.py:916 bin/skl_shared/src/shared.py:4248
+#: base/bin/MTExtractor/src/get.py:926 bin/skl_shared/src/shared.py:4248
 msgid "No"
 msgstr "Нет"
 
-#: base/bin/MTExtractor/src/get.py:918
+#: base/bin/MTExtractor/src/get.py:928
 msgid "#: {}; Pattern: \"{}\"; Match: {}"
 msgstr "№: {}; Образец: \"{}\"; Совпадение: {}"
 
-#: base/bin/MTExtractor/src/get.py:1074 base/bin/MTExtractor/src/get.py:1330
-#: base/bin/MTExtractor/src/get.py:1346 base/bin/MTExtractor/src/get.py:1363
-#: base/bin/MTExtractor/src/get.py:1380 base/bin/MTExtractor/src/get.py:1411
-#: base/bin/MTExtractor/src/get.py:1428 base/bin/MTExtractor/src/get.py:1445
-#: base/bin/MTExtractor/src/get.py:1488 base/bin/MTExtractor/src/get.py:1504
+#: base/bin/MTExtractor/src/get.py:1084 base/bin/MTExtractor/src/get.py:1340
+#: base/bin/MTExtractor/src/get.py:1356 base/bin/MTExtractor/src/get.py:1373
+#: base/bin/MTExtractor/src/get.py:1390 base/bin/MTExtractor/src/get.py:1421
+#: base/bin/MTExtractor/src/get.py:1438 base/bin/MTExtractor/src/get.py:1455
+#: base/bin/MTExtractor/src/get.py:1498 base/bin/MTExtractor/src/get.py:1514
 msgid "File \"{}\" does not exist!"
 msgstr "Файл \"{}\" не существует!"
 
-#: base/bin/MTExtractor/src/get.py:1097 base/bin/MTExtractor/src/get.py:1113
-#: base/bin/MTExtractor/src/get.py:1517 base/bin/MTExtractor/src/tags.py:153
+#: base/bin/MTExtractor/src/get.py:1107 base/bin/MTExtractor/src/get.py:1123
+#: base/bin/MTExtractor/src/get.py:1527 base/bin/MTExtractor/src/tags.py:153
 #: base/bin/MTExtractor/src/tests.py:174 base/bin/MTExtractor/src/utils.py:590
 #: base/bin/MTExtractor/src/utils.py:646 base/bin/MTExtractor/src/utils.py:832
 #: base/bin/MTExtractor/src/utils.py:1005
@@ -194,183 +206,175 @@ msgstr "Файл \"{}\" не существует!"
 msgid "Wrong input data!"
 msgstr "Недопустимые входные данные!"
 
-#: base/bin/MTExtractor/src/get.py:1109
+#: base/bin/MTExtractor/src/get.py:1119
 msgid "#{}: {}"
 msgstr "№{}: {}"
 
-#: base/bin/MTExtractor/src/get.py:1132
+#: base/bin/MTExtractor/src/get.py:1142
 msgid "Start"
 msgstr "Начало"
 
-#: base/bin/MTExtractor/src/get.py:1134 base/bin/MTExtractor/src/get.py:1139
+#: base/bin/MTExtractor/src/get.py:1144 base/bin/MTExtractor/src/get.py:1149
 msgid "{} (#{})"
 msgstr "{} (№{})"
 
-#: base/bin/MTExtractor/src/get.py:1144
+#: base/bin/MTExtractor/src/get.py:1154
 msgid "End"
 msgstr "Конец"
 
-#: base/bin/MTExtractor/src/get.py:1210
+#: base/bin/MTExtractor/src/get.py:1220
 msgid ""
 "Processing the pattern has not been completed, but the end of the file has "
 "already been reached!"
 msgstr "Обработка образца не была завершена, однако был достигнут конец файла!"
 
-#: base/bin/MTExtractor/src/get.py:1727
+#: base/bin/MTExtractor/src/get.py:1737
 msgid "{} offline dictionaries are available"
 msgstr "Доступно {} локальных словарей"
 
-#: base/bin/MTExtractor/src/get.py:1855
+#: base/bin/MTExtractor/src/get.py:1845
 msgid "{}/{} bytes have been processed"
 msgstr "{}/{} байтов обработано"
 
-#: base/bin/MTExtractor/src/get.py:1860
+#: base/bin/MTExtractor/src/get.py:1850
 msgid "Unprocessed fragment: \"{}\""
 msgstr "Необработанный фрагмент: \"{}\""
 
-#: base/bin/MTExtractor/src/get.py:2246
+#: base/bin/MTExtractor/src/get.py:2229
 msgid "Phrase"
 msgstr "Фраза"
 
-#: base/bin/MTExtractor/src/get.py:2247
+#: base/bin/MTExtractor/src/get.py:2230
 msgid "phrase"
 msgstr "фраза"
 
-#: base/bin/MTExtractor/src/get.py:2250
+#: base/bin/MTExtractor/src/get.py:2233
 msgid "Abbreviation"
 msgstr "Сокращение"
 
-#: base/bin/MTExtractor/src/get.py:2251
+#: base/bin/MTExtractor/src/get.py:2234
 msgid "abbr."
 msgstr "сокр."
 
-#: base/bin/MTExtractor/src/get.py:2254
+#: base/bin/MTExtractor/src/get.py:2237
 msgid "Adverb"
 msgstr "Наречие"
 
-#: base/bin/MTExtractor/src/get.py:2255
+#: base/bin/MTExtractor/src/get.py:2238
 msgid "adv."
 msgstr "нареч."
 
-#: base/bin/MTExtractor/src/get.py:2259
+#: base/bin/MTExtractor/src/get.py:2242
 msgid "Interjection"
 msgstr "Междометие"
 
-#: base/bin/MTExtractor/src/get.py:2260
+#: base/bin/MTExtractor/src/get.py:2243
 msgid "interj."
 msgstr "межд."
 
-#: base/bin/MTExtractor/src/get.py:2264
+#: base/bin/MTExtractor/src/get.py:2247
 msgid "Conjunction"
 msgstr "Союз"
 
-#: base/bin/MTExtractor/src/get.py:2265
+#: base/bin/MTExtractor/src/get.py:2248
 msgid "conj."
 msgstr "союз"
 
-#: base/bin/MTExtractor/src/get.py:2269
+#: base/bin/MTExtractor/src/get.py:2252
 msgid "Article"
 msgstr "Артикль"
 
-#: base/bin/MTExtractor/src/get.py:2270
+#: base/bin/MTExtractor/src/get.py:2253
 msgid "art."
 msgstr "арт."
 
-#: base/bin/MTExtractor/src/get.py:2274
+#: base/bin/MTExtractor/src/get.py:2257
 msgid "Numeral"
 msgstr "Числительное"
 
-#: base/bin/MTExtractor/src/get.py:2275
+#: base/bin/MTExtractor/src/get.py:2258
 msgid "num."
 msgstr "числ."
 
-#: base/bin/MTExtractor/src/get.py:2279
+#: base/bin/MTExtractor/src/get.py:2262
 msgid "Ordinal Numeral"
 msgstr "Порядковое числительное"
 
-#: base/bin/MTExtractor/src/get.py:2280
+#: base/bin/MTExtractor/src/get.py:2263
 msgid "ord.num."
 msgstr "поряд.числ."
 
-#: base/bin/MTExtractor/src/get.py:2283
+#: base/bin/MTExtractor/src/get.py:2266
 msgid "Preposition"
 msgstr "Предлог"
 
-#: base/bin/MTExtractor/src/get.py:2284
+#: base/bin/MTExtractor/src/get.py:2267
 msgid "prepos."
 msgstr "предл."
 
-#: base/bin/MTExtractor/src/get.py:2288
+#: base/bin/MTExtractor/src/get.py:2271
 msgid "Form"
 msgstr "Форма"
 
-#: base/bin/MTExtractor/src/get.py:2289
+#: base/bin/MTExtractor/src/get.py:2272
 msgid "form"
 msgstr "форма"
 
-#: base/bin/MTExtractor/src/get.py:2293
+#: base/bin/MTExtractor/src/get.py:2276
 msgid "Particle"
 msgstr "Частица"
 
-#: base/bin/MTExtractor/src/get.py:2294
+#: base/bin/MTExtractor/src/get.py:2277
 msgid "part."
 msgstr "част."
 
-#: base/bin/MTExtractor/src/get.py:2298
+#: base/bin/MTExtractor/src/get.py:2281
 msgid "Predicative"
 msgstr "Предикатив"
 
-#: base/bin/MTExtractor/src/get.py:2299
+#: base/bin/MTExtractor/src/get.py:2282
 msgid "predic."
 msgstr "предик."
 
-#: base/bin/MTExtractor/src/get.py:2302
+#: base/bin/MTExtractor/src/get.py:2285
 msgid "Pronoun"
 msgstr "Местоимение"
 
-#: base/bin/MTExtractor/src/get.py:2303
+#: base/bin/MTExtractor/src/get.py:2286
 msgid "pron"
 msgstr "мест."
 
-#: base/bin/MTExtractor/src/get.py:2306
+#: base/bin/MTExtractor/src/get.py:2289
 msgid "Adjective"
 msgstr "Прилагательное"
 
-#: base/bin/MTExtractor/src/get.py:2307
+#: base/bin/MTExtractor/src/get.py:2290
 msgid "adj"
 msgstr "прил."
 
-#: base/bin/MTExtractor/src/get.py:2310
+#: base/bin/MTExtractor/src/get.py:2293
 msgid "Noun"
 msgstr "Существительное"
 
-#: base/bin/MTExtractor/src/get.py:2311
+#: base/bin/MTExtractor/src/get.py:2294
 msgid "n"
 msgstr "сущ."
 
-#: base/bin/MTExtractor/src/get.py:2314
+#: base/bin/MTExtractor/src/get.py:2297
 msgid "Verb"
 msgstr "Глагол"
 
-#: base/bin/MTExtractor/src/get.py:2315
+#: base/bin/MTExtractor/src/get.py:2298
 msgid "v"
 msgstr "гл."
 
-#: base/bin/MTExtractor/src/get.py:2358
+#: base/bin/MTExtractor/src/get.py:2341
 msgid "Try for \"{}|{}\""
 msgstr "Тест \"{}|{}\""
 
-#: base/bin/MTExtractor/src/get.py:2365
+#: base/bin/MTExtractor/src/get.py:2348
 msgid "Found stem: \"{}\""
 msgstr "Найдена основа: \"{}\""
-
-#: base/bin/MTExtractor/src/get.py:2400
-msgid "Found articles: {}"
-msgstr "Найдены статьи: {}"
-
-#: base/bin/MTExtractor/src/get.py:2402
-msgid "No articles have been found!"
-msgstr "Статьи не найдены!"
 
 #: base/bin/MTExtractor/src/run.py:44 bin/skl_shared/src/logic.py:768
 #: bin/skl_shared/src/logic.py:2247 bin/skl_shared/src/shared.py:1415
@@ -427,11 +431,6 @@ msgstr "Размер блока: {}"
 #: base/bin/MTExtractor/src/tests.py:155
 msgid "Pages:"
 msgstr "Страниц:"
-
-#: base/bin/MTExtractor/src/tests.py:173 base/bin/MTExtractor/src/tests.py:185
-#: base/bin/MTExtractor/src/tests.py:186 base/bin/MTExtractor/src/tests.py:187
-msgid "N/A"
-msgstr "Н/Д"
 
 #: base/bin/MTExtractor/src/tests.py:458
 msgid "Total: {}"
@@ -1489,6 +1488,12 @@ msgstr ""
 #: bin/skl_shared/src/tests.py:1127
 msgid "Anchor: {}"
 msgstr "Привязка: {}"
+
+#~ msgid "Found articles: {}"
+#~ msgstr "Найдены статьи: {}"
+
+#~ msgid "No articles have been found!"
+#~ msgstr "Статьи не найдены!"
 
 #~ msgid "Cannot print the message!"
 #~ msgstr "Не удаётся показать сообщение!"

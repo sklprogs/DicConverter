@@ -102,14 +102,14 @@ class Extractor:
                     art_no = [item[0] for item in art_no if item]
                     art_nos.append(art_no)
                 else:
-                    art_nos.append(_('N/A'))
+                    art_nos.append([-1])
             sh.STOP_MES = False
             timer.end()
             assert len(self.simple) == len(self.phrases)
             mes = _('Processed chunks (total/parsed/translated): {}/{}/{}')
             translated = 0
             for art_no in art_nos:
-                if art_no != _('N/A'):
+                if art_no != [-1]:
                     translated += 1
             mes = mes.format (self.iparse.origcnt
                              ,len(self.phrases)
@@ -122,10 +122,11 @@ class Extractor:
                                ,headers  = headers
                                ).run()
             #TODO: elaborate path
+            ihome = sh.Home('DicExtractor')
             if lang == 1:
-                filew = '/home/pete/tmp/result_en.txt'
+                filew = ihome.add_config('result1.txt')
             else:
-                filew = '/home/pete/tmp/result_ru.txt'
+                filew = ihome.add_config('result2.txt')
             sh.WriteTextFile (file    = filew
                              ,Rewrite = True
                              ).write(mes)
@@ -142,7 +143,7 @@ class Extractor:
 
 if __name__ == '__main__':
     f = '[MTExtractor] extractor.__main__'
-    gt.PATH = '/home/pete/.config/mclient/dics'
+    gt.PATH = sh.Home('DicExtractor').get_conf_dir()
     gt.DEBUG = False
     gt.objs.get_files().reset()
     Extractor().run()

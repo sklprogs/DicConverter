@@ -9,22 +9,57 @@ import get as gt
 class Extractor:
     
     def __init__(self):
+        f = '[MTExtractor] extractor.Extractor.__init__'
         self.set_values()
+        ihome = sh.Home('DicExtractor')
+        self.filew1 = ihome.add_config('result1.txt')
+        self.filew2 = ihome.add_config('result2.txt')
+        # Rewrite files if they exist (since we further use appending)
+        sh.WriteTextFile(self.filew1,True).write('\n')
+        sh.WriteTextFile(self.filew2,True).write('\n')
+        self.timer = sh.Timer(f)
+        self.timer.start()
     
-    def reset(self):
-        self.set_values()
+    def reset_cycle(self):
+        self.phrases = []
+        self.simple = []
+        self.artnos = []
+        self.iparse = None
     
     def set_values(self):
         self.Success = True
-        self.simple = []
         self.phrases = []
+        self.simple = []
+        self.artnos = []
         self.iparse = None
+        self.read = 0
+        self.parsed = 0
+        self.translated = 0
+    
+    def report(self):
+        f = '[MTExtractor] extractor.Extractor.report'
+        if self.Success:
+            messages = []
+            mes = _('Processed chunks (total/parsed/translated):')
+            messages.append(mes)
+            mes = '{}/{}/{}'
+            mes = mes.format(self.read,self.parsed,self.translated)
+            messages.append(mes)
+            messages.append('')
+            mes = _('The operation has taken:')
+            messages.append(mes)
+            mes = sh.com.get_human_time(self.timer.end())
+            messages.append(mes)
+            mes = '\n'.join(messages)
+            sh.objs.get_mes(f,mes).show_info()
+        else:
+            sh.com.cancel(f)
     
     def debug(self):
         f = '[MTExtractor] extractor.Extractor.debug'
         if self.Success:
-            headers = ['SIMPLE','PHRASES','SUBJECT']
-            iterable = [self.simple,self.phrases,self.iparse.xplain2]
+            headers = ('PHRASE','SUBJECT','ARTNO')
+            iterable = [self.phrases,self.iparse.xplain2,self.artnos]
             mes = sh.FastTable (iterable = iterable
                                ,headers  = headers
                                ,maxrow   = 50
@@ -57,11 +92,11 @@ class Extractor:
         else:
             sh.com.cancel(f)
     
-    def parse_typein(self,file,limit=0):
+    def parse_typein(self,file,start_page=0,end_page=100000000):
         f = '[MTExtractor] extractor.Extractor.parse_typein'
         if self.Success:
             self.iparse = gt.Parser(file)
-            self.iparse.parsel_loop(limit)
+            self.iparse.parsel_loop(start_page,end_page)
             self.Success = self.iparse.Success
         else:
             sh.com.cancel(f)
@@ -79,66 +114,80 @@ class Extractor:
         else:
             sh.com.cancel(f)
     
-    def run_lang(self,lang=1,limit=0):
+    def dump(self):
+        f = '[MTExtractor] extractor.Extractor.dump'
+        if self.Success:
+            iterable = [self.phrases,self.iparse.xplain2,self.artnos]
+            mes = sh.FastTable(iterable).run()
+            sh.WriteTextFile (file    = self.filew
+                             ,Rewrite = True
+                             ).append(mes)
+        else:
+            sh.com.cancel(f)
+    
+    def run_lang(self,lang=1,start_page=0,end_page=100000000):
         f = '[MTExtractor] extractor.Extractor.run_lang'
         if self.Success:
             if lang == 1:
                 file = gt.objs.get_files().iwalker.get_typein1()
+                self.filew = self.filew1
             else:
                 gt.LANG1, gt.LANG2 = gt.LANG2, gt.LANG1
                 gt.objs.get_files().reset()
                 file = gt.objs.files.iwalker.get_typein1()
-            timer = sh.Timer(f)
-            timer.start()
-            sh.STOP_MES = True
-            self.parse_typein(file,limit)
+                self.filew = self.filew2
+            self.parse_typein(file,start_page,end_page)
             self.set_phrases()
             #self.debug()
-            art_nos = []
             for i in range(len(self.simple)):
-                art_no = self.translate(self.simple[i])
-                if art_no:
-                    art_no = gt.com.parse3(art_no)
-                    art_no = [item[0] for item in art_no if item]
-                    art_nos.append(art_no)
+                artno = self.translate(self.simple[i])
+                if artno:
+                    artno = gt.com.parse3(artno)
+                    artno = [item[0] for item in artno if item]
+                    self.artnos.append(artno)
                 else:
-                    art_nos.append([-1])
-            sh.STOP_MES = False
-            timer.end()
+                    self.artnos.append([-1])
+            
+            self.read += self.iparse.origcnt
+            self.parsed += len(self.phrases)
+            
             assert len(self.simple) == len(self.phrases)
-            mes = _('Processed chunks (total/parsed/translated): {}/{}/{}')
-            translated = 0
-            for art_no in art_nos:
-                if art_no != [-1]:
-                    translated += 1
-            mes = mes.format (self.iparse.origcnt
-                             ,len(self.phrases)
-                             ,translated
-                             )
-            sh.objs.get_mes(f,mes,True).show_info()
-            headers = ('PHRASE','SUBJECT','ARTNO')
-            iterable = [self.phrases,self.iparse.xplain2,art_nos]
-            mes = sh.FastTable (iterable = iterable
-                               ,headers  = headers
-                               ).run()
-            #TODO: elaborate path
-            ihome = sh.Home('DicExtractor')
-            if lang == 1:
-                filew = ihome.add_config('result1.txt')
-            else:
-                filew = ihome.add_config('result2.txt')
-            sh.WriteTextFile (file    = filew
-                             ,Rewrite = True
-                             ).write(mes)
-            sh.Launch(filew).launch_default()
+            for artno in self.artnos:
+                if artno != [-1]:
+                    self.translated += 1
         else:
             sh.com.cancel(f)
     
+    def run_cycle(self,lang=1,start_page=0,end_page=100000000):
+        self.run_lang (lang       = lang
+                      ,start_page = start_page
+                      ,end_page   = end_page
+                      )
+        self.dump()
+        self.reset_cycle()
+    
     def run(self):
-        self.run_lang(lang=1,limit=0)
-        self.reset()
-        self.run_lang(lang=2,limit=0)
+        #page_start = 0
+        #page_end = 100000000
+        #cur
+        start_page = 3
+        end_page = 5
+        sh.STOP_MES = True
         
+        self.run_cycle (lang       = 1
+                       ,start_page = start_page
+                       ,end_page   = end_page
+                       )
+        self.run_cycle (lang       = 2
+                       ,start_page = start_page
+                       ,end_page   = end_page
+                       )
+
+        sh.STOP_MES = False
+        self.report()
+
+        sh.Launch(self.filew1).launch_default()
+        sh.Launch(self.filew2).launch_default()
 
 
 if __name__ == '__main__':

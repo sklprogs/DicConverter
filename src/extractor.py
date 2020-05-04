@@ -167,11 +167,8 @@ class Extractor:
         self.reset_cycle()
     
     def run(self):
-        #page_start = 0
-        #page_end = 100000000
-        #cur
-        start_page = 3
-        end_page = 5
+        start_page = 0
+        end_page = 100000000
         sh.STOP_MES = True
         
         self.run_cycle (lang       = 1

@@ -566,7 +566,7 @@ class Parser(Binary):
             if self.get_pages():
                 max_ = min(len(self.lpages),end_page)
                 i = start_page
-                while i <= max_:
+                while i < max_:
                     page_no = self.pages.index(self.lpages[i])
                     result = self.get_page_limits(page_no)
                     if result:

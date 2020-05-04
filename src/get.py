@@ -2403,12 +2403,15 @@ class Get:
             else:
                 mes = _('No articles have been found!')
             sh.objs.get_mes(f,mes,True).show_info()
+            return art_nos
+            '''
             articles = []
             for art_no in art_nos:
                 article = objs.get_files().get_article().search(art_no)
                 if article:
                     articles.append(article)
             return articles
+            '''
         else:
             sh.com.cancel(f)
     

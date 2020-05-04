@@ -20,8 +20,14 @@ class Extractor:
     def debug(self):
         f = '[MTExtractor] extractor.Extractor.debug'
         if self.Success:
+            simple = [chunk.decode(gt.CODING,'replace') \
+                      for chunk in self.simple
+                     ]
+            phrases = [chunk.decode(gt.CODING,'replace') \
+                       for chunk in self.phrases
+                      ]
             headers = ['SIMPLE','PHRASES','SUBJECT']
-            iterable = [self.simple,self.phrases,self.subjects]
+            iterable = [simple,phrases,self.subjects]
             mes = sh.FastTable (iterable = iterable
                                ,headers  = headers
                                ,maxrow   = 50
@@ -38,9 +44,7 @@ class Extractor:
                 for part1 in self.iparse.chunks1:
                     if part1:
                         chunks = part1.split(b'\x00')
-                        chunks = [chunk.decode(gt.CODING,'replace') \
-                                  for chunk in chunks if chunk
-                                 ]
+                        chunks = [chunk for chunk in chunks if chunk]
                         self.simple.append(chunks[0])
                         if len(chunks) == 1:
                             self.phrases.append(chunks[0])
@@ -54,10 +58,9 @@ class Extractor:
         else:
             sh.com.cancel(f)
     
-    def parse_typein(self,limit=0):
+    def parse_typein(self,file,limit=0):
         f = '[MTExtractor] extractor.Extractor.parse_typein'
         if self.Success:
-            file = gt.objs.get_files().iwalker.get_typein1()
             self.iparse = gt.Parser(file)
             self.iparse.parsel_loop(limit)
             self.subjects = list(self.iparse.xplain2)
@@ -69,8 +72,12 @@ class Extractor:
             sh.com.cancel(f)
     
     def run(self):
-        self.parse_typein(10)
+        #'acceleration measured in g'
+        file = gt.objs.get_files().iwalker.get_typein1()
+        self.parse_typein(file,10)
         self.set_phrases()
+        self.debug()
+
 
 
 if __name__ == '__main__':
@@ -82,4 +89,3 @@ if __name__ == '__main__':
     iextract = Extractor()
     iextract.run()
     timer.end()
-    iextract.debug()

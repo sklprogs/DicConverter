@@ -138,11 +138,11 @@ class DB:
             try:
                 self.dbc.execute (
                     'create table if not exists LANG2 (\
-                     ARTNO   integer \
+                     ARTNO    integer \
                     ,SUBJECT1 integer \
                     ,SUBJECT2 integer \
                     ,SUBJECT3 integer \
-                    ,PHRASE  text \
+                    ,PHRASE   text \
                                                       )'
                                  )
             except Exception as e:

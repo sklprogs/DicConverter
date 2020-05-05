@@ -7,19 +7,208 @@ from skl_shared.localize import _
 from . import get as gt
 
 
+class Compare:
+    
+    def __init__(self):
+        self.set_values()
+        self.Success = objs.get_db().Success
+    
+    def set_values(self):
+        self.Success = True
+        self.max_ = 0
+        ''' Number of phrases to be processed per a cycle. Each cycle
+            is followed by committing to DB, so this number should be
+            big enough. On the other hand, bigger cycles consume more
+            memory.
+        '''
+        self.delta = 10000
+        self.ranges = []
+        self.data1 = None
+        self.data2 = None
+        self.final = []
+        self.matches = 0
+        self.nomatches = 0
+    
+    def reset_range(self):
+        self.data1 = None
+        self.data2 = None
+        self.final = []
+    
+    def debug(self):
+        f = '[DicExtractor] plugins.multitran.extractor.Compare.debug'
+        if self.Success:
+            data = objs.get_db().fetch_range(objs.db.table3,1,1000)
+            if data:
+                artnos = []
+                subjects1 = []
+                subjects2 = []
+                subjects3 = []
+                phrases1 = []
+                phrases2 = []
+                for row in data:
+                    artnos.append(row[0])
+                    subjects1.append(row[1])
+                    subjects2.append(row[2])
+                    subjects3.append(row[3])
+                    phrases1.append(row[4])
+                    phrases2.append(row[5])
+                iterable = [artnos,subjects1,subjects2,subjects3
+                           ,phrases1,phrases2
+                           ]
+                headers = ('ARTNO','SUBJ1','SUBJ2','SUBJ3','PHRASE1'
+                          ,'PHRASE2'
+                          )
+                mes = sh.FastTable (iterable = iterable
+                                   ,headers  = headers
+                                   ,maxrow   = 50
+                                   ).run()
+                sh.com.run_fast_debug(mes)
+            else:
+                sh.com.rep_empty(f)
+        else:
+            sh.com.cancel(f)
+    
+    def dump(self):
+        f = '[DicExtractor] plugins.multitran.extractor.Compare.dump'
+        if self.Success:
+            if self.final:
+                for row in self.final:
+                    objs.get_db().add_final(row)
+                objs.db.save()
+            else:
+                sh.com.rep_empty(f)
+        else:
+            sh.com.cancel(f)
+    
+    def compare(self):
+        f = '[DicExtractor] plugins.multitran.extractor.Compare.compare'
+        if self.Success:
+            if self.data1 and self.data2:
+                for i in range(len(self.data1)):
+                    Found = False
+                    for j in range(len(self.data2)):
+                        if self.data1[i][0] == self.data2[j][0]:
+                            ''' ARTNO,SUBJECT1,SUBJECT2,SUBJECT3
+                               ,PHRASE1,PHRASE2
+                            '''
+                            add = [self.data1[i][0],self.data1[i][1]
+                                  ,self.data1[i][2],self.data1[i][3]
+                                  ,self.data1[i][4],self.data2[j][4]
+                                  ]
+                            self.final.append(add)
+                            Found = True
+                            break
+                    if Found:
+                        self.matches += 1
+                    else:
+                        self.nomatches += 1
+            else:
+                self.Success = False
+                sh.com.rep_empty(f)
+        else:
+            sh.com.cancel(f)
+    
+    def run(self):
+        self.get_max()
+        self.calc_ranges()
+        self.set_ranges()
+        self.debug()
+    
+    def get_max(self):
+        f = '[DicExtractor] plugins.multitran.extractor.Compare.get_max'
+        if self.Success:
+            max1 = objs.get_db().get_max_artno(objs.db.table1)
+            max2 = objs.db.get_max_artno(objs.db.table2)
+            if max1 and max2:
+                self.max_ = min(max1,max2)
+                sh.objs.get_mes(f,self.max_,True).show_debug()
+            else:
+                self.Success = False
+                sh.com.rep_empty(f)
+        else:
+            sh.com.cancel(f)
+    
+    def calc_ranges(self):
+        f = '[DicExtractor] plugins.multitran.extractor.Compare.calc_ranges'
+        if self.Success:
+            max_ = 1
+            while max_ <= self.max_:
+                min_ = max_
+                max_ += self.delta
+                if max_ > self.max_:
+                    max_ = self.max_
+                self.ranges.append([min_,max_])
+                max_ += 1
+            sh.objs.get_mes(f,self.ranges,True).show_debug()
+        else:
+            sh.com.cancel(f)
+    
+    def set_ranges(self):
+        f = '[DicExtractor] plugins.multitran.extractor.Compare.set_ranges'
+        if self.Success:
+            if self.ranges:
+                for range_ in self.ranges:
+                    self.reset_range()
+                    self.data1 = objs.get_db().fetch_range(objs.db.table1,range_[0],range_[1])
+                    self.data2 = objs.db.fetch_range(objs.db.table2,range_[0],range_[1])
+                    self.compare()
+                    self.dump()
+                mes = _('Pairs in total/with matches/without matches:')
+                sub = '{}/{}/{}'.format (self.matches + self.nomatches
+                                        ,self.matches,self.nomatches
+                                        )
+                mes += '\n' + sub
+                sh.objs.get_mes(f,mes).show_debug()
+            else:
+                self.Success = False
+                sh.com.rep_empty(f)
+        else:
+            sh.com.cancel(f)
+
+
+
 class DB:
 
     def __init__(self,path):
         self.set_values()
         self.path = path
         self.connect()
-        self.create_tab1()
-        self.create_tab2()
+        self.create()
+    
+    def create(self):
+        self.create_table(self.table1)
+        self.create_table(self.table2)
+        self.create_final()
     
     def set_values(self):
         self.Success = True
         self.path = ''
         self.db = self.dbc = None
+        self.table1 = 'LANG1'
+        self.table2 = 'LANG2'
+        self.table3 = 'LANG12'
+    
+    def get_max_artno(self,table):
+        f = '[DicExtractor] plugins.multitran.extractor.DB.get_max_artno'
+        if self.Success:
+            query = 'select max(ARTNO) from {}'.format(table)
+            self.dbc.execute(query)
+            result = self.dbc.fetchone()
+            if result:
+                return result[0]
+        else:
+            sh.com.cancel(f)
+    
+    def fetch_range(self,table,min_,max_):
+        f = '[DicExtractor] plugins.multitran.extractor.DB.fetch_range'
+        if self.Success:
+            subquery = 'select * from {} where ARTNO >= ? \
+                        and ARTNO <= ? order by ARTNO'
+            query = subquery.format(table)
+            self.dbc.execute(query,(min_,max_,))
+            return self.dbc.fetchall()
+        else:
+            sh.com.cancel(f)
     
     def print (self,table='LANG1'
               ,maxrow=50,maxrows=1000
@@ -27,7 +216,6 @@ class DB:
         f = '[DicExtractor] plugins.multitran.extractor.DB.print'
         if self.Success:
             subquery = 'select {} from {} order by ARTNO desc limit ?'
-            
             query = subquery.format('ARTNO',table)
             self.dbc.execute(query,(maxrows,))
             artnos = self.dbc.fetchall()
@@ -64,26 +252,30 @@ class DB:
         else:
             sh.com.cancel(f)
     
-    def add1(self,data):
-        f = '[DicExtractor] plugins.multitran.extractor.DB.add1'
+    def add_final(self,data):
+        f = '[DicExtractor] plugins.multitran.extractor.DB.add_final'
         if self.Success:
             try:
-                self.dbc.execute ('insert into LANG1 values (?,?,?,?,?)'
-                                 ,data
-                                 )
+                query = 'insert into {} values (?,?,?,?,?,?)'
+                query = query.format(self.table3)
+                self.dbc.execute(query,data)
                 return True
             except Exception as e:
                 self.fail(f,e)
         else:
             sh.com.cancel(f)
     
-    def add2(self,data):
-        f = '[DicExtractor] plugins.multitran.extractor.DB.add2'
+    def add(self,data,lang=1):
+        f = '[DicExtractor] plugins.multitran.extractor.DB.add'
         if self.Success:
+            if lang == 1:
+                table = self.table1
+            else:
+                table = self.table2
             try:
-                self.dbc.execute ('insert into LANG2 values (?,?,?,?,?)'
-                                 ,data
-                                 )
+                query = 'insert into {} values (?,?,?,?,?)'
+                query = query.format(table)
+                self.dbc.execute(query,data)
                 return True
             except Exception as e:
                 self.fail(f,e)
@@ -108,43 +300,48 @@ class DB:
     
     def clear(self):
         f = '[DicExtractor] plugins.multitran.extractor.DB.clear'
-        mes = _('Delete all records from {}').format('LANG1, LANG2')
+        tables = [self.table1,self.table2,self.table3]
+        mes = _('Delete all records from {}')
+        mes = mes.format(', '.join(tables))
         sh.objs.get_mes(f,mes,True).show_warning()
-        self.dbc.execute('delete from LANG1')
-        self.dbc.execute('delete from LANG2')
+        query = 'delete from {}'
+        self.dbc.execute(query.format(self.table1))
+        self.dbc.execute(query.format(self.table2))
+        self.dbc.execute(query.format(self.table3))
         #TODO: vacuumize
     
-    def create_tab1(self):
-        f = '[DicExtractor] plugins.multitran.extractor.DB.create_tab1'
+    def create_final(self):
+        f = '[DicExtractor] plugins.multitran.extractor.DB.create_final'
         if self.Success:
             try:
-                self.dbc.execute (
-                    'create table if not exists LANG1 (\
-                     ARTNO    integer \
-                    ,SUBJECT1 integer \
-                    ,SUBJECT2 integer \
-                    ,SUBJECT3 integer \
-                    ,PHRASE   text \
-                                                      )'
-                                 )
+                query = 'create table if not exists {} (\
+                         ARTNO    integer \
+                        ,SUBJECT1 integer \
+                        ,SUBJECT2 integer \
+                        ,SUBJECT3 integer \
+                        ,PHRASE1  text \
+                        ,PHRASE2  text \
+                                                       )'
+                query = query.format(self.table3)
+                self.dbc.execute(query)
             except Exception as e:
                 self.fail(f,e)
         else:
             sh.com.cancel(f)
     
-    def create_tab2(self):
-        f = '[DicExtractor] plugins.multitran.extractor.DB.create_tab2'
+    def create_table(self,lang):
+        f = '[DicExtractor] plugins.multitran.extractor.DB.create_table'
         if self.Success:
             try:
-                self.dbc.execute (
-                    'create table if not exists LANG2 (\
-                     ARTNO    integer \
-                    ,SUBJECT1 integer \
-                    ,SUBJECT2 integer \
-                    ,SUBJECT3 integer \
-                    ,PHRASE   text \
-                                                      )'
-                                 )
+                query = 'create table if not exists {} (\
+                         ARTNO    integer \
+                        ,SUBJECT1 integer \
+                        ,SUBJECT2 integer \
+                        ,SUBJECT3 integer \
+                        ,PHRASE   text \
+                                                       )'
+                query = query.format(lang)
+                self.dbc.execute(query)
             except Exception as e:
                 self.fail(f,e)
         else:
@@ -288,10 +485,6 @@ class Extractor:
     def dump(self,lang):
         f = '[DicExtractor] plugins.multitran.extractor.Extractor.dump'
         if self.Success:
-            if lang == 1:
-                action = objs.get_db().add1
-            else:
-                action = objs.get_db().add2
             for i in range(len(self.artnos)):
                 for artno in self.artnos[i]:
                     subjects = self.iparse.xplain2[i]
@@ -316,7 +509,7 @@ class Extractor:
                            ,self.phrases[i]
                            ,
                            )
-                    if not action(data):
+                    if not objs.get_db().add(data,lang):
                         messages = []
                         mes = 'ARTNO: "{}"'.format(artno)
                         messages.append(mes)
@@ -330,7 +523,6 @@ class Extractor:
                         messages.append(mes)
                         mes = '\n'.join(messages)
                         sh.objs.get_mes(f,mes).show_error()
-                                           
             objs.db.save()
         else:
             sh.com.cancel(f)
@@ -391,8 +583,8 @@ class Extractor:
 
         sh.STOP_MES = False
         self.report()
-        objs.get_db().print('LANG1')
-        objs.db.print('LANG2')
+        #objs.get_db().print('LANG1')
+        #objs.db.print('LANG2')
 
 
 

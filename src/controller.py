@@ -12,9 +12,6 @@ if __name__ == '__main__':
     f = '[DicExtractor] controller.__main__'
     mg.PATH = sh.Home('DicExtractor').get_conf_dir()
     mg.DEBUG = False
-    mg.objs.get_files().reset()
-    #mx.Extractor().run()
-    mx.objs.get_db().print('LANG1')
-    mx.objs.db.print('LANG2')
-    mg.objs.files.close()
+    mx.Extractor().run()
+    mx.Compare().run()
     mx.objs.get_db().close()

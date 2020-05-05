@@ -271,8 +271,8 @@ class Elems:
             or wforma != self.blocks[i].wforma \
             or speecha != self.blocks[i].speecha:
                 
-                block          = Block()
-                block.type_    = 'speech'
+                block         = Block()
+                block.type_   = 'speech'
                 block.text    = self.blocks[i].speecha
                 block.dica    = self.blocks[i].dica
                 block.dicaf   = self.blocks[i].dicaf
@@ -283,8 +283,8 @@ class Elems:
                 block.same    = 0
                 self.blocks.insert(i,block)
                 
-                block          = Block()
-                block.type_    = 'transc'
+                block         = Block()
+                block.type_   = 'transc'
                 block.text    = self.blocks[i].transca
                 block.dica    = self.blocks[i].dica
                 block.dicaf   = self.blocks[i].dicaf
@@ -295,8 +295,8 @@ class Elems:
                 block.same    = 0
                 self.blocks.insert(i,block)
 
-                block          = Block()
-                block.type_    = 'wform'
+                block         = Block()
+                block.type_   = 'wform'
                 block.text    = self.blocks[i].wforma
                 block.dica    = self.blocks[i].dica
                 block.dicaf   = self.blocks[i].dicaf
@@ -307,8 +307,8 @@ class Elems:
                 block.same    = 0
                 self.blocks.insert(i,block)
                 
-                block          = Block()
-                block.type_    = 'dic'
+                block         = Block()
+                block.type_   = 'dic'
                 block.text    = self.blocks[i].dica
                 block.dica    = self.blocks[i].dica
                 block.dicaf   = self.blocks[i].dicaf
@@ -328,8 +328,8 @@ class Elems:
             
     def remove_fixed(self):
         self.blocks = [block for block in self.blocks if block.type_ \
-                        not in ('dic','wform','transc','speech')
-                       ]
+                       not in ('dic','wform','transc','speech')
+                      ]
                        
     def selectables(self):
         # block.no is set only after creating DB

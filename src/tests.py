@@ -68,9 +68,9 @@ class Ending(gt.Ending):
     def debug(self):
         f = '[MTExtractor] tests.Ending.debug'
         if self.Success:
-            ends     = list(self.ends)
-            ends     = [str(end) for end in ends]
-            headers  = ('#','ENDINGS')
+            ends = list(self.ends)
+            ends = [str(end) for end in ends]
+            headers = ('#','ENDINGS')
             iterable = (self.nos,ends)
             mes = sh.FastTable (iterable = iterable
                                ,headers  = headers

@@ -1635,39 +1635,6 @@ class TypeIn(UPage):
 
 
 
-class Suggest:
-    
-    def __init__(self,pattern):
-        self.set_values()
-        if pattern:
-            self.reset(pattern)
-    
-    def set_values(self):
-        self.Success = True
-        self.pattern = ''
-    
-    def reset(self,pattern):
-        f = '[MTExtractor] get.Suggest.reset'
-        self.pattern = pattern
-        if not self.pattern:
-            self.Success = False
-            sh.com.rep_empty(f)
-    
-    def get(self,limit=20):
-        f = '[MTExtractor] get.Suggest.get'
-        if self.Success:
-            suggestions = objs.get_files().get_typein1().search(self.pattern)
-            if suggestions:
-                return suggestions[0:20]
-        else:
-            sh.com.cancel(f)
-    
-    def run(self):
-        self.pattern = com.strip(self.pattern)
-        return self.get()
-
-
-
 class AllDics:
     
     def __init__(self):

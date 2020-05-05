@@ -36,7 +36,7 @@ class Tags:
         self.lang2   = lang2
     
     def get_types(self):
-        f = '[MTExtractor] tags.Tags.get_types'
+        f = '[DicExtractor] plugins.multitran.tags.Tags.get_types'
         if self.Success:
             if len(self.tags) % 2 == 0:
                 for i in range(len(self.tags)):
@@ -49,7 +49,7 @@ class Tags:
                 sh.objs.get_mes(f,mes,True).show_warning()
     
     def set_types(self):
-        f = '[MTExtractor] tags.Tags.set_types'
+        f = '[DicExtractor] plugins.multitran.tags.Tags.set_types'
         if self.Success:
             for i in range(len(self.content)):
                 self.blocks.append(Block())
@@ -73,7 +73,7 @@ class Tags:
             sh.com.cancel(f)
     
     def debug_blocks(self):
-        f = '[MTExtractor] tags.Tags.debug_blocks'
+        f = '[DicExtractor] plugins.multitran.tags.Tags.debug_blocks'
         mes = _('Debug table:')
         sh.objs.get_mes(f,mes,True).show_info()
         headers = ['TYPE','TEXT']
@@ -96,14 +96,14 @@ class Tags:
             self.debug_blocks()
     
     def debug_tags(self):
-        f = '[MTExtractor] tags.Tags.debug_tags'
+        f = '[DicExtractor] plugins.multitran.tags.Tags.debug_tags'
         message = ''
         for i in range(len(self.tags)):
             message += '{}:{}\n'.format(i,self.tags[i])
         sh.com.run_fast_debug(message)
     
     def decode(self):
-        f = '[MTExtractor] tags.Tags.decode'
+        f = '[DicExtractor] plugins.multitran.tags.Tags.decode'
         if self.Success:
             i = 1
             while i < len(self.tags):
@@ -116,7 +116,7 @@ class Tags:
             sh.com.cancel(f)
     
     def set_seps(self):
-        f = '[MTExtractor] tags.Tags.set_seps'
+        f = '[DicExtractor] plugins.multitran.tags.Tags.set_seps'
         if self.Success:
             self.seps = [self.seplg1,self.seplg2
                         ,self.sepdic,self.sepcom
@@ -125,7 +125,7 @@ class Tags:
             sh.com.cancel(f)
     
     def split(self):
-        f = '[MTExtractor] tags.Tags.split'
+        f = '[DicExtractor] plugins.multitran.tags.Tags.split'
         if self.Success:
             tmp = b''
             for i in range(len(self.entry)):
@@ -142,7 +142,7 @@ class Tags:
             sh.com.cancel(f)
     
     def set_langs(self):
-        f = '[MTExtractor] tags.Tags.set_langs'
+        f = '[DicExtractor] plugins.multitran.tags.Tags.set_langs'
         if self.Success:
             if self.lang1 and self.lang2:
                 try:
@@ -159,7 +159,7 @@ class Tags:
             sh.com.cancel(f)
     
     def check(self):
-        f = '[MTExtractor] tags.Tags.check'
+        f = '[DicExtractor] plugins.multitran.tags.Tags.check'
         # Dictionary section is optional, so we do not check for it
         if self.entry and self.lang1 and self.lang2:
             if self.lang1 in self.entry \

@@ -4,7 +4,7 @@
 import sqlite3
 import skl_shared.shared as sh
 from skl_shared.localize import _
-import get as gt
+from . import get as gt
 
 
 class DB:
@@ -24,7 +24,7 @@ class DB:
     def print (self,table='LANG1'
               ,maxrow=50,maxrows=1000
               ):
-        f = '[MTExtractor] extractor.DB.print'
+        f = '[DicExtractor] plugins.multitran.extractor.DB.print'
         if self.Success:
             subquery = 'select {} from {} order by ARTNO desc limit ?'
             
@@ -65,7 +65,7 @@ class DB:
             sh.com.cancel(f)
     
     def add1(self,data):
-        f = '[MTExtractor] extractor.DB.add1'
+        f = '[DicExtractor] plugins.multitran.extractor.DB.add1'
         if self.Success:
             try:
                 self.dbc.execute ('insert into LANG1 values (?,?,?,?,?)'
@@ -78,7 +78,7 @@ class DB:
             sh.com.cancel(f)
     
     def add2(self,data):
-        f = '[MTExtractor] extractor.DB.add2'
+        f = '[DicExtractor] plugins.multitran.extractor.DB.add2'
         if self.Success:
             try:
                 self.dbc.execute ('insert into LANG2 values (?,?,?,?,?)'
@@ -91,7 +91,7 @@ class DB:
             sh.com.cancel(f)
     
     def save(self):
-        f = '[MTExtractor] extractor.DB.save'
+        f = '[DicExtractor] plugins.multitran.extractor.DB.save'
         if self.Success:
             if self.path:
                 mes = _('Save "{}"').format(self.path)
@@ -107,7 +107,7 @@ class DB:
             sh.com.cancel(f)
     
     def clear(self):
-        f = '[MTExtractor] extractor.DB.clear'
+        f = '[DicExtractor] plugins.multitran.extractor.DB.clear'
         mes = _('Delete all records from {}').format('LANG1, LANG2')
         sh.objs.get_mes(f,mes,True).show_warning()
         self.dbc.execute('delete from LANG1')
@@ -115,7 +115,7 @@ class DB:
         #TODO: vacuumize
     
     def create_tab1(self):
-        f = '[MTExtractor] extractor.DB.create_tab1'
+        f = '[DicExtractor] plugins.multitran.extractor.DB.create_tab1'
         if self.Success:
             try:
                 self.dbc.execute (
@@ -133,7 +133,7 @@ class DB:
             sh.com.cancel(f)
     
     def create_tab2(self):
-        f = '[MTExtractor] extractor.DB.create_tab2'
+        f = '[DicExtractor] plugins.multitran.extractor.DB.create_tab2'
         if self.Success:
             try:
                 self.dbc.execute (
@@ -151,7 +151,7 @@ class DB:
             sh.com.cancel(f)
     
     def close(self):
-        f = '[MTExtractor] extractor.DB.close'
+        f = '[DicExtractor] plugins.multitran.extractor.DB.close'
         if self.Success:
             mes = _('Close "{}"').format(self.path)
             sh.objs.get_mes(f,mes,True).show_info()
@@ -169,7 +169,7 @@ class DB:
         sh.objs.get_mes(func,mes).show_warning()
     
     def connect(self):
-        f = '[MTExtractor] extractor.DB.connect'
+        f = '[DicExtractor] plugins.multitran.extractor.DB.connect'
         if self.Success:
             mes = _('Open "{}"').format(self.path)
             sh.objs.get_mes(f,mes,True).show_info()
@@ -186,7 +186,7 @@ class DB:
 class Extractor:
     
     def __init__(self):
-        f = '[MTExtractor] extractor.Extractor.__init__'
+        f = '[DicExtractor] plugins.multitran.extractor.Extractor.__init__'
         self.set_values()
         self.timer = sh.Timer(f)
         self.timer.start()
@@ -208,7 +208,7 @@ class Extractor:
         self.translated = 0
     
     def report(self):
-        f = '[MTExtractor] extractor.Extractor.report'
+        f = '[DicExtractor] plugins.multitran.extractor.Extractor.report'
         if self.Success:
             messages = []
             mes = _('Processed chunks (total/parsed/translated):')
@@ -227,7 +227,7 @@ class Extractor:
             sh.com.cancel(f)
     
     def debug(self):
-        f = '[MTExtractor] extractor.Extractor.debug'
+        f = '[DicExtractor] plugins.multitran.extractor.Extractor.debug'
         if self.Success:
             headers = ('PHRASE','SUBJECT','ARTNO')
             iterable = [self.phrases,self.iparse.xplain2,self.artnos]
@@ -241,7 +241,7 @@ class Extractor:
             sh.com.cancel(f)
     
     def set_phrases(self):
-        f = '[MTExtractor] extractor.Extractor.set_phrases'
+        f = '[DicExtractor] plugins.multitran.extractor.Extractor.set_phrases'
         if self.Success:
             if self.iparse.chunks1:
                 for part1 in self.iparse.chunks1:
@@ -264,7 +264,7 @@ class Extractor:
             sh.com.cancel(f)
     
     def parse_typein(self,file,start_page=0,end_page=100000000):
-        f = '[MTExtractor] extractor.Extractor.parse_typein'
+        f = '[DicExtractor] plugins.multitran.extractor.Extractor.parse_typein'
         if self.Success:
             self.iparse = gt.Parser(file)
             self.iparse.parsel_loop(start_page,end_page)
@@ -273,7 +273,7 @@ class Extractor:
             sh.com.cancel(f)
     
     def translate(self,pattern):
-        f = '[MTExtractor] extractor.Extractor.translate'
+        f = '[DicExtractor] plugins.multitran.extractor.Extractor.translate'
         if self.Success:
             iget = gt.Get(pattern)
             result = iget.run()
@@ -286,7 +286,7 @@ class Extractor:
             sh.com.cancel(f)
     
     def dump(self,lang):
-        f = '[MTExtractor] extractor.Extractor.dump'
+        f = '[DicExtractor] plugins.multitran.extractor.Extractor.dump'
         if self.Success:
             if lang == 1:
                 action = objs.get_db().add1
@@ -336,7 +336,7 @@ class Extractor:
             sh.com.cancel(f)
     
     def run_lang(self,lang=1,start_page=0,end_page=100000000):
-        f = '[MTExtractor] extractor.Extractor.run_lang'
+        f = '[DicExtractor] plugins.multitran.extractor.Extractor.run_lang'
         if self.Success:
             if lang == 1:
                 file = gt.objs.get_files().iwalker.get_typein1()
@@ -412,7 +412,7 @@ objs = Objects()
 
 
 if __name__ == '__main__':
-    f = '[MTExtractor] extractor.__main__'
+    f = '[DicExtractor] plugins.multitran.extractor.__main__'
     gt.PATH = sh.Home('DicExtractor').get_conf_dir()
     gt.DEBUG = False
     gt.objs.get_files().reset()

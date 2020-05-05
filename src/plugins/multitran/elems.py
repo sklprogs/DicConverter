@@ -48,7 +48,7 @@ class Elems:
                  ,Debug=False,Shorten=True
                  ,MaxRow=20,MaxRows=20,search=''
                  ):
-        f = '[MTExtractor] elems.Elems.__init__'
+        f = '[DicExtractor] elems.Elems.__init__'
         self.dicurls = {}
         self.defins  = []
         self.abbr    = iabbr
@@ -93,7 +93,7 @@ class Elems:
                         self.blocks[i-1], self.blocks[i] = self.blocks[i], self.blocks[i-1]
     
     def _get_pair(self,text):
-        f = '[MTExtractor] elems.Elems._get_pair'
+        f = '[DicExtractor] elems.Elems._get_pair'
         code = sh.Input(f,text).get_integer()
         return self.abbr.get_pair(code)
     
@@ -110,7 +110,7 @@ class Elems:
         return True
     
     def set_dic_titles(self):
-        f = '[MTExtractor] elems.Elems.set_dic_titles'
+        f = '[DicExtractor] elems.Elems.set_dic_titles'
         if self.abbr:
             if self.abbr.Success:
                 for block in self.blocks:
@@ -145,7 +145,7 @@ class Elems:
             block.text = block.text.strip()
     
     def run(self):
-        f = '[MTExtractor] elems.Elems.run'
+        f = '[DicExtractor] elems.Elems.run'
         if self.Success:
             # Do some cleanup
             self.strip()
@@ -342,7 +342,7 @@ class Elems:
 
 
 if __name__ == '__main__':
-    f = '[MTExtractor] elems.__main__'
+    f = '[DicExtractor] elems.__main__'
     search = 'phrenosin'
     import get  as gt
     import tags as tg

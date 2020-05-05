@@ -18,71 +18,10 @@ DUMP1  = sh.Home().add('tmp','dump1')
 DUMP2  = sh.Home().add('tmp','dump2')
 
 
-class Xor:
-    
-    def __init__(self,bytes1,bytes2):
-        self.set_values()
-        self.bytes1 = bytes1
-        self.bytes2 = bytes2
-        self.check()
-    
-    def set_values(self):
-        self.Success = True
-        self.bytes1 = b''
-        self.bytes2 = b''
-        self.ints1 = []
-        self.ints2 = []
-        self.syms = []
-    
-    def check(self):
-        f = '[MTExtractor] utils.Xor.check'
-        if self.bytes1 and self.bytes2:
-            if len(self.bytes1) == len(self.bytes2):
-                return True
-            else:
-                self.Success = False
-                sub = '{} == {}'.format (len(self.bytes1)
-                                        ,len(self.bytes2)
-                                        )
-                mes = _('The condition "{}" is not observed!')
-                mes = mes.format(sub)
-                sh.objs.get_mes(f,mes,True).show_warning()
-        else:
-            self.Success = False
-            sh.com.rep_empty(f)
-        
-    def report(self):
-        f = '[MTExtractor] utils.Xor.report'
-        if self.Success:
-            headers  = ('NO','ORIG','INT1','INT2')
-            nos = [i + 1 for i in range(len(self.syms))]
-            iterable = (nos,self.syms,self.ints1,self.ints2)
-            mes = sh.FastTable (headers  = headers
-                               ,iterable = iterable
-                               ,sep      = sh.lg.nbspace * 2
-                               ).run()
-            return mes
-        else:
-            sh.com.cancel(f)
-    
-    def analyze(self):
-        f = '[MTExtractor] utils.Xor.analyze'
-        if self.Success:
-            for i in range(len(self.bytes1)):
-                decoded = self.bytes1[i:i+1].decode(gt.CODING,'replace')
-                decoded = '"{}"'.format(decoded)
-                self.syms.append(decoded)
-                self.ints1.append(self.bytes1[i])
-                self.ints2.append(self.bytes2[i])
-        else:
-            sh.com.cancel(f)
-
-
-
 class Tests:
     
     def gen_patterns(self):
-        f = '[MTExtractor] utils.Tests.gen_patterns'
+        f = '[DicExtractor] plugins.multitran.utils.Tests.gen_patterns'
         table = 'АБВГДЕЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯабвгдежзийклмнопрстуфхцчшщъыьэюя'
         i = 3
         len_ = 5
@@ -92,17 +31,8 @@ class Tests:
                                   )
         sh.com.run_fast_debug(str(result))
     
-    def analyze_xor(self):
-        f = '[MTExtractor] utils.Tests.analyze_xor'
-        bytes1 = b'Bullshit!'
-        bytes2 = b'-fcivqx\x89<'
-        ixor = Xor(bytes1,bytes2)
-        ixor.analyze()
-        mes = ixor.report()
-        sh.com.run_fast_debug(mes)
-    
     def get_patch(self):
-        f = '[MTExtractor] utils.Tests.get_patch'
+        f = '[DicExtractor] plugins.multitran.utils.Tests.get_patch'
         file = '/home/pete/.wine/drive_c/setup/Multitran/network/eng_rus/dict.ert'
         # A comment added for "Zerah"
         pos = 132779143
@@ -149,7 +79,7 @@ class Tests:
         sh.Launch(filew).launch_default()
     
     def corrupt(self):
-        f = '[MTExtractor] utils.Tests.corrupt'
+        f = '[DicExtractor] plugins.multitran.utils.Tests.corrupt'
         file = '/home/pete/.wine/drive_c/setup/Multitran/network/eng_rus/dict.ert'
         #pos = 132779147
         #subst = b'\x00'
@@ -173,7 +103,7 @@ class Tests:
         Navigate(sh.Home().add('tmp','test.bin')).show_menu()
     
     def analyze_dumps(self):
-        f = '[MTExtractor] utils.Tests.analyze_dumps'
+        f = '[DicExtractor] plugins.multitran.utils.Tests.analyze_dumps'
         iparse1 = Parser(DUMP1)
         iparse2 = Parser(DUMP2)
         pos1 = 0
@@ -241,7 +171,7 @@ class Tests:
         iparse2.close()
     
     def compare_bytes(self,maxlen=10):
-        f = '[MTExtractor] utils.Tests.compare_bytes'
+        f = '[DicExtractor] plugins.multitran.utils.Tests.compare_bytes'
         dump1 = gt.Binary(DUMP1)
         dump2 = gt.Binary(DUMP2)
         end1  = dump1.get_file_size()
@@ -274,7 +204,7 @@ class Tests:
         CompareBinaries(DUMP1,DUMP2).show_menu()
     
     def get_shared_dumps(self):
-        f = '[MTExtractor] utils.Tests.get_shared_dumps'
+        f = '[DicExtractor] plugins.multitran.utils.Tests.get_shared_dumps'
         pos1 = 0
         pos2 = 16380
         ''' We do not use 'self._parse' here since 'Parser.parse'
@@ -303,7 +233,7 @@ class Tests:
             sh.com.rep_empty(f)
     
     def parse_dumps(self):
-        f = '[MTExtractor] utils.Tests.parse_dumps'
+        f = '[DicExtractor] plugins.multitran.utils.Tests.parse_dumps'
         pos1 = 0
         pos2 = 16380
         ''' We do not use 'self._parse' here since 'Parser.parse'
@@ -323,12 +253,6 @@ class Tests:
         iparse.run_reader(pos1,pos2)
         iparse.parse()
         iparse.debug()
-    
-    def parse_article(self):
-        file = gt.objs.get_files().iwalker.get_article()
-        pos1 = 655363
-        pos2 = 656808
-        self._parse(file,pos1,pos2)
     
     def parse_glue(self):
         file = gt.objs.get_files().iwalker.get_glue1()
@@ -373,7 +297,7 @@ class Navigate(gt.Binary):
         self.coms.sort()
     
     def find_prev(self):
-        f = '[MTExtractor] utils.Navigate.find_prev'
+        f = '[DicExtractor] plugins.multitran.utils.Navigate.find_prev'
         if self.Success:
             if self.coded:
                 if self.spos is None or self.spos == 0:
@@ -393,7 +317,7 @@ class Navigate(gt.Binary):
             sh.com.cancel(f)
     
     def find_next(self):
-        f = '[MTExtractor] utils.Navigate.find_next'
+        f = '[DicExtractor] plugins.multitran.utils.Navigate.find_next'
         if self.Success:
             if self.coded:
                 if self.spos is None:
@@ -418,7 +342,7 @@ class Navigate(gt.Binary):
             sh.com.cancel(f)
     
     def _print_found(self):
-        f = '[MTExtractor] utils.Navigate._print_found'
+        f = '[DicExtractor] plugins.multitran.utils.Navigate._print_found'
         if self.spos is None:
             mes = _('No matches!')
             sh.objs.get_mes(f,mes,True).show_info()
@@ -454,7 +378,7 @@ class Navigate(gt.Binary):
             print(buffer3)
     
     def _find(self):
-        f = '[MTExtractor] utils.Navigate._find'
+        f = '[DicExtractor] plugins.multitran.utils.Navigate._find'
         spos = self.find(self.coded)
         if spos is None:
             mes = _('No matches!')
@@ -464,7 +388,7 @@ class Navigate(gt.Binary):
             self._print_found()
     
     def find_text(self):
-        f = '[MTExtractor] utils.Navigate.find_text'
+        f = '[DicExtractor] plugins.multitran.utils.Navigate.find_text'
         if self.Success:
             pattern = com.input_str(_('Enter text to search for: '))
             self.coded = bytes(pattern,gt.CODING)
@@ -473,7 +397,7 @@ class Navigate(gt.Binary):
             sh.com.cancel(f)
     
     def find_bytes(self):
-        f = '[MTExtractor] utils.Navigate.find_bytes'
+        f = '[DicExtractor] plugins.multitran.utils.Navigate.find_bytes'
         if self.Success:
             pattern = com.input_str(_('Enter bytes to search for: '))
             try:
@@ -489,7 +413,7 @@ class Navigate(gt.Binary):
             sh.com.cancel(f)
     
     def find_nav(self):
-        f = '[MTExtractor] utils.Navigate.find_nav'
+        f = '[DicExtractor] plugins.multitran.utils.Navigate.find_nav'
         if self.Success:
             choice = input(_('Search for text instead of bytes? Y/n '))
             choice = choice.strip()
@@ -503,7 +427,7 @@ class Navigate(gt.Binary):
             sh.com.cancel(f)
         
     def dump(self):
-        f = '[MTExtractor] utils.Navigate.dump'
+        f = '[DicExtractor] plugins.multitran.utils.Navigate.dump'
         if self.Success:
             mes = _('This will extract data from the binary file from set positions')
             print(mes)
@@ -543,7 +467,7 @@ class Navigate(gt.Binary):
             sh.com.cancel(f)
     
     def go_end(self):
-        f = '[MTExtractor] utils.Navigate.go_end'
+        f = '[DicExtractor] plugins.multitran.utils.Navigate.go_end'
         if self.Success:
             self.pos = self.get_file_size() - self.buffer
             if self.pos < 0:
@@ -553,7 +477,7 @@ class Navigate(gt.Binary):
             sh.com.cancel(f)
     
     def go_start(self):
-        f = '[MTExtractor] utils.Navigate.go_start'
+        f = '[DicExtractor] plugins.multitran.utils.Navigate.go_start'
         if self.Success:
             self.pos = 0
             self.load()
@@ -561,7 +485,7 @@ class Navigate(gt.Binary):
             sh.com.cancel(f)
     
     def clear(self):
-        f = '[MTExtractor] utils.Navigate.clear'
+        f = '[DicExtractor] plugins.multitran.utils.Navigate.clear'
         if self.Success:
             try:
                 if sh.objs.get_os().is_win():
@@ -576,7 +500,7 @@ class Navigate(gt.Binary):
             sh.com.cancel(f)
     
     def set_pos(self):
-        f = '[MTExtractor] utils.Navigate.set_pos'
+        f = '[DicExtractor] plugins.multitran.utils.Navigate.set_pos'
         if self.Success:
             mes = _('Enter a position to go or press Return to keep the current one ({}): ')
             mes = mes.format(sh.com.set_figure_commas(self.pos))
@@ -595,7 +519,7 @@ class Navigate(gt.Binary):
             sh.com.cancel(f)
     
     def go_page_down(self):
-        f = '[MTExtractor] utils.Navigate.go_page_down'
+        f = '[DicExtractor] plugins.multitran.utils.Navigate.go_page_down'
         if self.Success:
             self.pos += self.buffer
             if self.pos >= self.get_file_size():
@@ -607,7 +531,7 @@ class Navigate(gt.Binary):
             sh.com.cancel(f)
     
     def go_page_up(self):
-        f = '[MTExtractor] utils.Navigate.go_page_up'
+        f = '[DicExtractor] plugins.multitran.utils.Navigate.go_page_up'
         if self.Success:
             self.pos -= self.buffer
             if self.pos < 0:
@@ -617,7 +541,7 @@ class Navigate(gt.Binary):
             sh.com.cancel(f)
     
     def load(self):
-        f = '[MTExtractor] utils.Navigate.load'
+        f = '[DicExtractor] plugins.multitran.utils.Navigate.load'
         if self.Success:
             start = self.pos
             end = start + self.buffer
@@ -632,7 +556,7 @@ class Navigate(gt.Binary):
             sh.com.cancel(f)
     
     def set_buffer(self):
-        f = '[MTExtractor] utils.Navigate.set_buffer'
+        f = '[DicExtractor] plugins.multitran.utils.Navigate.set_buffer'
         if self.Success:
             mes = _('Enter a buffer size or press Return to keep the current one ({}): ')
             mes = mes.format(sh.com.set_figure_commas(self.buffer))
@@ -651,7 +575,7 @@ class Navigate(gt.Binary):
             sh.com.cancel(f)
     
     def show_help(self):
-        f = '[MTExtractor] utils.Navigate.show_help'
+        f = '[DicExtractor] plugins.multitran.utils.Navigate.show_help'
         if self.Success:
             mes = _('Available commands: {}')
             mes = mes.format('; '.join(self.coms))
@@ -660,7 +584,7 @@ class Navigate(gt.Binary):
             sh.com.cancel(f)
     
     def show_menu(self,command=''):
-        f = '[MTExtractor] utils.Navigate.show_menu'
+        f = '[DicExtractor] plugins.multitran.utils.Navigate.show_menu'
         if self.Success:
             if not command:
                 try:
@@ -729,7 +653,7 @@ class Navigate(gt.Binary):
             sh.com.cancel(f)
     
     def quit(self):
-        f = '[MTExtractor] utils.Navigate.quit'
+        f = '[DicExtractor] plugins.multitran.utils.Navigate.quit'
         if self.Success:
             self.close()
             mes = _('Goodbye!')
@@ -738,7 +662,7 @@ class Navigate(gt.Binary):
             sh.com.cancel(f)
     
     def print(self):
-        f = '[MTExtractor] utils.Navigate.print'
+        f = '[DicExtractor] plugins.multitran.utils.Navigate.print'
         if self.Success:
             mes = gt.com.get_string(self.chunk,0)
             print(mes)
@@ -746,7 +670,7 @@ class Navigate(gt.Binary):
             sh.com.cancel(f)
     
     def report(self):
-        f = '[MTExtractor] utils.Navigate.report'
+        f = '[DicExtractor] plugins.multitran.utils.Navigate.report'
         if self.Success:
             self.clear()
             sub = sh.com.set_figure_commas(self.pos)
@@ -801,7 +725,7 @@ class Commands:
         return patterns
     
     def get_patch(self,file,pattern,pos,add_pos=20,sympos=0):
-        f = '[MTExtractor] utils.Commands.get_patch'
+        f = '[DicExtractor] plugins.multitran.utils.Commands.get_patch'
         if file and pattern:
             ibin = gt.Binary(file)
             if ibin.Success:
@@ -838,7 +762,7 @@ class Commands:
             sh.com.rep_empty(f)
     
     def corrupt(self,filew,pos,subst=b'\x00'):
-        f = '[MTExtractor] utils.Commands.corrupt'
+        f = '[DicExtractor] plugins.multitran.utils.Commands.corrupt'
         if filew and subst:
             ibin = gt.Binary(filew)
             chunk = ibin.read(pos,pos+len(subst))
@@ -866,7 +790,7 @@ class Commands:
             sh.com.rep_empty(f)
     
     def input_str(self,mes=''):
-        f = '[MTExtractor] utils.Commands.input_str'
+        f = '[DicExtractor] plugins.multitran.utils.Commands.input_str'
         if not mes:
             mes = _('Input a string: ')
         try:
@@ -875,7 +799,7 @@ class Commands:
             return ''
     
     def input_int(self,mes=''):
-        f = '[MTExtractor] utils.Commands.input_int'
+        f = '[DicExtractor] plugins.multitran.utils.Commands.input_int'
         if not mes:
             mes = _('Input an integer: ')
         try:
@@ -893,7 +817,7 @@ class CompareBinaries:
         self.reset(file1,file2)
     
     def set_files(self):
-        f = '[MTExtractor] utils.CompareBinaries.set_files'
+        f = '[DicExtractor] plugins.multitran.utils.CompareBinaries.set_files'
         if self.Success:
             mes1  = _('File {}: ').format(1)
             mes2  = _('File {}: ').format(2)
@@ -919,7 +843,7 @@ class CompareBinaries:
             self.files()
         
     def dump(self):
-        f = '[MTExtractor] utils.CompareBinaries.dump'
+        f = '[DicExtractor] plugins.multitran.utils.CompareBinaries.dump'
         if self.Success:
             mes = _('This will extract binary data from both files from set positions')
             print(mes)
@@ -955,7 +879,7 @@ class CompareBinaries:
             sh.com.cancel(f)
     
     def go_end(self):
-        f = '[MTExtractor] utils.CompareBinaries.go_end'
+        f = '[DicExtractor] plugins.multitran.utils.CompareBinaries.go_end'
         if self.Success:
             min_ = min (self.bin1.get_file_size()
                        ,self.bin2.get_file_size()
@@ -968,7 +892,7 @@ class CompareBinaries:
             sh.com.cancel(f)
     
     def go_start(self):
-        f = '[MTExtractor] utils.CompareBinaries.go_start'
+        f = '[DicExtractor] plugins.multitran.utils.CompareBinaries.go_start'
         if self.Success:
             self.pos = 0
             self.load()
@@ -976,7 +900,7 @@ class CompareBinaries:
             sh.com.cancel(f)
     
     def clear(self):
-        f = '[MTExtractor] utils.CompareBinaries.clear'
+        f = '[DicExtractor] plugins.multitran.utils.CompareBinaries.clear'
         if self.Success:
             try:
                 if sh.objs.get_os().is_win():
@@ -991,7 +915,7 @@ class CompareBinaries:
             sh.com.cancel(f)
     
     def set_pos(self):
-        f = '[MTExtractor] utils.CompareBinaries.set_pos'
+        f = '[DicExtractor] plugins.multitran.utils.CompareBinaries.set_pos'
         if self.Success:
             mes = _('Enter a position to go or press Return to keep the current one ({}): ')
             mes = mes.format(sh.com.set_figure_commas(self.pos))
@@ -1027,7 +951,7 @@ class CompareBinaries:
         self.coms.sort()
     
     def go_prev(self):
-        f = '[MTExtractor] utils.CompareBinaries.go_prev'
+        f = '[DicExtractor] plugins.multitran.utils.CompareBinaries.go_prev'
         if self.Success:
             while True:
                 start = self.pos - self.buffer
@@ -1049,7 +973,7 @@ class CompareBinaries:
             sh.com.cancel(f)
     
     def go_next(self):
-        f = '[MTExtractor] utils.CompareBinaries.go_next'
+        f = '[DicExtractor] plugins.multitran.utils.CompareBinaries.go_next'
         if self.Success:
             while True:
                 start = self.pos + self.buffer
@@ -1067,7 +991,7 @@ class CompareBinaries:
             sh.com.cancel(f)
     
     def go_page_down(self):
-        f = '[MTExtractor] utils.CompareBinaries.go_page_down'
+        f = '[DicExtractor] plugins.multitran.utils.CompareBinaries.go_page_down'
         if self.Success:
             self.pos += self.buffer
             min_ = min (self.bin1.get_file_size()
@@ -1082,7 +1006,7 @@ class CompareBinaries:
             sh.com.cancel(f)
     
     def go_page_up(self):
-        f = '[MTExtractor] utils.CompareBinaries.go_page_up'
+        f = '[DicExtractor] plugins.multitran.utils.CompareBinaries.go_page_up'
         if self.Success:
             self.pos -= self.buffer
             if self.pos < 0:
@@ -1092,7 +1016,7 @@ class CompareBinaries:
             sh.com.cancel(f)
     
     def load(self):
-        f = '[MTExtractor] utils.CompareBinaries.load'
+        f = '[DicExtractor] plugins.multitran.utils.CompareBinaries.load'
         if self.Success:
             start = self.pos
             end   = start + self.buffer
@@ -1111,7 +1035,7 @@ class CompareBinaries:
             sh.com.cancel(f)
     
     def set_buffer(self):
-        f = '[MTExtractor] utils.CompareBinaries.set_buffer'
+        f = '[DicExtractor] plugins.multitran.utils.CompareBinaries.set_buffer'
         if self.Success:
             mes = _('Enter a buffer size or press Return to keep the current one ({}): ')
             mes = mes.format(sh.com.set_figure_commas(self.buffer))
@@ -1132,7 +1056,7 @@ class CompareBinaries:
             sh.com.cancel(f)
     
     def show_help(self):
-        f = '[MTExtractor] utils.CompareBinaries.show_help'
+        f = '[DicExtractor] plugins.multitran.utils.CompareBinaries.show_help'
         if self.Success:
             mes = _('Available commands: {}')
             mes = mes.format('; '.join(self.coms))
@@ -1141,7 +1065,7 @@ class CompareBinaries:
             sh.com.cancel(f)
     
     def show_menu(self,command=''):
-        f = '[MTExtractor] utils.CompareBinaries.show_menu'
+        f = '[DicExtractor] plugins.multitran.utils.CompareBinaries.show_menu'
         if self.Success:
             if not command:
                 try:
@@ -1204,7 +1128,7 @@ class CompareBinaries:
             sh.com.cancel(f)
     
     def quit(self):
-        f = '[MTExtractor] utils.CompareBinaries.quit'
+        f = '[DicExtractor] plugins.multitran.utils.CompareBinaries.quit'
         if self.Success:
             self.close()
             mes = _('Goodbye!')
@@ -1213,7 +1137,7 @@ class CompareBinaries:
             sh.com.cancel(f)
     
     def is_changed(self,i):
-        f = '[MTExtractor] utils.CompareBinaries.is_changed'
+        f = '[DicExtractor] plugins.multitran.utils.CompareBinaries.is_changed'
         if self.Success:
             if i in self.poses:
                 return True
@@ -1221,7 +1145,7 @@ class CompareBinaries:
             sh.com.cancel(f)
     
     def print(self):
-        f = '[MTExtractor] utils.CompareBinaries.print'
+        f = '[DicExtractor] plugins.multitran.utils.CompareBinaries.print'
         if self.Success:
             mes = _('Chunk 1:')
             sh.objs.get_mes(f,mes,True).show_debug()
@@ -1245,7 +1169,7 @@ class CompareBinaries:
             sh.com.cancel(f)
     
     def report(self):
-        f = '[MTExtractor] utils.CompareBinaries.report'
+        f = '[DicExtractor] plugins.multitran.utils.CompareBinaries.report'
         if self.Success:
             self.clear()
             sub = sh.com.set_figure_commas(self.pos)
@@ -1255,7 +1179,7 @@ class CompareBinaries:
             sh.com.cancel(f)
     
     def compare(self,start=0,end=400):
-        f = '[MTExtractor] utils.CompareBinaries.compare'
+        f = '[DicExtractor] plugins.multitran.utils.CompareBinaries.compare'
         if self.Success:
             self.poses   = []
             self.chunks1 = self.bin1.read(start,end)
@@ -1275,7 +1199,7 @@ class CompareBinaries:
             sh.com.cancel(f)
     
     def close(self):
-        f = '[MTExtractor] utils.CompareBinaries.close'
+        f = '[DicExtractor] plugins.multitran.utils.CompareBinaries.close'
         if self.Success:
             self.bin1.close()
             self.bin2.close()

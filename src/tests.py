@@ -3,7 +3,8 @@
 
 import io
 import struct
-import get               as gt
+import get as gt
+import extractor as xt
 import skl_shared.shared as sh
 from skl_shared.localize import _
 
@@ -541,29 +542,41 @@ class UPage(gt.UPage):
             sh.com.cancel(f)
 
 
+
+class DB(xt.DB):
+    
+    def __init__(self,*args,**kwargs):
+        super().__init__(*args,**kwargs)
+    
+    def search(self,pattern='tick'):
+        f = '[MTExtractor] tests.DB.search'
+        if self.Success:
+            if pattern:
+                self.dbc.execute ('select ARTNO from LANG1 \
+                                   where  PHRASE = ? order by ARTNO'
+                                 ,(pattern,)
+                                 )
+                artnos = self.dbc.fetchall()
+                if artnos:
+                    artnos = [artno[0] for artno in artnos]
+                else:
+                    artnos = []
+                sh.com.run_fast_debug(artnos)
+            else:
+                sh.com.empty(f)
+        else:
+            sh.com.cancel(f)
+
+
 com = Commands()
 
 
 if __name__ == '__main__':
     f = '[MTExtractor] tests.__main__'
-    gt.PATH = '/home/pete/.config/mclient/dics'
-    ''' Currently failing translations:
-        "work"
-        "совковая лопата с суживающимся полотном с прямолинейной кромкой"
-        "собирать и содержать в определённом месте потерявшихся домашних животных или автомобили"
-    '''
-    #Tests().get_speech('DARE')
-    #Tests().translate('DARE')
-    #Binary(gt.objs.get_files().iwalker.get_glue1()).show_info()
-    gt.DEBUG = True
-    # creeping Coxsackies
-    pattern = 'rabal'
-    iget = gt.Get(pattern)
-    iget.check()
-    iget.strip()
-    gt.objs.get_files().reset()
-    iget.get_stems()
-    iget.get_combos()
-    iget.set_speech()
-    mes = iget.search()
-    sh.objs.get_mes(f,mes,True).show_debug()
+    ihome = sh.Home('DicExtractor')
+    gt.PATH = ihome.get_conf_dir()
+    dbpath = ihome.add_config('extract.db')
+    gt.DEBUG = False
+    idb = DB(dbpath)
+    idb.search()
+    idb.close()

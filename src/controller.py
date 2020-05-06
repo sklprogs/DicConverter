@@ -12,6 +12,7 @@ if __name__ == '__main__':
     f = '[DicExtractor] controller.__main__'
     mg.PATH = sh.Home('DicExtractor').get_conf_dir()
     mg.DEBUG = False
-    mx.Extractor().run(20)
-    mx.Compare().run()
+    #mx.Extractor().run()
+    #mx.Compare().run()
+    mx.objs.get_db().print_final()
     mx.objs.get_db().close()

@@ -12,15 +12,19 @@ class Commands:
     def __init__(self):
         pass
     
-    def calc_ranges(self,limit,delta):
+    def swap_langs(self):
+        gt.LANG1, gt.LANG2 = gt.LANG2, gt.LANG1
+        gt.objs.get_files().reset()
+    
+    def calc_ranges(self,maxlim,step,minlim=0):
         f = '[DicExtractor] plugins.multitran.extractor.Commands.calc_ranges'
         ranges = []
-        max_ = 1
-        while max_ <= limit:
+        max_ = minlim
+        while max_ <= maxlim:
             min_ = max_
-            max_ += delta
-            if max_ > limit:
-                max_ = limit
+            max_ += step
+            if max_ > maxlim:
+                max_ = maxlim
             ranges.append([min_,max_])
             max_ += 1
         sh.objs.get_mes(f,ranges,True).show_debug()
@@ -215,6 +219,56 @@ class DB:
         else:
             sh.com.cancel(f)
     
+    def print_final(self,maxrow=45,maxrows=1000):
+        f = '[DicExtractor] plugins.multitran.extractor.DB.print_final'
+        if self.Success:
+            subquery = 'select {} from {} order by ARTNO desc limit ?'
+            query = subquery.format('ARTNO',self.table3)
+            self.dbc.execute(query,(maxrows,))
+            artnos = self.dbc.fetchall()
+            if artnos:
+                artnos = [artno[0] for artno in artnos]
+            else:
+                artnos = []
+            
+            query = subquery.format('SUBJECT1',self.table3)
+            self.dbc.execute(query,(maxrows,))
+            subjects = self.dbc.fetchall()
+            if subjects:
+                subjects = [subject[0] for subject in subjects]
+            else:
+                subjects = []
+            
+            query = subquery.format('PHRASE1',self.table3)
+            self.dbc.execute(query,(maxrows,))
+            phrases1 = self.dbc.fetchall()
+            
+            query = subquery.format('PHRASE2',self.table3)
+            self.dbc.execute(query,(maxrows,))
+            phrases2 = self.dbc.fetchall()
+            
+            if phrases1:
+                phrases1 = [phrase[0] for phrase in phrases1]
+            else:
+                phrases1 = []
+            
+            if phrases2:
+                phrases2 = [phrase[0] for phrase in phrases2]
+            else:
+                phrases2 = []
+            
+            headers = ('NO','ARTNO','SUBJECT','PHRASE1','PHRASE2')
+            nos = [i + 1 for i in range(len(subjects))]
+            iterable = [nos,artnos,subjects,phrases1,phrases2]
+            mes = sh.FastTable (iterable = iterable
+                               ,headers  = headers
+                               ,maxrow   = maxrow
+                               ,maxrows  = maxrows
+                               ).run()
+            sh.com.run_fast_debug(mes)
+        else:
+            sh.com.cancel(f)
+    
     def print (self,table='LANG1'
               ,maxrow=50,maxrows=1000
               ):
@@ -387,29 +441,73 @@ class DB:
 
 class Extractor:
     
-    def __init__(self):
+    def __init__(self,start_page=0,end_page=100000000):
         f = '[DicExtractor] plugins.multitran.extractor.Extractor.__init__'
         self.set_values()
+        self.start_page = start_page
+        self.end_page = end_page
         self.timer = sh.Timer(f)
         self.timer.start()
+    
+    def set_end_page(self):
+        f = '[DicExtractor] plugins.multitran.extractor.Extractor.set_end_page'
+        if self.Success:
+            #NOTE: Run 'init_parsers' first
+            self.end_page = min (self.end_page
+                                ,len(self.iparse1.lpages)
+                                ,len(self.iparse2.lpages)
+                                )
+        else:
+            sh.com.cancel(f)
     
     def reset_cycle(self):
         self.phrases = []
         self.simple = []
         self.artnos = []
-        self.iparse = None
     
     def set_values(self):
         self.Success = True
         self.phrases = []
         self.simple = []
         self.artnos = []
-        self.iparse = None
         self.read = 0
         self.parsed = 0
         self.translated = 0
-        # Number of 16K pages to process
-        self.delta = 1000 # Buffer: at least 32M for both languages
+        ''' Number of 16K pages to process. Buffer will be at least 32M
+            (for both languages).
+        '''
+        self.delta = 1000
+        self.lang = 1
+        self.start_page = 0
+        self.end_page = 100000000
+    
+    def set_parser(self):
+        f = '[DicExtractor] plugins.multitran.extractor.Extractor.set_parser'
+        if self.Success:
+            if self.lang == 1:
+                self.iparse = self.iparse1
+            else:
+                self.iparse = self.iparse2
+        else:
+            sh.com.cancel(f)
+    
+    def init_parsers(self):
+        f = '[DicExtractor] plugins.multitran.extractor.Extractor.init_parsers'
+        if self.Success:
+            ''' #NOTE: When searching stems, we need to swap languages
+                and call 'get_typein1' to get a stem file for the 2nd
+                language since the search uses 'get_stems1'.
+            '''
+            file1 = gt.objs.get_files().iwalker.get_typein1()
+            file2 = gt.objs.files.iwalker.get_typein2()
+            self.iparse1 = gt.Parser(file1)
+            self.iparse2 = gt.Parser(file2)
+            self.iparse1.get_pages()
+            self.iparse2.get_pages()
+            self.Success = self.iparse1.Success and self.iparse2.Success
+            self.set_parser()
+        else:
+            sh.com.cancel(f)
     
     def report(self):
         f = '[DicExtractor] plugins.multitran.extractor.Extractor.report'
@@ -467,15 +565,6 @@ class Extractor:
         else:
             sh.com.cancel(f)
     
-    def parse_typein(self,file,start_page=0,end_page=100000000):
-        f = '[DicExtractor] plugins.multitran.extractor.Extractor.parse_typein'
-        if self.Success:
-            self.iparse = gt.Parser(file)
-            self.iparse.parsel_loop(start_page,end_page)
-            self.Success = self.iparse.Success
-        else:
-            sh.com.cancel(f)
-    
     def translate(self,pattern):
         f = '[DicExtractor] plugins.multitran.extractor.Extractor.translate'
         if self.Success:
@@ -489,7 +578,7 @@ class Extractor:
         else:
             sh.com.cancel(f)
     
-    def dump(self,lang):
+    def dump(self):
         f = '[DicExtractor] plugins.multitran.extractor.Extractor.dump'
         if self.Success:
             for i in range(len(self.artnos)):
@@ -516,7 +605,7 @@ class Extractor:
                            ,self.phrases[i]
                            ,
                            )
-                    if not objs.get_db().add(data,lang):
+                    if not objs.get_db().add(data,self.lang):
                         messages = []
                         mes = 'ARTNO: "{}"'.format(artno)
                         messages.append(mes)
@@ -534,16 +623,10 @@ class Extractor:
         else:
             sh.com.cancel(f)
     
-    def run_lang(self,lang=1,start_page=0,end_page=100000000):
+    def run_lang(self,start_page,end_page):
         f = '[DicExtractor] plugins.multitran.extractor.Extractor.run_lang'
         if self.Success:
-            if lang == 1:
-                file = gt.objs.get_files().iwalker.get_typein1()
-            else:
-                gt.LANG1, gt.LANG2 = gt.LANG2, gt.LANG1
-                gt.objs.get_files().reset()
-                file = gt.objs.files.iwalker.get_typein1()
-            self.parse_typein(file,start_page,end_page)
+            self.iparse.parsel_loop(start_page,end_page)
             self.set_phrases()
             #self.debug()
             for i in range(len(self.simple)):
@@ -565,42 +648,43 @@ class Extractor:
         else:
             sh.com.cancel(f)
     
-    def run_cycle(self,lang=1,start_page=0,end_page=100000000):
-        self.run_lang (lang       = lang
-                      ,start_page = start_page
-                      ,end_page   = end_page
-                      )
-        self.dump(lang)
+    def run_cycle(self,start_page,end_page):
+        self.run_lang(start_page,end_page)
+        self.dump()
         self.reset_cycle()
     
-    def run_loop(self,end_page=100000000):
+    def _run_loop(self,ranges):
+        for range_ in ranges:
+            self.run_cycle (start_page = range_[0]
+                           ,end_page   = range_[1]
+                           )
+    
+    def run_loop(self):
         f = '[DicExtractor] plugins.multitran.extractor.Extractor.run_loop'
         if self.Success:
-            #cur
-            #end_page = min(end_page,len(self.iparse.lpages))
-            ranges = com.calc_ranges(end_page,self.delta)
+            ranges = com.calc_ranges (minlim = self.start_page
+                                     ,maxlim = self.end_page
+                                     ,step   = self.delta
+                                     )
             if ranges:
-                for range_ in ranges:
-                    self.run_cycle (lang       = 1
-                                   ,start_page = range_[0]
-                                   ,end_page   = range_[1]
-                                   )
-                    self.run_cycle (lang       = 2
-                                   ,start_page = range_[0]
-                                   ,end_page   = range_[1]
-                                   )
+                self._run_loop(ranges)
+                com.swap_langs()
+                self.lang = 2
+                self.set_parser()
+                self._run_loop(ranges)
             else:
                 self.Success = False
                 sh.com.rep_empty(f)
         else:
             sh.com.cancel(f)
     
-    def run(self,end_page=100000000):
-        start_page = 0
+    def run(self):
         sh.STOP_MES = True
         objs.get_db().clear()
         objs.db.save()
-        self.run_loop(end_page)
+        self.init_parsers()
+        self.set_end_page()
+        self.run_loop()
         sh.STOP_MES = False
         self.report()
         #objs.get_db().print('LANG1')

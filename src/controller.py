@@ -9,4 +9,4 @@ import plugins.multitran.extractor as mx
 
 if __name__ == '__main__':
     f = '[DicExtractor] controller.__main__'
-    mx.Runner().run()
+    mx.Runner(end_page=10).run()

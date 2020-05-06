@@ -5,6 +5,35 @@ import sqlite3
 import skl_shared.shared as sh
 from skl_shared.localize import _
 from . import get as gt
+from . import gui as gi
+
+
+class ProgressBar:
+    
+    def __init__(self):
+        self.gui = gi.ProgressBar (title   = _('Extraction progress')
+                                  ,icon    = gi.ICON
+                                  ,height  = 120
+                                  ,YScroll = False
+                                  )
+    
+    def set_text(self,text=None):
+        self.gui.set_text(text)
+    
+    def show(self,event=None):
+        self.gui.show()
+    
+    def close(self,event=None):
+        self.gui.close()
+    
+    def update(self,count,limit):
+        # Prevent ZeroDivisionError
+        if limit:
+            percent = round((100*count)/limit)
+        else:
+            percent = 0
+        self.gui.update(percent)
+
 
 
 class Commands:
@@ -33,21 +62,31 @@ class Commands:
 
 class Runner:
     
-    def __init__(self):
-        pass
+    def __init__(self,start_page=0,end_page=100000000):
+        self.start_page = start_page
+        self.end_page = end_page
     
     def run(self):
         f = '[DicExtractor] plugins.multitran.extractor.Runner.run'
         self.timer = sh.Timer(f)
         self.timer.start()
+        objs.get_progress().set_text(_('Prepare'))
+        objs.progress.show()
         # Processing will be faster by 33% if logging is disabled
         sh.STOP_MES = True
         gt.PATH = sh.Home('DicExtractor').get_conf_dir()
-        self.iextract = Extractor()
+        self.iextract = Extractor (start_page = self.start_page
+                                  ,end_page   = self.end_page
+                                  )
         self.iextract.run()
+        mes = _('Find matches ({}/{})').format(2,3)
+        objs.progress.set_text(mes)
         self.icompare = Compare()
         self.icompare.run()
         sh.STOP_MES = False
+        mes = _('Convert ({}/{})').format(3,3)
+        objs.progress.set_text(mes)
+        objs.progress.close()
         self.Success = self.iextract.Success and self.icompare.Success
         self.report()
         self.icompare.debug()
@@ -180,6 +219,7 @@ class Compare:
             ranges = com.calc_ranges(self.max_,self.delta)
             if ranges:
                 for range_ in ranges:
+                    objs.get_progress().update(range_[0],self.max_)
                     self.reset_range()
                     self.data1 = objs.get_db().fetch_range(objs.db.table1,range_[0],range_[1])
                     self.data2 = objs.db.fetch_range(objs.db.table2,range_[0],range_[1])
@@ -651,6 +691,7 @@ class Extractor:
     
     def _run_loop(self,ranges):
         for range_ in ranges:
+            objs.get_progress().update(range_[0],self.end_page)
             self.run_cycle (start_page = range_[0]
                            ,end_page   = range_[1]
                            )
@@ -679,6 +720,8 @@ class Extractor:
         objs.db.save()
         self.init_parsers()
         self.set_end_page()
+        mes = _('Process single records ({}/{})').format(1,3)
+        objs.get_progress().set_text(mes)
         self.run_loop()
 
 
@@ -686,7 +729,12 @@ class Extractor:
 class Objects:
     
     def __init__(self):
-        self.db = None
+        self.db = self.progress = None
+    
+    def get_progress(self):
+        if self.progress is None:
+            self.progress = ProgressBar()
+        return self.progress
     
     def get_db(self):
         if self.db is None:

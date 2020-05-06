@@ -7,6 +7,27 @@ from skl_shared.localize import _
 from . import get as gt
 
 
+class Commands:
+    
+    def __init__(self):
+        pass
+    
+    def calc_ranges(self,limit,delta):
+        f = '[DicExtractor] plugins.multitran.extractor.Commands.calc_ranges'
+        ranges = []
+        max_ = 1
+        while max_ <= limit:
+            min_ = max_
+            max_ += delta
+            if max_ > limit:
+                max_ = limit
+            ranges.append([min_,max_])
+            max_ += 1
+        sh.objs.get_mes(f,ranges,True).show_debug()
+        return ranges
+
+
+
 class Compare:
     
     def __init__(self):
@@ -22,7 +43,6 @@ class Compare:
             memory.
         '''
         self.delta = 10000
-        self.ranges = []
         self.data1 = None
         self.data2 = None
         self.final = []
@@ -110,7 +130,6 @@ class Compare:
     
     def run(self):
         self.get_max()
-        self.calc_ranges()
         self.set_ranges()
         self.debug()
     
@@ -128,26 +147,12 @@ class Compare:
         else:
             sh.com.cancel(f)
     
-    def calc_ranges(self):
-        f = '[DicExtractor] plugins.multitran.extractor.Compare.calc_ranges'
-        if self.Success:
-            max_ = 1
-            while max_ <= self.max_:
-                min_ = max_
-                max_ += self.delta
-                if max_ > self.max_:
-                    max_ = self.max_
-                self.ranges.append([min_,max_])
-                max_ += 1
-            sh.objs.get_mes(f,self.ranges,True).show_debug()
-        else:
-            sh.com.cancel(f)
-    
     def set_ranges(self):
         f = '[DicExtractor] plugins.multitran.extractor.Compare.set_ranges'
         if self.Success:
-            if self.ranges:
-                for range_ in self.ranges:
+            ranges = com.calc_ranges(self.max_,self.delta)
+            if ranges:
+                for range_ in ranges:
                     self.reset_range()
                     self.data1 = objs.get_db().fetch_range(objs.db.table1,range_[0],range_[1])
                     self.data2 = objs.db.fetch_range(objs.db.table2,range_[0],range_[1])
@@ -403,6 +408,8 @@ class Extractor:
         self.read = 0
         self.parsed = 0
         self.translated = 0
+        # Number of 16K pages to process
+        self.delta = 1000 # Buffer: at least 32M for both languages
     
     def report(self):
         f = '[DicExtractor] plugins.multitran.extractor.Extractor.report'
@@ -566,21 +573,34 @@ class Extractor:
         self.dump(lang)
         self.reset_cycle()
     
+    def run_loop(self,end_page=100000000):
+        f = '[DicExtractor] plugins.multitran.extractor.Extractor.run_loop'
+        if self.Success:
+            #cur
+            #end_page = min(end_page,len(self.iparse.lpages))
+            ranges = com.calc_ranges(end_page,self.delta)
+            if ranges:
+                for range_ in ranges:
+                    self.run_cycle (lang       = 1
+                                   ,start_page = range_[0]
+                                   ,end_page   = range_[1]
+                                   )
+                    self.run_cycle (lang       = 2
+                                   ,start_page = range_[0]
+                                   ,end_page   = range_[1]
+                                   )
+            else:
+                self.Success = False
+                sh.com.rep_empty(f)
+        else:
+            sh.com.cancel(f)
+    
     def run(self,end_page=100000000):
         start_page = 0
         sh.STOP_MES = True
         objs.get_db().clear()
         objs.db.save()
-        
-        self.run_cycle (lang       = 1
-                       ,start_page = start_page
-                       ,end_page   = end_page
-                       )
-        self.run_cycle (lang       = 2
-                       ,start_page = start_page
-                       ,end_page   = end_page
-                       )
-
+        self.run_loop(end_page)
         sh.STOP_MES = False
         self.report()
         #objs.get_db().print('LANG1')
@@ -601,6 +621,7 @@ class Objects:
 
 
 objs = Objects()
+com = Commands()
 
 
 if __name__ == '__main__':

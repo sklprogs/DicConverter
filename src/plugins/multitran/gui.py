@@ -5,7 +5,7 @@ import skl_shared.shared as sh
 from skl_shared.localize import _
 
 ICON = sh.objs.get_pdir().add ('..','resources'
-                              ,'icon_64x64_dic.gif'
+                              ,'icon_64x64_DicExtractor.gif'
                               )
 
 

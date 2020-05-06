@@ -415,29 +415,35 @@ class DB:
     
     def clear(self):
         f = '[DicExtractor] plugins.multitran.extractor.DB.clear'
-        tables = [self.table1,self.table2,self.table3]
-        mes = _('Delete all records from {}')
-        mes = mes.format(', '.join(tables))
-        sh.objs.get_mes(f,mes,True).show_warning()
-        query = 'delete from {}'
-        self.dbc.execute(query.format(self.table1))
-        self.dbc.execute(query.format(self.table2))
-        self.dbc.execute(query.format(self.table3))
-        #TODO: vacuumize
+        if self.Success:
+            tables = [self.table1,self.table2,self.table3]
+            mes = _('Delete all records from {}')
+            mes = mes.format(', '.join(tables))
+            sh.objs.get_mes(f,mes,True).show_warning()
+            query = 'delete from {}'
+            try:
+                self.dbc.execute(query.format(self.table1))
+                self.dbc.execute(query.format(self.table2))
+                self.dbc.execute(query.format(self.table3))
+            except Exception as e:
+                self.fail(f,e)
+            #TODO: vacuumize
+        else:
+            sh.com.cancel(f)
     
     def create_final(self):
         f = '[DicExtractor] plugins.multitran.extractor.DB.create_final'
         if self.Success:
+            query = 'create table if not exists {} (\
+                     ARTNO    integer \
+                    ,SUBJECT1 integer \
+                    ,SUBJECT2 integer \
+                    ,SUBJECT3 integer \
+                    ,PHRASE1  text \
+                    ,PHRASE2  text \
+                                                   )'
+            query = query.format(self.table3)
             try:
-                query = 'create table if not exists {} (\
-                         ARTNO    integer \
-                        ,SUBJECT1 integer \
-                        ,SUBJECT2 integer \
-                        ,SUBJECT3 integer \
-                        ,PHRASE1  text \
-                        ,PHRASE2  text \
-                                                       )'
-                query = query.format(self.table3)
                 self.dbc.execute(query)
             except Exception as e:
                 self.fail(f,e)
@@ -447,15 +453,15 @@ class DB:
     def create_table(self,lang):
         f = '[DicExtractor] plugins.multitran.extractor.DB.create_table'
         if self.Success:
+            query = 'create table if not exists {} (\
+                     ARTNO    integer \
+                    ,SUBJECT1 integer \
+                    ,SUBJECT2 integer \
+                    ,SUBJECT3 integer \
+                    ,PHRASE   text \
+                                                   )'
+            query = query.format(lang)
             try:
-                query = 'create table if not exists {} (\
-                         ARTNO    integer \
-                        ,SUBJECT1 integer \
-                        ,SUBJECT2 integer \
-                        ,SUBJECT3 integer \
-                        ,PHRASE   text \
-                                                       )'
-                query = query.format(lang)
                 self.dbc.execute(query)
             except Exception as e:
                 self.fail(f,e)

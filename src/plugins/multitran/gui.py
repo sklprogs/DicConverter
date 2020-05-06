@@ -22,4 +22,5 @@ class ProgressBar(sh.ProgressBar):
     
     def update(self,percent):
         self.item.widget['value'] = percent
+        # This is required to fill the progress bar on-the-fly
         sh.objs.get_root().update_idle()

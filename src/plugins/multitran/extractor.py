@@ -75,14 +75,18 @@ class Runner:
         # Processing will be faster by 33% if logging is disabled
         sh.STOP_MES = True
         gt.PATH = sh.Home('DicExtractor').get_conf_dir()
+        objs.get_db().clear()
+        objs.db.save()
         self.iextract = Extractor (start_page = self.start_page
                                   ,end_page   = self.end_page
                                   )
         self.iextract.run()
+        objs.db.save()
         mes = _('Find matches ({}/{})').format(2,3)
         objs.progress.set_text(mes)
         self.icompare = Compare()
         self.icompare.run()
+        objs.db.save()
         sh.STOP_MES = False
         mes = _('Convert ({}/{})').format(3,3)
         objs.progress.set_text(mes)
@@ -131,11 +135,7 @@ class Compare:
     def set_values(self):
         self.Success = True
         self.max_ = 0
-        ''' Number of phrases to be processed per a cycle. Each cycle
-            is followed by committing to DB, so this number should be
-            big enough. On the other hand, bigger cycles consume more
-            memory.
-        '''
+        # Number of phrases to be processed per a cycle
         self.delta = 10000
         self.data1 = None
         self.data2 = None
@@ -161,7 +161,6 @@ class Compare:
             if self.final:
                 for row in self.final:
                     objs.get_db().add_final(row)
-                objs.db.save()
             else:
                 sh.com.rep_empty(f)
         else:
@@ -528,9 +527,7 @@ class Extractor:
         self.read = 0
         self.parsed = 0
         self.translated = 0
-        ''' Number of 16K pages to process. Buffer will be at least 32M
-            (for both languages).
-        '''
+        # Number of 16K pages to process at once
         self.delta = 1000
         self.lang = 1
         self.start_page = 0
@@ -655,7 +652,6 @@ class Extractor:
                         messages.append(mes)
                         mes = '\n'.join(messages)
                         sh.objs.get_mes(f,mes).show_error()
-            objs.db.save()
         else:
             sh.com.cancel(f)
     
@@ -704,10 +700,16 @@ class Extractor:
                                      ,step   = self.delta
                                      )
             if ranges:
+                mes = _('Process single records ({}) ({}/{})')
+                mes = mes.format(self.iparse.bname,1,3)
+                objs.get_progress().set_text(mes)
                 self._run_loop(ranges)
                 com.swap_langs()
                 self.lang = 2
                 self.set_parser()
+                mes = _('Process single records ({}) ({}/{})')
+                mes = mes.format(self.iparse.bname,1,3)
+                objs.progress.set_text(mes)
                 self._run_loop(ranges)
             else:
                 self.Success = False
@@ -716,12 +718,8 @@ class Extractor:
             sh.com.cancel(f)
     
     def run(self):
-        objs.get_db().clear()
-        objs.db.save()
         self.init_parsers()
         self.set_end_page()
-        mes = _('Process single records ({}/{})').format(1,3)
-        objs.get_progress().set_text(mes)
         self.run_loop()
 
 

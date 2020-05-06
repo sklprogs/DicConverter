@@ -31,6 +31,56 @@ class Commands:
         return ranges
 
 
+class Runner:
+    
+    def __init__(self):
+        pass
+    
+    def run(self):
+        f = '[DicExtractor] plugins.multitran.extractor.Runner.run'
+        self.timer = sh.Timer(f)
+        self.timer.start()
+        sh.STOP_MES = True
+        gt.PATH = sh.Home('DicExtractor').get_conf_dir()
+        self.iextract = Extractor()
+        self.iextract.run()
+        self.icompare = Compare()
+        self.icompare.run()
+        sh.STOP_MES = False
+        self.Success = self.iextract.Success and self.icompare.Success
+        self.report()
+        self.icompare.debug()
+        objs.get_db().close()
+    
+    def report(self):
+        f = '[DicExtractor] plugins.multitran.extractor.Runner.report'
+        if self.Success:
+            messages = []
+            mes = _('Processed single records (total/parsed/translated):')
+            messages.append(mes)
+            mes = '{}/{}/{}'.format (self.iextract.read
+                                    ,self.iextract.parsed
+                                    ,self.iextract.translated
+                                    )
+            messages.append(mes)
+            mes = _('Pairs in total/with matches/without matches:')
+            messages.append(mes)
+            mes = '{}/{}/{}'.format (self.icompare.matches + self.icompare.nomatches
+                                    ,self.icompare.matches
+                                    ,self.icompare.nomatches
+                                    )
+            messages.append(mes)
+            messages.append('')
+            mes = _('The operation has taken:')
+            messages.append(mes)
+            mes = sh.com.get_human_time(self.timer.end())
+            messages.append(mes)
+            mes = '\n'.join(messages)
+            sh.objs.get_mes(f,mes).show_info()
+        else:
+            sh.com.cancel(f)
+
+
 
 class Compare:
     
@@ -61,34 +111,7 @@ class Compare:
     def debug(self):
         f = '[DicExtractor] plugins.multitran.extractor.Compare.debug'
         if self.Success:
-            data = objs.get_db().fetch_range(objs.db.table3,1,1000)
-            if data:
-                artnos = []
-                subjects1 = []
-                subjects2 = []
-                subjects3 = []
-                phrases1 = []
-                phrases2 = []
-                for row in data:
-                    artnos.append(row[0])
-                    subjects1.append(row[1])
-                    subjects2.append(row[2])
-                    subjects3.append(row[3])
-                    phrases1.append(row[4])
-                    phrases2.append(row[5])
-                iterable = [artnos,subjects1,subjects2,subjects3
-                           ,phrases1,phrases2
-                           ]
-                headers = ('ARTNO','SUBJ1','SUBJ2','SUBJ3','PHRASE1'
-                          ,'PHRASE2'
-                          )
-                mes = sh.FastTable (iterable = iterable
-                                   ,headers  = headers
-                                   ,maxrow   = 50
-                                   ).run()
-                sh.com.run_fast_debug(mes)
-            else:
-                sh.com.rep_empty(f)
+            objs.get_db().print_final()
         else:
             sh.com.cancel(f)
     
@@ -135,7 +158,6 @@ class Compare:
     def run(self):
         self.get_max()
         self.set_ranges()
-        self.debug()
     
     def get_max(self):
         f = '[DicExtractor] plugins.multitran.extractor.Compare.get_max'
@@ -162,12 +184,6 @@ class Compare:
                     self.data2 = objs.db.fetch_range(objs.db.table2,range_[0],range_[1])
                     self.compare()
                     self.dump()
-                mes = _('Pairs in total/with matches/without matches:')
-                sub = '{}/{}/{}'.format (self.matches + self.nomatches
-                                        ,self.matches,self.nomatches
-                                        )
-                mes += '\n' + sub
-                sh.objs.get_mes(f,mes).show_debug()
             else:
                 self.Success = False
                 sh.com.rep_empty(f)
@@ -446,8 +462,6 @@ class Extractor:
         self.set_values()
         self.start_page = start_page
         self.end_page = end_page
-        self.timer = sh.Timer(f)
-        self.timer.start()
     
     def set_end_page(self):
         f = '[DicExtractor] plugins.multitran.extractor.Extractor.set_end_page'
@@ -506,25 +520,6 @@ class Extractor:
             self.iparse2.get_pages()
             self.Success = self.iparse1.Success and self.iparse2.Success
             self.set_parser()
-        else:
-            sh.com.cancel(f)
-    
-    def report(self):
-        f = '[DicExtractor] plugins.multitran.extractor.Extractor.report'
-        if self.Success:
-            messages = []
-            mes = _('Processed chunks (total/parsed/translated):')
-            messages.append(mes)
-            mes = '{}/{}/{}'
-            mes = mes.format(self.read,self.parsed,self.translated)
-            messages.append(mes)
-            messages.append('')
-            mes = _('The operation has taken:')
-            messages.append(mes)
-            mes = sh.com.get_human_time(self.timer.end())
-            messages.append(mes)
-            mes = '\n'.join(messages)
-            sh.objs.get_mes(f,mes).show_info()
         else:
             sh.com.cancel(f)
     
@@ -679,16 +674,11 @@ class Extractor:
             sh.com.cancel(f)
     
     def run(self):
-        sh.STOP_MES = True
         objs.get_db().clear()
         objs.db.save()
         self.init_parsers()
         self.set_end_page()
         self.run_loop()
-        sh.STOP_MES = False
-        self.report()
-        #objs.get_db().print('LANG1')
-        #objs.db.print('LANG2')
 
 
 

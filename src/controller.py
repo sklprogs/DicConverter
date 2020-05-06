@@ -4,15 +4,9 @@
 import skl_shared.shared as sh
 from skl_shared.localize import _
 
-import plugins.multitran.get as mg
 import plugins.multitran.extractor as mx
 
 
 if __name__ == '__main__':
     f = '[DicExtractor] controller.__main__'
-    mg.PATH = sh.Home('DicExtractor').get_conf_dir()
-    mg.DEBUG = False
-    #mx.Extractor().run()
-    #mx.Compare().run()
-    mx.objs.get_db().print_final()
-    mx.objs.get_db().close()
+    mx.Runner().run()

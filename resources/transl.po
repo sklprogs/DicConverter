@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: shared\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-05-06 18:05+0300\n"
-"PO-Revision-Date: 2020-05-06 18:06+0300\n"
+"POT-Creation-Date: 2020-05-06 21:06+0300\n"
+"PO-Revision-Date: 2020-05-06 21:08+0300\n"
 "Last-Translator: Peter Sklyar <skl.progs@gmail.com>\n"
 "Language-Team: Peter Sklyar <skl.progs@gmail.com>\n"
 "Language: ru_RU\n"
@@ -41,32 +41,48 @@ msgstr "Недопустимые входные данные: \"{}\"!"
 msgid "Debug table:"
 msgstr "Таблица для отладки:"
 
-#: DicExtractor/src/plugins/multitran/extractor.py:60
-msgid "Processed single records (total/parsed/translated):"
-msgstr "Обработано отдельных записей (всего/разобрано/переведено): {}/{}/{}"
+#: DicExtractor/src/plugins/multitran/extractor.py:14
+msgid "Extraction progress"
+msgstr "Ход извлечения"
 
-#: DicExtractor/src/plugins/multitran/extractor.py:67
+#: DicExtractor/src/plugins/multitran/extractor.py:73
+msgid "Prepare"
+msgstr "Подготовка"
+
+#: DicExtractor/src/plugins/multitran/extractor.py:82
+msgid "Find matches ({}/{})"
+msgstr "Поиск совпадений ({}/{})"
+
+#: DicExtractor/src/plugins/multitran/extractor.py:87
+msgid "Convert ({}/{})"
+msgstr "Конвертация ({}/{})"
+
+#: DicExtractor/src/plugins/multitran/extractor.py:99
+msgid "Processed single records (total/parsed/translated):"
+msgstr "Обработано одиночных записей (всего/разобрано/переведено):"
+
+#: DicExtractor/src/plugins/multitran/extractor.py:106
 msgid "Pairs in total/with matches/without matches:"
 msgstr "Пар всего/с совпадениями/без совпадений:"
 
-#: DicExtractor/src/plugins/multitran/extractor.py:75
+#: DicExtractor/src/plugins/multitran/extractor.py:114
 msgid "The operation has taken:"
 msgstr "Операция завершена за:"
 
-#: DicExtractor/src/plugins/multitran/extractor.py:365
+#: DicExtractor/src/plugins/multitran/extractor.py:405
 msgid "Save \"{}\""
 msgstr "Сохранение \"{}\""
 
-#: DicExtractor/src/plugins/multitran/extractor.py:380
+#: DicExtractor/src/plugins/multitran/extractor.py:420
 msgid "Delete all records from {}"
 msgstr "Удаление всех записей из {}"
 
-#: DicExtractor/src/plugins/multitran/extractor.py:429
+#: DicExtractor/src/plugins/multitran/extractor.py:469
 #: DicExtractor/src/plugins/multitran/get.py:503
 msgid "Close \"{}\""
 msgstr "Закрытие \"{}\""
 
-#: DicExtractor/src/plugins/multitran/extractor.py:440
+#: DicExtractor/src/plugins/multitran/extractor.py:480
 msgid ""
 "Database \"{}\" has failed!\n"
 "\n"
@@ -76,10 +92,14 @@ msgstr ""
 "\n"
 "Подробности: {}"
 
-#: DicExtractor/src/plugins/multitran/extractor.py:447
+#: DicExtractor/src/plugins/multitran/extractor.py:487
 #: DicExtractor/src/plugins/multitran/get.py:484
 msgid "Open \"{}\""
 msgstr "Открытие \"{}\""
+
+#: DicExtractor/src/plugins/multitran/extractor.py:723
+msgid "Process single records ({}/{})"
+msgstr "Обработка отдельных записей ({}/{})"
 
 #: DicExtractor/src/plugins/multitran/get.py:67
 msgid "Position: {}"
@@ -415,6 +435,10 @@ msgstr "Тест \"{}|{}\""
 #: DicExtractor/src/plugins/multitran/get.py:2306
 msgid "Found stem: \"{}\""
 msgstr "Найдена основа: \"{}\""
+
+#: DicExtractor/src/plugins/multitran/gui.py:20
+msgid "Read single records"
+msgstr "Чтение одиночных записей"
 
 #: DicExtractor/src/plugins/multitran/tags.py:48 skl_shared/src/shared.py:4464
 msgid "Wrong input data: \"{}\""

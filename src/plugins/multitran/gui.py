@@ -17,7 +17,7 @@ class ProgressBar(sh.ProgressBar):
     
     def set_text(self,text=None):
         if text is None:
-            text = _('Read single entries')
+            text = _('Read single records')
         self.item.label.set_text(text)
     
     def update(self,percent):

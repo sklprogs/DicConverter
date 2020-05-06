@@ -40,6 +40,7 @@ class Runner:
         f = '[DicExtractor] plugins.multitran.extractor.Runner.run'
         self.timer = sh.Timer(f)
         self.timer.start()
+        # Processing will be faster by 33% if logging is disabled
         sh.STOP_MES = True
         gt.PATH = sh.Home('DicExtractor').get_conf_dir()
         self.iextract = Extractor()

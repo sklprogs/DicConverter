@@ -75,6 +75,7 @@ class Runner:
         # Processing will be faster by 33% if logging is disabled
         sh.STOP_MES = True
         gt.PATH = sh.Home('DicExtractor').get_conf_dir()
+        gt.DEBUG = False
         objs.get_db().clear()
         objs.db.save()
         self.iextract = Extractor (start_page = self.start_page
@@ -87,10 +88,10 @@ class Runner:
         self.icompare = Compare()
         self.icompare.run()
         objs.db.save()
-        sh.STOP_MES = False
         mes = _('Convert ({}/{})').format(3,3)
         objs.progress.set_text(mes)
         objs.progress.close()
+        sh.STOP_MES = False
         self.Success = self.iextract.Success and self.icompare.Success
         self.report()
         self.icompare.debug()

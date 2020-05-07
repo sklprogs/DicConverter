@@ -8,5 +8,5 @@ import plugins.multitran.extractor as mx
 
 
 if __name__ == '__main__':
-    f = '[DicExtractor] controller.__main__'
+    f = '[DicConverter] controller.__main__'
     mx.Runner().run()

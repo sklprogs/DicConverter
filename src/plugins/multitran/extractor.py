@@ -46,7 +46,7 @@ class Commands:
         gt.objs.get_files().reset()
     
     def calc_ranges(self,maxlim,step,minlim=0):
-        f = '[DicExtractor] plugins.multitran.extractor.Commands.calc_ranges'
+        f = '[DicConverter] plugins.multitran.extractor.Commands.calc_ranges'
         ranges = []
         max_ = minlim
         while max_ <= maxlim:
@@ -67,14 +67,14 @@ class Runner:
         self.end_page = end_page
     
     def run(self):
-        f = '[DicExtractor] plugins.multitran.extractor.Runner.run'
+        f = '[DicConverter] plugins.multitran.extractor.Runner.run'
         self.timer = sh.Timer(f)
         self.timer.start()
         objs.get_progress().set_text(_('Prepare'))
         objs.progress.show()
         # Processing will be faster by 33% if logging is disabled
         sh.STOP_MES = True
-        gt.PATH = sh.Home('DicExtractor').get_conf_dir()
+        gt.PATH = sh.Home('DicConverter').get_conf_dir()
         gt.DEBUG = False
         objs.get_db().clear()
         objs.db.save()
@@ -98,7 +98,7 @@ class Runner:
         objs.get_db().close()
     
     def report(self):
-        f = '[DicExtractor] plugins.multitran.extractor.Runner.report'
+        f = '[DicConverter] plugins.multitran.extractor.Runner.report'
         if self.Success:
             messages = []
             mes = _('Processed single records (total/parsed/translated):')
@@ -150,14 +150,14 @@ class Compare:
         self.final = []
     
     def debug(self):
-        f = '[DicExtractor] plugins.multitran.extractor.Compare.debug'
+        f = '[DicConverter] plugins.multitran.extractor.Compare.debug'
         if self.Success:
             objs.get_db().print_final()
         else:
             sh.com.cancel(f)
     
     def dump(self):
-        f = '[DicExtractor] plugins.multitran.extractor.Compare.dump'
+        f = '[DicConverter] plugins.multitran.extractor.Compare.dump'
         if self.Success:
             if self.final:
                 for row in self.final:
@@ -168,7 +168,7 @@ class Compare:
             sh.com.cancel(f)
     
     def compare(self):
-        f = '[DicExtractor] plugins.multitran.extractor.Compare.compare'
+        f = '[DicConverter] plugins.multitran.extractor.Compare.compare'
         if self.Success:
             if self.data1 and self.data2:
                 for i in range(len(self.data1)):
@@ -200,7 +200,7 @@ class Compare:
         self.set_ranges()
     
     def get_max(self):
-        f = '[DicExtractor] plugins.multitran.extractor.Compare.get_max'
+        f = '[DicConverter] plugins.multitran.extractor.Compare.get_max'
         if self.Success:
             max1 = objs.get_db().get_max_artno(objs.db.table1)
             max2 = objs.db.get_max_artno(objs.db.table2)
@@ -214,7 +214,7 @@ class Compare:
             sh.com.cancel(f)
     
     def set_ranges(self):
-        f = '[DicExtractor] plugins.multitran.extractor.Compare.set_ranges'
+        f = '[DicConverter] plugins.multitran.extractor.Compare.set_ranges'
         if self.Success:
             ranges = com.calc_ranges(self.max_,self.delta)
             if ranges:
@@ -255,7 +255,7 @@ class DB:
         self.table3 = 'LANG12'
     
     def get_max_artno(self,table):
-        f = '[DicExtractor] plugins.multitran.extractor.DB.get_max_artno'
+        f = '[DicConverter] plugins.multitran.extractor.DB.get_max_artno'
         if self.Success:
             query = 'select max(ARTNO) from {}'.format(table)
             self.dbc.execute(query)
@@ -266,7 +266,7 @@ class DB:
             sh.com.cancel(f)
     
     def fetch_range(self,table,min_,max_):
-        f = '[DicExtractor] plugins.multitran.extractor.DB.fetch_range'
+        f = '[DicConverter] plugins.multitran.extractor.DB.fetch_range'
         if self.Success:
             subquery = 'select * from {} where ARTNO >= ? \
                         and ARTNO <= ? order by ARTNO'
@@ -277,7 +277,7 @@ class DB:
             sh.com.cancel(f)
     
     def print_final(self,maxrow=45,maxrows=1000):
-        f = '[DicExtractor] plugins.multitran.extractor.DB.print_final'
+        f = '[DicConverter] plugins.multitran.extractor.DB.print_final'
         if self.Success:
             subquery = 'select {} from {} order by ARTNO desc limit ?'
             query = subquery.format('ARTNO',self.table3)
@@ -329,7 +329,7 @@ class DB:
     def print (self,table='LANG1'
               ,maxrow=50,maxrows=1000
               ):
-        f = '[DicExtractor] plugins.multitran.extractor.DB.print'
+        f = '[DicConverter] plugins.multitran.extractor.DB.print'
         if self.Success:
             subquery = 'select {} from {} order by ARTNO desc limit ?'
             query = subquery.format('ARTNO',table)
@@ -369,7 +369,7 @@ class DB:
             sh.com.cancel(f)
     
     def add_final(self,data):
-        f = '[DicExtractor] plugins.multitran.extractor.DB.add_final'
+        f = '[DicConverter] plugins.multitran.extractor.DB.add_final'
         if self.Success:
             try:
                 query = 'insert into {} values (?,?,?,?,?,?)'
@@ -382,7 +382,7 @@ class DB:
             sh.com.cancel(f)
     
     def add(self,data,lang=1):
-        f = '[DicExtractor] plugins.multitran.extractor.DB.add'
+        f = '[DicConverter] plugins.multitran.extractor.DB.add'
         if self.Success:
             if lang == 1:
                 table = self.table1
@@ -399,7 +399,7 @@ class DB:
             sh.com.cancel(f)
     
     def save(self):
-        f = '[DicExtractor] plugins.multitran.extractor.DB.save'
+        f = '[DicConverter] plugins.multitran.extractor.DB.save'
         if self.Success:
             if self.path:
                 mes = _('Save "{}"').format(self.path)
@@ -415,7 +415,7 @@ class DB:
             sh.com.cancel(f)
     
     def clear(self):
-        f = '[DicExtractor] plugins.multitran.extractor.DB.clear'
+        f = '[DicConverter] plugins.multitran.extractor.DB.clear'
         if self.Success:
             tables = [self.table1,self.table2,self.table3]
             mes = _('Delete all records from {}')
@@ -433,7 +433,7 @@ class DB:
             sh.com.cancel(f)
     
     def create_final(self):
-        f = '[DicExtractor] plugins.multitran.extractor.DB.create_final'
+        f = '[DicConverter] plugins.multitran.extractor.DB.create_final'
         if self.Success:
             query = 'create table if not exists {} (\
                      ARTNO    integer \
@@ -452,7 +452,7 @@ class DB:
             sh.com.cancel(f)
     
     def create_table(self,lang):
-        f = '[DicExtractor] plugins.multitran.extractor.DB.create_table'
+        f = '[DicConverter] plugins.multitran.extractor.DB.create_table'
         if self.Success:
             query = 'create table if not exists {} (\
                      ARTNO    integer \
@@ -470,7 +470,7 @@ class DB:
             sh.com.cancel(f)
     
     def close(self):
-        f = '[DicExtractor] plugins.multitran.extractor.DB.close'
+        f = '[DicConverter] plugins.multitran.extractor.DB.close'
         if self.Success:
             mes = _('Close "{}"').format(self.path)
             sh.objs.get_mes(f,mes,True).show_info()
@@ -488,7 +488,7 @@ class DB:
         sh.objs.get_mes(func,mes).show_warning()
     
     def connect(self):
-        f = '[DicExtractor] plugins.multitran.extractor.DB.connect'
+        f = '[DicConverter] plugins.multitran.extractor.DB.connect'
         if self.Success:
             mes = _('Open "{}"').format(self.path)
             sh.objs.get_mes(f,mes,True).show_info()
@@ -505,13 +505,13 @@ class DB:
 class Extractor:
     
     def __init__(self,start_page=0,end_page=100000000):
-        f = '[DicExtractor] plugins.multitran.extractor.Extractor.__init__'
+        f = '[DicConverter] plugins.multitran.extractor.Extractor.__init__'
         self.set_values()
         self.start_page = start_page
         self.end_page = end_page
     
     def set_end_page(self):
-        f = '[DicExtractor] plugins.multitran.extractor.Extractor.set_end_page'
+        f = '[DicConverter] plugins.multitran.extractor.Extractor.set_end_page'
         if self.Success:
             #NOTE: Run 'init_parsers' first
             self.end_page = min (self.end_page
@@ -541,7 +541,7 @@ class Extractor:
         self.end_page = 100000000
     
     def set_parser(self):
-        f = '[DicExtractor] plugins.multitran.extractor.Extractor.set_parser'
+        f = '[DicConverter] plugins.multitran.extractor.Extractor.set_parser'
         if self.Success:
             if self.lang == 1:
                 self.iparse = self.iparse1
@@ -551,7 +551,7 @@ class Extractor:
             sh.com.cancel(f)
     
     def init_parsers(self):
-        f = '[DicExtractor] plugins.multitran.extractor.Extractor.init_parsers'
+        f = '[DicConverter] plugins.multitran.extractor.Extractor.init_parsers'
         if self.Success:
             ''' #NOTE: When searching stems, we need to swap languages
                 and call 'get_typein1' to get a stem file for the 2nd
@@ -569,7 +569,7 @@ class Extractor:
             sh.com.cancel(f)
     
     def debug(self):
-        f = '[DicExtractor] plugins.multitran.extractor.Extractor.debug'
+        f = '[DicConverter] plugins.multitran.extractor.Extractor.debug'
         if self.Success:
             headers = ('PHRASE','SUBJECT','ARTNO')
             iterable = [self.phrases,self.iparse.xplain2,self.artnos]
@@ -583,7 +583,7 @@ class Extractor:
             sh.com.cancel(f)
     
     def set_phrases(self):
-        f = '[DicExtractor] plugins.multitran.extractor.Extractor.set_phrases'
+        f = '[DicConverter] plugins.multitran.extractor.Extractor.set_phrases'
         if self.Success:
             if self.iparse.chunks1:
                 for part1 in self.iparse.chunks1:
@@ -606,7 +606,7 @@ class Extractor:
             sh.com.cancel(f)
     
     def translate(self,pattern):
-        f = '[DicExtractor] plugins.multitran.extractor.Extractor.translate'
+        f = '[DicConverter] plugins.multitran.extractor.Extractor.translate'
         if self.Success:
             iget = gt.Get(pattern)
             result = iget.run()
@@ -619,7 +619,7 @@ class Extractor:
             sh.com.cancel(f)
     
     def dump(self):
-        f = '[DicExtractor] plugins.multitran.extractor.Extractor.dump'
+        f = '[DicConverter] plugins.multitran.extractor.Extractor.dump'
         if self.Success:
             for i in range(len(self.artnos)):
                 for artno in self.artnos[i]:
@@ -663,7 +663,7 @@ class Extractor:
             sh.com.cancel(f)
     
     def run_lang(self,start_page,end_page):
-        f = '[DicExtractor] plugins.multitran.extractor.Extractor.run_lang'
+        f = '[DicConverter] plugins.multitran.extractor.Extractor.run_lang'
         if self.Success:
             self.iparse.parsel_loop(start_page,end_page)
             self.set_phrases()
@@ -700,7 +700,7 @@ class Extractor:
                            )
     
     def run_loop(self):
-        f = '[DicExtractor] plugins.multitran.extractor.Extractor.run_loop'
+        f = '[DicConverter] plugins.multitran.extractor.Extractor.run_loop'
         if self.Success:
             ranges = com.calc_ranges (minlim = self.start_page
                                      ,maxlim = self.end_page
@@ -743,7 +743,7 @@ class Objects:
     
     def get_db(self):
         if self.db is None:
-            path = sh.Home('DicExtractor').add_config('extract.db')
+            path = sh.Home('DicConverter').add_config('extract.db')
             self.db = DB(path)
         return self.db
 
@@ -753,8 +753,8 @@ com = Commands()
 
 
 if __name__ == '__main__':
-    f = '[DicExtractor] plugins.multitran.extractor.__main__'
-    gt.PATH = sh.Home('DicExtractor').get_conf_dir()
+    f = '[DicConverter] plugins.multitran.extractor.__main__'
+    gt.PATH = sh.Home('DicConverter').get_conf_dir()
     gt.DEBUG = False
     gt.objs.get_files().reset()
     #Extractor().run()

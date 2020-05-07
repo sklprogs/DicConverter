@@ -21,7 +21,7 @@ DUMP2  = sh.Home().add('tmp','dump2')
 class Tests:
     
     def gen_patterns(self):
-        f = '[DicExtractor] plugins.multitran.utils.Tests.gen_patterns'
+        f = '[DicConverter] plugins.multitran.utils.Tests.gen_patterns'
         table = 'АБВГДЕЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯабвгдежзийклмнопрстуфхцчшщъыьэюя'
         i = 3
         len_ = 5
@@ -32,7 +32,7 @@ class Tests:
         sh.com.run_fast_debug(str(result))
     
     def get_patch(self):
-        f = '[DicExtractor] plugins.multitran.utils.Tests.get_patch'
+        f = '[DicConverter] plugins.multitran.utils.Tests.get_patch'
         file = '/home/pete/.wine/drive_c/setup/Multitran/network/eng_rus/dict.ert'
         # A comment added for "Zerah"
         pos = 132779143
@@ -79,7 +79,7 @@ class Tests:
         sh.Launch(filew).launch_default()
     
     def corrupt(self):
-        f = '[DicExtractor] plugins.multitran.utils.Tests.corrupt'
+        f = '[DicConverter] plugins.multitran.utils.Tests.corrupt'
         file = '/home/pete/.wine/drive_c/setup/Multitran/network/eng_rus/dict.ert'
         #pos = 132779147
         #subst = b'\x00'
@@ -103,7 +103,7 @@ class Tests:
         Navigate(sh.Home().add('tmp','test.bin')).show_menu()
     
     def analyze_dumps(self):
-        f = '[DicExtractor] plugins.multitran.utils.Tests.analyze_dumps'
+        f = '[DicConverter] plugins.multitran.utils.Tests.analyze_dumps'
         iparse1 = Parser(DUMP1)
         iparse2 = Parser(DUMP2)
         pos1 = 0
@@ -171,7 +171,7 @@ class Tests:
         iparse2.close()
     
     def compare_bytes(self,maxlen=10):
-        f = '[DicExtractor] plugins.multitran.utils.Tests.compare_bytes'
+        f = '[DicConverter] plugins.multitran.utils.Tests.compare_bytes'
         dump1 = gt.Binary(DUMP1)
         dump2 = gt.Binary(DUMP2)
         end1  = dump1.get_file_size()
@@ -204,7 +204,7 @@ class Tests:
         CompareBinaries(DUMP1,DUMP2).show_menu()
     
     def get_shared_dumps(self):
-        f = '[DicExtractor] plugins.multitran.utils.Tests.get_shared_dumps'
+        f = '[DicConverter] plugins.multitran.utils.Tests.get_shared_dumps'
         pos1 = 0
         pos2 = 16380
         ''' We do not use 'self._parse' here since 'Parser.parse'
@@ -233,7 +233,7 @@ class Tests:
             sh.com.rep_empty(f)
     
     def parse_dumps(self):
-        f = '[DicExtractor] plugins.multitran.utils.Tests.parse_dumps'
+        f = '[DicConverter] plugins.multitran.utils.Tests.parse_dumps'
         pos1 = 0
         pos2 = 16380
         ''' We do not use 'self._parse' here since 'Parser.parse'
@@ -297,7 +297,7 @@ class Navigate(gt.Binary):
         self.coms.sort()
     
     def find_prev(self):
-        f = '[DicExtractor] plugins.multitran.utils.Navigate.find_prev'
+        f = '[DicConverter] plugins.multitran.utils.Navigate.find_prev'
         if self.Success:
             if self.coded:
                 if self.spos is None or self.spos == 0:
@@ -317,7 +317,7 @@ class Navigate(gt.Binary):
             sh.com.cancel(f)
     
     def find_next(self):
-        f = '[DicExtractor] plugins.multitran.utils.Navigate.find_next'
+        f = '[DicConverter] plugins.multitran.utils.Navigate.find_next'
         if self.Success:
             if self.coded:
                 if self.spos is None:
@@ -342,7 +342,7 @@ class Navigate(gt.Binary):
             sh.com.cancel(f)
     
     def _print_found(self):
-        f = '[DicExtractor] plugins.multitran.utils.Navigate._print_found'
+        f = '[DicConverter] plugins.multitran.utils.Navigate._print_found'
         if self.spos is None:
             mes = _('No matches!')
             sh.objs.get_mes(f,mes,True).show_info()
@@ -378,7 +378,7 @@ class Navigate(gt.Binary):
             print(buffer3)
     
     def _find(self):
-        f = '[DicExtractor] plugins.multitran.utils.Navigate._find'
+        f = '[DicConverter] plugins.multitran.utils.Navigate._find'
         spos = self.find(self.coded)
         if spos is None:
             mes = _('No matches!')
@@ -388,7 +388,7 @@ class Navigate(gt.Binary):
             self._print_found()
     
     def find_text(self):
-        f = '[DicExtractor] plugins.multitran.utils.Navigate.find_text'
+        f = '[DicConverter] plugins.multitran.utils.Navigate.find_text'
         if self.Success:
             pattern = com.input_str(_('Enter text to search for: '))
             self.coded = bytes(pattern,gt.CODING)
@@ -397,7 +397,7 @@ class Navigate(gt.Binary):
             sh.com.cancel(f)
     
     def find_bytes(self):
-        f = '[DicExtractor] plugins.multitran.utils.Navigate.find_bytes'
+        f = '[DicConverter] plugins.multitran.utils.Navigate.find_bytes'
         if self.Success:
             pattern = com.input_str(_('Enter bytes to search for: '))
             try:
@@ -413,7 +413,7 @@ class Navigate(gt.Binary):
             sh.com.cancel(f)
     
     def find_nav(self):
-        f = '[DicExtractor] plugins.multitran.utils.Navigate.find_nav'
+        f = '[DicConverter] plugins.multitran.utils.Navigate.find_nav'
         if self.Success:
             choice = input(_('Search for text instead of bytes? Y/n '))
             choice = choice.strip()
@@ -427,7 +427,7 @@ class Navigate(gt.Binary):
             sh.com.cancel(f)
         
     def dump(self):
-        f = '[DicExtractor] plugins.multitran.utils.Navigate.dump'
+        f = '[DicConverter] plugins.multitran.utils.Navigate.dump'
         if self.Success:
             mes = _('This will extract data from the binary file from set positions')
             print(mes)
@@ -467,7 +467,7 @@ class Navigate(gt.Binary):
             sh.com.cancel(f)
     
     def go_end(self):
-        f = '[DicExtractor] plugins.multitran.utils.Navigate.go_end'
+        f = '[DicConverter] plugins.multitran.utils.Navigate.go_end'
         if self.Success:
             self.pos = self.get_file_size() - self.buffer
             if self.pos < 0:
@@ -477,7 +477,7 @@ class Navigate(gt.Binary):
             sh.com.cancel(f)
     
     def go_start(self):
-        f = '[DicExtractor] plugins.multitran.utils.Navigate.go_start'
+        f = '[DicConverter] plugins.multitran.utils.Navigate.go_start'
         if self.Success:
             self.pos = 0
             self.load()
@@ -485,7 +485,7 @@ class Navigate(gt.Binary):
             sh.com.cancel(f)
     
     def clear(self):
-        f = '[DicExtractor] plugins.multitran.utils.Navigate.clear'
+        f = '[DicConverter] plugins.multitran.utils.Navigate.clear'
         if self.Success:
             try:
                 if sh.objs.get_os().is_win():
@@ -500,7 +500,7 @@ class Navigate(gt.Binary):
             sh.com.cancel(f)
     
     def set_pos(self):
-        f = '[DicExtractor] plugins.multitran.utils.Navigate.set_pos'
+        f = '[DicConverter] plugins.multitran.utils.Navigate.set_pos'
         if self.Success:
             mes = _('Enter a position to go or press Return to keep the current one ({}): ')
             mes = mes.format(sh.com.set_figure_commas(self.pos))
@@ -519,7 +519,7 @@ class Navigate(gt.Binary):
             sh.com.cancel(f)
     
     def go_page_down(self):
-        f = '[DicExtractor] plugins.multitran.utils.Navigate.go_page_down'
+        f = '[DicConverter] plugins.multitran.utils.Navigate.go_page_down'
         if self.Success:
             self.pos += self.buffer
             if self.pos >= self.get_file_size():
@@ -531,7 +531,7 @@ class Navigate(gt.Binary):
             sh.com.cancel(f)
     
     def go_page_up(self):
-        f = '[DicExtractor] plugins.multitran.utils.Navigate.go_page_up'
+        f = '[DicConverter] plugins.multitran.utils.Navigate.go_page_up'
         if self.Success:
             self.pos -= self.buffer
             if self.pos < 0:
@@ -541,7 +541,7 @@ class Navigate(gt.Binary):
             sh.com.cancel(f)
     
     def load(self):
-        f = '[DicExtractor] plugins.multitran.utils.Navigate.load'
+        f = '[DicConverter] plugins.multitran.utils.Navigate.load'
         if self.Success:
             start = self.pos
             end = start + self.buffer
@@ -556,7 +556,7 @@ class Navigate(gt.Binary):
             sh.com.cancel(f)
     
     def set_buffer(self):
-        f = '[DicExtractor] plugins.multitran.utils.Navigate.set_buffer'
+        f = '[DicConverter] plugins.multitran.utils.Navigate.set_buffer'
         if self.Success:
             mes = _('Enter a buffer size or press Return to keep the current one ({}): ')
             mes = mes.format(sh.com.set_figure_commas(self.buffer))
@@ -575,7 +575,7 @@ class Navigate(gt.Binary):
             sh.com.cancel(f)
     
     def show_help(self):
-        f = '[DicExtractor] plugins.multitran.utils.Navigate.show_help'
+        f = '[DicConverter] plugins.multitran.utils.Navigate.show_help'
         if self.Success:
             mes = _('Available commands: {}')
             mes = mes.format('; '.join(self.coms))
@@ -584,7 +584,7 @@ class Navigate(gt.Binary):
             sh.com.cancel(f)
     
     def show_menu(self,command=''):
-        f = '[DicExtractor] plugins.multitran.utils.Navigate.show_menu'
+        f = '[DicConverter] plugins.multitran.utils.Navigate.show_menu'
         if self.Success:
             if not command:
                 try:
@@ -653,7 +653,7 @@ class Navigate(gt.Binary):
             sh.com.cancel(f)
     
     def quit(self):
-        f = '[DicExtractor] plugins.multitran.utils.Navigate.quit'
+        f = '[DicConverter] plugins.multitran.utils.Navigate.quit'
         if self.Success:
             self.close()
             mes = _('Goodbye!')
@@ -662,7 +662,7 @@ class Navigate(gt.Binary):
             sh.com.cancel(f)
     
     def print(self):
-        f = '[DicExtractor] plugins.multitran.utils.Navigate.print'
+        f = '[DicConverter] plugins.multitran.utils.Navigate.print'
         if self.Success:
             mes = gt.com.get_string(self.chunk,0)
             print(mes)
@@ -670,7 +670,7 @@ class Navigate(gt.Binary):
             sh.com.cancel(f)
     
     def report(self):
-        f = '[DicExtractor] plugins.multitran.utils.Navigate.report'
+        f = '[DicConverter] plugins.multitran.utils.Navigate.report'
         if self.Success:
             self.clear()
             sub = sh.com.set_figure_commas(self.pos)
@@ -725,7 +725,7 @@ class Commands:
         return patterns
     
     def get_patch(self,file,pattern,pos,add_pos=20,sympos=0):
-        f = '[DicExtractor] plugins.multitran.utils.Commands.get_patch'
+        f = '[DicConverter] plugins.multitran.utils.Commands.get_patch'
         if file and pattern:
             ibin = gt.Binary(file)
             if ibin.Success:
@@ -762,7 +762,7 @@ class Commands:
             sh.com.rep_empty(f)
     
     def corrupt(self,filew,pos,subst=b'\x00'):
-        f = '[DicExtractor] plugins.multitran.utils.Commands.corrupt'
+        f = '[DicConverter] plugins.multitran.utils.Commands.corrupt'
         if filew and subst:
             ibin = gt.Binary(filew)
             chunk = ibin.read(pos,pos+len(subst))
@@ -790,7 +790,7 @@ class Commands:
             sh.com.rep_empty(f)
     
     def input_str(self,mes=''):
-        f = '[DicExtractor] plugins.multitran.utils.Commands.input_str'
+        f = '[DicConverter] plugins.multitran.utils.Commands.input_str'
         if not mes:
             mes = _('Input a string: ')
         try:
@@ -799,7 +799,7 @@ class Commands:
             return ''
     
     def input_int(self,mes=''):
-        f = '[DicExtractor] plugins.multitran.utils.Commands.input_int'
+        f = '[DicConverter] plugins.multitran.utils.Commands.input_int'
         if not mes:
             mes = _('Input an integer: ')
         try:
@@ -817,7 +817,7 @@ class CompareBinaries:
         self.reset(file1,file2)
     
     def set_files(self):
-        f = '[DicExtractor] plugins.multitran.utils.CompareBinaries.set_files'
+        f = '[DicConverter] plugins.multitran.utils.CompareBinaries.set_files'
         if self.Success:
             mes1  = _('File {}: ').format(1)
             mes2  = _('File {}: ').format(2)
@@ -843,7 +843,7 @@ class CompareBinaries:
             self.files()
         
     def dump(self):
-        f = '[DicExtractor] plugins.multitran.utils.CompareBinaries.dump'
+        f = '[DicConverter] plugins.multitran.utils.CompareBinaries.dump'
         if self.Success:
             mes = _('This will extract binary data from both files from set positions')
             print(mes)
@@ -879,7 +879,7 @@ class CompareBinaries:
             sh.com.cancel(f)
     
     def go_end(self):
-        f = '[DicExtractor] plugins.multitran.utils.CompareBinaries.go_end'
+        f = '[DicConverter] plugins.multitran.utils.CompareBinaries.go_end'
         if self.Success:
             min_ = min (self.bin1.get_file_size()
                        ,self.bin2.get_file_size()
@@ -892,7 +892,7 @@ class CompareBinaries:
             sh.com.cancel(f)
     
     def go_start(self):
-        f = '[DicExtractor] plugins.multitran.utils.CompareBinaries.go_start'
+        f = '[DicConverter] plugins.multitran.utils.CompareBinaries.go_start'
         if self.Success:
             self.pos = 0
             self.load()
@@ -900,7 +900,7 @@ class CompareBinaries:
             sh.com.cancel(f)
     
     def clear(self):
-        f = '[DicExtractor] plugins.multitran.utils.CompareBinaries.clear'
+        f = '[DicConverter] plugins.multitran.utils.CompareBinaries.clear'
         if self.Success:
             try:
                 if sh.objs.get_os().is_win():
@@ -915,7 +915,7 @@ class CompareBinaries:
             sh.com.cancel(f)
     
     def set_pos(self):
-        f = '[DicExtractor] plugins.multitran.utils.CompareBinaries.set_pos'
+        f = '[DicConverter] plugins.multitran.utils.CompareBinaries.set_pos'
         if self.Success:
             mes = _('Enter a position to go or press Return to keep the current one ({}): ')
             mes = mes.format(sh.com.set_figure_commas(self.pos))
@@ -951,7 +951,7 @@ class CompareBinaries:
         self.coms.sort()
     
     def go_prev(self):
-        f = '[DicExtractor] plugins.multitran.utils.CompareBinaries.go_prev'
+        f = '[DicConverter] plugins.multitran.utils.CompareBinaries.go_prev'
         if self.Success:
             while True:
                 start = self.pos - self.buffer
@@ -973,7 +973,7 @@ class CompareBinaries:
             sh.com.cancel(f)
     
     def go_next(self):
-        f = '[DicExtractor] plugins.multitran.utils.CompareBinaries.go_next'
+        f = '[DicConverter] plugins.multitran.utils.CompareBinaries.go_next'
         if self.Success:
             while True:
                 start = self.pos + self.buffer
@@ -991,7 +991,7 @@ class CompareBinaries:
             sh.com.cancel(f)
     
     def go_page_down(self):
-        f = '[DicExtractor] plugins.multitran.utils.CompareBinaries.go_page_down'
+        f = '[DicConverter] plugins.multitran.utils.CompareBinaries.go_page_down'
         if self.Success:
             self.pos += self.buffer
             min_ = min (self.bin1.get_file_size()
@@ -1006,7 +1006,7 @@ class CompareBinaries:
             sh.com.cancel(f)
     
     def go_page_up(self):
-        f = '[DicExtractor] plugins.multitran.utils.CompareBinaries.go_page_up'
+        f = '[DicConverter] plugins.multitran.utils.CompareBinaries.go_page_up'
         if self.Success:
             self.pos -= self.buffer
             if self.pos < 0:
@@ -1016,7 +1016,7 @@ class CompareBinaries:
             sh.com.cancel(f)
     
     def load(self):
-        f = '[DicExtractor] plugins.multitran.utils.CompareBinaries.load'
+        f = '[DicConverter] plugins.multitran.utils.CompareBinaries.load'
         if self.Success:
             start = self.pos
             end   = start + self.buffer
@@ -1035,7 +1035,7 @@ class CompareBinaries:
             sh.com.cancel(f)
     
     def set_buffer(self):
-        f = '[DicExtractor] plugins.multitran.utils.CompareBinaries.set_buffer'
+        f = '[DicConverter] plugins.multitran.utils.CompareBinaries.set_buffer'
         if self.Success:
             mes = _('Enter a buffer size or press Return to keep the current one ({}): ')
             mes = mes.format(sh.com.set_figure_commas(self.buffer))
@@ -1056,7 +1056,7 @@ class CompareBinaries:
             sh.com.cancel(f)
     
     def show_help(self):
-        f = '[DicExtractor] plugins.multitran.utils.CompareBinaries.show_help'
+        f = '[DicConverter] plugins.multitran.utils.CompareBinaries.show_help'
         if self.Success:
             mes = _('Available commands: {}')
             mes = mes.format('; '.join(self.coms))
@@ -1065,7 +1065,7 @@ class CompareBinaries:
             sh.com.cancel(f)
     
     def show_menu(self,command=''):
-        f = '[DicExtractor] plugins.multitran.utils.CompareBinaries.show_menu'
+        f = '[DicConverter] plugins.multitran.utils.CompareBinaries.show_menu'
         if self.Success:
             if not command:
                 try:
@@ -1128,7 +1128,7 @@ class CompareBinaries:
             sh.com.cancel(f)
     
     def quit(self):
-        f = '[DicExtractor] plugins.multitran.utils.CompareBinaries.quit'
+        f = '[DicConverter] plugins.multitran.utils.CompareBinaries.quit'
         if self.Success:
             self.close()
             mes = _('Goodbye!')
@@ -1137,7 +1137,7 @@ class CompareBinaries:
             sh.com.cancel(f)
     
     def is_changed(self,i):
-        f = '[DicExtractor] plugins.multitran.utils.CompareBinaries.is_changed'
+        f = '[DicConverter] plugins.multitran.utils.CompareBinaries.is_changed'
         if self.Success:
             if i in self.poses:
                 return True
@@ -1145,7 +1145,7 @@ class CompareBinaries:
             sh.com.cancel(f)
     
     def print(self):
-        f = '[DicExtractor] plugins.multitran.utils.CompareBinaries.print'
+        f = '[DicConverter] plugins.multitran.utils.CompareBinaries.print'
         if self.Success:
             mes = _('Chunk 1:')
             sh.objs.get_mes(f,mes,True).show_debug()
@@ -1169,7 +1169,7 @@ class CompareBinaries:
             sh.com.cancel(f)
     
     def report(self):
-        f = '[DicExtractor] plugins.multitran.utils.CompareBinaries.report'
+        f = '[DicConverter] plugins.multitran.utils.CompareBinaries.report'
         if self.Success:
             self.clear()
             sub = sh.com.set_figure_commas(self.pos)
@@ -1179,7 +1179,7 @@ class CompareBinaries:
             sh.com.cancel(f)
     
     def compare(self,start=0,end=400):
-        f = '[DicExtractor] plugins.multitran.utils.CompareBinaries.compare'
+        f = '[DicConverter] plugins.multitran.utils.CompareBinaries.compare'
         if self.Success:
             self.poses   = []
             self.chunks1 = self.bin1.read(start,end)
@@ -1199,7 +1199,7 @@ class CompareBinaries:
             sh.com.cancel(f)
     
     def close(self):
-        f = '[DicExtractor] plugins.multitran.utils.CompareBinaries.close'
+        f = '[DicConverter] plugins.multitran.utils.CompareBinaries.close'
         if self.Success:
             self.bin1.close()
             self.bin2.close()

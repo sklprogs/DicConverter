@@ -40,7 +40,7 @@ class Binary:
         self.Success = True
     
     def get_pages(self):
-        f = '[DicExtractor] plugins.multitran.get.Binary.get_pages'
+        f = '[DicConverter] plugins.multitran.get.Binary.get_pages'
         self.get_block_size()
         if self.Success:
             if not self.pages:
@@ -97,7 +97,7 @@ class Binary:
         return self.pages
     
     def get_zero(self,start,end):
-        f = '[DicExtractor] plugins.multitran.get.Binary.get_zero'
+        f = '[DicConverter] plugins.multitran.get.Binary.get_zero'
         result = []
         if self.Success:
             pos = self.find(b'\x00',start,end)
@@ -110,7 +110,7 @@ class Binary:
     
     def get_parts2(self,pattern,start=0,end=0):
         # Run 'get_part2' in loop (only useful for finding stems)
-        f = '[DicExtractor] plugins.multitran.get.Binary.get_parts2'
+        f = '[DicConverter] plugins.multitran.get.Binary.get_parts2'
         chunks = []
         if DEBUG:
             mchunks = []
@@ -169,7 +169,7 @@ class Binary:
     
     def get_parts1(self,pattern,start=0,end=0):
         # Get suggestions
-        f = '[DicExtractor] plugins.multitran.get.Binary.get_parts1'
+        f = '[DicConverter] plugins.multitran.get.Binary.get_parts1'
         chunks = []
         if DEBUG:
             mchunks = []
@@ -225,7 +225,7 @@ class Binary:
         return chunks
     
     def find_all(self,pattern,start=0,end=0):
-        f = '[DicExtractor] plugins.multitran.get.Binary.find_all'
+        f = '[DicConverter] plugins.multitran.get.Binary.find_all'
         matches = []
         if self.Success:
             while True:
@@ -243,7 +243,7 @@ class Binary:
         return matches
     
     def get_page_limit(self):
-        f = '[DicExtractor] plugins.multitran.get.Binary.get_page_limit'
+        f = '[DicConverter] plugins.multitran.get.Binary.get_page_limit'
         self.get_file_size()
         self.get_block_size()
         if self.Success:
@@ -259,7 +259,7 @@ class Binary:
         ''' This should be equal to 'sh.File(self.vfile).get_size()'.
             #NOTE: size = max_pos + 1
         '''
-        f = '[DicExtractor] plugins.multitran.get.Binary.get_file_size'
+        f = '[DicConverter] plugins.multitran.get.Binary.get_file_size'
         if self.Success:
             if not self.fsize:
                 self.fsize = sh.File(self.file).get_size()
@@ -278,7 +278,7 @@ class Binary:
     
     def get_page_limits(self,page_no):
         # Return positions of a page based on MT indicators
-        f = '[DicExtractor] plugins.multitran.get.Binary.get_page_limits'
+        f = '[DicConverter] plugins.multitran.get.Binary.get_page_limits'
         if self.Success:
             if page_no is None or not self.get_block_size():
                 sh.com.rep_empty(f)
@@ -331,7 +331,7 @@ class Binary:
             sh.com.cancel(f)
     
     def get_block_size(self):
-        f = '[DicExtractor] plugins.multitran.get.Binary.get_block_size'
+        f = '[DicConverter] plugins.multitran.get.Binary.get_block_size'
         if self.Success:
             if not self.bsize:
                 read = self.read(28,30)
@@ -354,7 +354,7 @@ class Binary:
         return self.bsize
     
     def check_lengths(self,pattern,lengths):
-        f = '[DicExtractor] plugins.multitran.get.Binary.check_lengths'
+        f = '[DicConverter] plugins.multitran.get.Binary.check_lengths'
         if self.Success:
             if lengths:
                 if lengths[0] == len(pattern) and lengths[1] > 0:
@@ -368,7 +368,7 @@ class Binary:
             sh.com.cancel(f)
     
     def get_part2(self,pattern,start=0,end=0):
-        f = '[DicExtractor] plugins.multitran.get.Binary.get_part2'
+        f = '[DicConverter] plugins.multitran.get.Binary.get_part2'
         if self.Success:
             pos11 = self.find(pattern,start,end)
             if pos11 is None:
@@ -387,7 +387,7 @@ class Binary:
             sh.com.cancel(f)
     
     def get_lengths(self,index_):
-        f = '[DicExtractor] plugins.multitran.get.Binary.get_lengths'
+        f = '[DicConverter] plugins.multitran.get.Binary.get_lengths'
         if self.Success:
             ''' There are 'M' pages at the beginning, so an index of
                 the 1st part will always be positive.
@@ -425,7 +425,7 @@ class Binary:
             sh.com.cancel(f)
     
     def read(self,start,end):
-        f = '[DicExtractor] plugins.multitran.get.Binary.read'
+        f = '[DicConverter] plugins.multitran.get.Binary.read'
         if self.Success:
             if start is None or end is None:
                 sh.com.rep_empty(f)
@@ -449,7 +449,7 @@ class Binary:
             sh.com.cancel(f)
     
     def find(self,pattern,start=0,end=0):
-        f = '[DicExtractor] plugins.multitran.get.Binary.find'
+        f = '[DicConverter] plugins.multitran.get.Binary.find'
         if self.Success:
             if pattern:
                 if not end:
@@ -479,7 +479,7 @@ class Binary:
             sh.com.cancel(f)
     
     def open(self):
-        f = '[DicExtractor] plugins.multitran.get.Binary.open'
+        f = '[DicConverter] plugins.multitran.get.Binary.open'
         if self.Success:
             mes = _('Open "{}"').format(self.file)
             sh.objs.get_mes(f,mes,True).show_info()
@@ -498,7 +498,7 @@ class Binary:
             sh.com.cancel(f)
     
     def close(self):
-        f = '[DicExtractor] plugins.multitran.get.Binary.close'
+        f = '[DicConverter] plugins.multitran.get.Binary.close'
         if self.Success:
             mes = _('Close "{}"').format(self.file)
             sh.objs.get_mes(f,mes,True).show_info()
@@ -527,7 +527,7 @@ class Parser(Binary):
         self.origcnt = 0
     
     def parse2div2(self):
-        f = '[DicExtractor] plugins.multitran.get.Parser.parse2div2'
+        f = '[DicConverter] plugins.multitran.get.Parser.parse2div2'
         if self.Success:
             for chunk in self.chunks2:
                 if len(chunk) % 2 == 0:
@@ -542,7 +542,7 @@ class Parser(Binary):
             sh.com.cancel(f)
     
     def delete_invalid(self):
-        f = '[DicExtractor] plugins.multitran.get.Parser.delete_invalid'
+        f = '[DicConverter] plugins.multitran.get.Parser.delete_invalid'
         if self.Success:
             i = 0
             count = 0
@@ -561,7 +561,7 @@ class Parser(Binary):
             sh.com.cancel(f)
     
     def parsel_loop(self,start_page=0,end_page=100000000):
-        f = '[DicExtractor] plugins.multitran.get.Parser.parsel_loop'
+        f = '[DicConverter] plugins.multitran.get.Parser.parsel_loop'
         if self.Success:
             if self.get_pages():
                 max_ = min(len(self.lpages),end_page)
@@ -584,7 +584,7 @@ class Parser(Binary):
             sh.com.cancel(f)
     
     def parse2div3(self):
-        f = '[DicExtractor] plugins.multitran.get.Parser.parse2div3'
+        f = '[DicConverter] plugins.multitran.get.Parser.parse2div3'
         if self.Success:
             for chunk in self.chunks2:
                 # 2 bytes + multiple sequences of 3 bytes
@@ -600,7 +600,7 @@ class Parser(Binary):
             sh.com.cancel(f)
     
     def parse1div3(self):
-        f = '[DicExtractor] plugins.multitran.get.Parser.parse1div3'
+        f = '[DicConverter] plugins.multitran.get.Parser.parse1div3'
         if self.Success:
             for chunk in self.chunks1:
                 if len(chunk) % 3 == 0:
@@ -616,7 +616,7 @@ class Parser(Binary):
             sh.com.cancel(f)
     
     def parse_glue(self):
-        f = '[DicExtractor] plugins.multitran.get.Parser.parse_glue'
+        f = '[DicConverter] plugins.multitran.get.Parser.parse_glue'
         if self.Success:
             self.parse1div3()
             self.parse2div3()
@@ -624,7 +624,7 @@ class Parser(Binary):
             sh.com.cancel(f)
     
     def parse_article(self):
-        f = '[DicExtractor] plugins.multitran.get.Parser.parse_article'
+        f = '[DicConverter] plugins.multitran.get.Parser.parse_article'
         if self.Success:
             for chunk in self.chunks1:
                 chunk = com.get_string(chunk,0)
@@ -636,7 +636,7 @@ class Parser(Binary):
             sh.com.cancel(f)
     
     def debug(self,maxrow=70,maxrows=1000):
-        f = '[DicExtractor] plugins.multitran.get.Parser.debug'
+        f = '[DicConverter] plugins.multitran.get.Parser.debug'
         if self.Success:
             if self.xplain1 and self.xplain2:
                 if len(self.xplain1) == len(self.xplain2):
@@ -671,7 +671,7 @@ class Parser(Binary):
             sh.com.cancel(f)
         
     def parse2div7(self):
-        f = '[DicExtractor] plugins.multitran.get.Parser.parse2div7'
+        f = '[DicConverter] plugins.multitran.get.Parser.parse2div7'
         ''' According to "libmtquery-0.0.1alpha3/doc/README.rus":
             the 1st byte - a type designating the use of capital letters
             (not used), further - a vector of 7-byte codes, each code
@@ -702,7 +702,7 @@ class Parser(Binary):
             sh.com.cancel(f)
     
     def parsel1(self):
-        f = '[DicExtractor] plugins.multitran.get.Parser.parsel1'
+        f = '[DicConverter] plugins.multitran.get.Parser.parsel1'
         if self.Success:
             for chunk in self.chunks1:
                 chunk = chunk.decode(CODING,'replace')
@@ -711,7 +711,7 @@ class Parser(Binary):
             sh.com.cancel(f)
     
     def parse_typein(self):
-        f = '[DicExtractor] plugins.multitran.get.Parser.parse_typein'
+        f = '[DicConverter] plugins.multitran.get.Parser.parse_typein'
         if self.Success:
             self.parsel1()
             self.parse2div2()
@@ -719,7 +719,7 @@ class Parser(Binary):
             sh.com.cancel(f)
     
     def parse_stem(self):
-        f = '[DicExtractor] plugins.multitran.get.Parser.parse_stem'
+        f = '[DicConverter] plugins.multitran.get.Parser.parse_stem'
         if self.Success:
             self.parsel1()
             self.parse2div7()
@@ -727,7 +727,7 @@ class Parser(Binary):
             sh.com.cancel(f)
     
     def parse(self):
-        f = '[DicExtractor] plugins.multitran.get.Parser.parse'
+        f = '[DicConverter] plugins.multitran.get.Parser.parse'
         if self.Success:
             #FIX: Why base names are not lowercased?
             bname = self.bname.lower()
@@ -748,7 +748,7 @@ class Parser(Binary):
             sh.com.cancel(f)
     
     def run_reader(self,pos1,pos2):
-        f = '[DicExtractor] plugins.multitran.get.Parser.reader'
+        f = '[DicConverter] plugins.multitran.get.Parser.reader'
         if self.Success:
             stream = self.read(pos1,pos2)
             if stream:
@@ -792,7 +792,7 @@ class Xor:
         self.set_vectors()
     
     def get_shift(self,pos1,pos2):
-        f = '[DicExtractor] plugins.multitran.get.Xor.get_shift'
+        f = '[DicConverter] plugins.multitran.get.Xor.get_shift'
         min_ = min(pos1,pos2) + 1
         max_ = max(pos1,pos2)
         shift = 0
@@ -810,7 +810,7 @@ class Xor:
         return shift
     
     def overflow(self,pos):
-        f = '[DicExtractor] plugins.multitran.get.Xor.overflow'
+        f = '[DicConverter] plugins.multitran.get.Xor.overflow'
         if not 0 <= pos <= 255:
             old = pos = abs(pos)
             overhead = pos - (pos // 255) * 255 - 1
@@ -821,7 +821,7 @@ class Xor:
         return pos
     
     def xor(self,byte,pos,start):
-        f = '[DicExtractor] plugins.multitran.get.Xor.xor'
+        f = '[DicConverter] plugins.multitran.get.Xor.xor'
         if byte:
             if 0 <= byte[0] <= 255:
                 shift = self.get_shift(pos1,pos2)
@@ -877,7 +877,7 @@ class Ending:
         self.parse()
     
     def overflow(self,no):
-        f = '[DicExtractor] plugins.multitran.get.Ending.overflow'
+        f = '[DicConverter] plugins.multitran.get.Ending.overflow'
         new = no
         if self.Success:
             new = com.overflowh(new)
@@ -897,7 +897,7 @@ class Ending:
         return new
     
     def has_match(self,no,pattern):
-        f = '[DicExtractor] plugins.multitran.get.Ending.has_match'
+        f = '[DicConverter] plugins.multitran.get.Ending.has_match'
         if self.Success:
             no = self.overflow(no)
             #TODO: implement 'X' (full pattern match)
@@ -927,7 +927,7 @@ class Ending:
             sh.com.cancel(f)
     
     def load(self):
-        f = '[DicExtractor] plugins.multitran.get.Ending.load'
+        f = '[DicConverter] plugins.multitran.get.Ending.load'
         if self.Success:
             self.text = sh.ReadTextFile(self.file).get()
             if not self.text:
@@ -938,7 +938,7 @@ class Ending:
             sh.com.cancel(f)
     
     def parse(self):
-        f = '[DicExtractor] plugins.multitran.get.Ending.parse'
+        f = '[DicConverter] plugins.multitran.get.Ending.parse'
         if self.Success:
             lines = self.text.splitlines()
             lines = [line for line in lines if line]
@@ -995,7 +995,7 @@ class Subject:
         self.parse()
     
     def get_pair(self,code):
-        f = '[DicExtractor] plugins.multitran.get.Subject.get_pair'
+        f = '[DicConverter] plugins.multitran.get.Subject.get_pair'
         if self.Success:
             if code in self.dic_nos:
                 ind = self.dic_nos.index(code)
@@ -1013,7 +1013,7 @@ class Subject:
             sh.com.cancel(f)
     
     def get_locale(self):
-        f = '[DicExtractor] plugins.multitran.get.Subject.get_locale'
+        f = '[DicConverter] plugins.multitran.get.Subject.get_locale'
         if self.Success:
             info = locale.getdefaultlocale()
             if info:
@@ -1035,7 +1035,7 @@ class Subject:
         self.lang    = 'en'
     
     def parse(self):
-        f = '[DicExtractor] plugins.multitran.get.Subject.parse'
+        f = '[DicConverter] plugins.multitran.get.Subject.parse'
         if self.Success:
             lst = self.text.splitlines()
             # This should not be needed. We do that just to be safe.
@@ -1061,7 +1061,7 @@ class Subject:
             sh.com.cancel(f)
     
     def load(self):
-        f = '[DicExtractor] plugins.multitran.get.Subject.load'
+        f = '[DicConverter] plugins.multitran.get.Subject.load'
         if self.Success:
             # We need silent logging here
             if os.path.exists(self.file):
@@ -1091,7 +1091,7 @@ class UPage(Binary):
         self.part2 = []
     
     def _get_no(self,stem):
-        f = '[DicExtractor] plugins.multitran.get.UPage._get_no'
+        f = '[DicConverter] plugins.multitran.get.UPage._get_no'
         try:
             return self.part1.index(stem)
         except ValueError:
@@ -1100,7 +1100,7 @@ class UPage(Binary):
             return -1
     
     def _get_ref(self,i):
-        f = '[DicExtractor] plugins.multitran.get.UPage._get_ref'
+        f = '[DicConverter] plugins.multitran.get.UPage._get_ref'
         if i is None:
             sh.com.rep_empty(f)
         else:
@@ -1124,7 +1124,7 @@ class UPage(Binary):
         return '"{}"'.format(result)
     
     def _log(self,pattern,i):
-        f = '[DicExtractor] plugins.multitran.get.UPage._log'
+        f = '[DicConverter] plugins.multitran.get.UPage._log'
         if self.part1[i] == pattern:
             oper = '<='
         else:
@@ -1152,7 +1152,7 @@ class UPage(Binary):
         sh.objs.get_mes(f,mes,True).show_debug()
     
     def searchu(self,pattern):
-        f = '[DicExtractor] plugins.multitran.get.UPage.searchu'
+        f = '[DicConverter] plugins.multitran.get.UPage.searchu'
         if self.Success:
             self.get_parts()
             if self.part1:
@@ -1171,7 +1171,7 @@ class UPage(Binary):
             sh.com.cancel(f)
     
     def get_parts(self):
-        f = '[DicExtractor] plugins.multitran.get.UPage.get_parts'
+        f = '[DicConverter] plugins.multitran.get.UPage.get_parts'
         if self.Success:
             if not self.part2:
                 if self.get_page():
@@ -1218,7 +1218,7 @@ class UPage(Binary):
             sh.com.cancel(f)
     
     def get_page(self):
-        f = '[DicExtractor] plugins.multitran.get.UPage.get_page'
+        f = '[DicConverter] plugins.multitran.get.UPage.get_page'
         if self.Success:
             if not self.page:
                 if self.get_size():
@@ -1235,7 +1235,7 @@ class UPage(Binary):
         return self.page
     
     def get_size(self):
-        f = '[DicExtractor] plugins.multitran.get.UPage.get_size'
+        f = '[DicConverter] plugins.multitran.get.UPage.get_size'
         if self.Success:
             if not self.psize:
                 ''' The 1st page is an area with M identifier.
@@ -1254,7 +1254,7 @@ class UPage(Binary):
         return self.psize
     
     def check_parts(self):
-        f = '[DicExtractor] plugins.multitran.get.UPage.check_parts'
+        f = '[DicConverter] plugins.multitran.get.UPage.check_parts'
         if self.Success:
             if len(self.part1) == len(self.part2):
                 Check = True
@@ -1278,7 +1278,7 @@ class UPage(Binary):
         ''' Get the 1st page number that is not described in U page or
             create a new page number based on the max page number.
         '''
-        f = '[DicExtractor] plugins.multitran.get.UPage._get_missing'
+        f = '[DicConverter] plugins.multitran.get.UPage._get_missing'
         unpacked = sorted(set(self.part2))
         unpacked = [struct.unpack('<h',item)[0] for item in unpacked]
         # We need +1 for a new item and +1 for 'range'
@@ -1291,7 +1291,7 @@ class UPage(Binary):
                 return item
     
     def conform_parts(self):
-        f = '[DicExtractor] plugins.multitran.get.UPage.conform_parts'
+        f = '[DicConverter] plugins.multitran.get.UPage.conform_parts'
         if self.Success:
             if self.part1:
                 if self.check_parts():
@@ -1319,7 +1319,7 @@ class Walker:
             self.reset()
     
     def get_ending(self):
-        f = '[DicExtractor] plugins.multitran.get.Walker.get_ending'
+        f = '[DicConverter] plugins.multitran.get.Walker.get_ending'
         if self.Success:
             if not self.ending:
                 fname = 'sik.' + self.lang13
@@ -1335,7 +1335,7 @@ class Walker:
         return self.ending
     
     def get_subject(self):
-        f = '[DicExtractor] plugins.multitran.get.Walker.get_subject'
+        f = '[DicConverter] plugins.multitran.get.Walker.get_subject'
         if self.Success:
             if not self.subject:
                 fname = 'subjects.txt'
@@ -1351,7 +1351,7 @@ class Walker:
         return self.subject
     
     def get_typein1(self):
-        f = '[DicExtractor] plugins.multitran.get.Walker.get_typein1'
+        f = '[DicConverter] plugins.multitran.get.Walker.get_typein1'
         if self.Success:
             if not self.typein1:
                 fname = 'typein.' + self.lang11 + self.lang21
@@ -1368,7 +1368,7 @@ class Walker:
         return self.typein1
 
     def get_typein2(self):
-        f = '[DicExtractor] plugins.multitran.get.Walker.get_typein2'
+        f = '[DicConverter] plugins.multitran.get.Walker.get_typein2'
         if self.Success:
             if not self.typein2:
                 fname = 'typein.' + self.lang21 + self.lang11
@@ -1385,7 +1385,7 @@ class Walker:
         return self.typein2
     
     def get_files(self):
-        f = '[DicExtractor] plugins.multitran.get.Walker.get_files'
+        f = '[DicConverter] plugins.multitran.get.Walker.get_files'
         if self.Success:
             return [self.get_typein1(),self.get_typein2()
                    ,self.get_stems1(),self.get_stems2()
@@ -1397,7 +1397,7 @@ class Walker:
             return []
     
     def get_article(self):
-        f = '[DicExtractor] plugins.multitran.get.Walker.get_article'
+        f = '[DicConverter] plugins.multitran.get.Walker.get_article'
         if self.Success:
             if not self.article:
                 fname = 'dict.' + self.lang11 + self.lang21 + 't'
@@ -1416,7 +1416,7 @@ class Walker:
         return self.article
     
     def get_glue1(self):
-        f = '[DicExtractor] plugins.multitran.get.Walker.get_glue1'
+        f = '[DicConverter] plugins.multitran.get.Walker.get_glue1'
         if self.Success:
             if not self.glue1:
                 fname = 'dict.' + self.lang11 + self.lang21 + 'd'
@@ -1433,7 +1433,7 @@ class Walker:
         return self.glue1
     
     def get_glue2(self):
-        f = '[DicExtractor] plugins.multitran.get.Walker.get_glue2'
+        f = '[DicConverter] plugins.multitran.get.Walker.get_glue2'
         if self.Success:
             if not self.glue2:
                 fname = 'dict.' + self.lang21 + self.lang11 + 'd'
@@ -1456,7 +1456,7 @@ class Walker:
         self.walk()
     
     def set_langs(self):
-        f = '[DicExtractor] plugins.multitran.get.Walker.set_langs'
+        f = '[DicConverter] plugins.multitran.get.Walker.set_langs'
         if self.Success:
             lang1       = LANG1.lower()
             lang2       = LANG2.lower()
@@ -1468,7 +1468,7 @@ class Walker:
             sh.com.cancel(f)
     
     def check(self):
-        f = '[DicExtractor] plugins.multitran.get.Walker.check'
+        f = '[DicConverter] plugins.multitran.get.Walker.check'
         if PATH and LANG1 and LANG2:
             self.idir = sh.Directory(PATH)
             self.Success = self.idir.Success
@@ -1477,7 +1477,7 @@ class Walker:
             sh.com.rep_empty(f)
     
     def get_stems1(self):
-        f = '[DicExtractor] plugins.multitran.get.Walker.get_stems1'
+        f = '[DicConverter] plugins.multitran.get.Walker.get_stems1'
         if self.Success:
             if not self.stems1:
                 fname = 'stem.' + self.lang13
@@ -1493,7 +1493,7 @@ class Walker:
         return self.stems1
     
     def get_stems2(self):
-        f = '[DicExtractor] plugins.multitran.get.Walker.get_stems2'
+        f = '[DicConverter] plugins.multitran.get.Walker.get_stems2'
         if self.Success:
             if not self.stems2:
                 fname = 'stem.' + self.lang23
@@ -1509,7 +1509,7 @@ class Walker:
         return self.stems2
     
     def get_file(self,fname):
-        f = '[DicExtractor] plugins.multitran.get.Walker.get_file'
+        f = '[DicConverter] plugins.multitran.get.Walker.get_file'
         if self.Success:
             try:
                 ind = self.fnames.index(fname)
@@ -1540,7 +1540,7 @@ class Walker:
         self.ending  = ''
     
     def walk(self):
-        f = '[DicExtractor] plugins.multitran.get.Walker.walk'
+        f = '[DicConverter] plugins.multitran.get.Walker.walk'
         if self.Success:
             for dirpath, dirnames, filenames in os.walk(self.idir.dir):
                 for filename in filenames:
@@ -1559,7 +1559,7 @@ class TypeIn(UPage):
         super().__init__(*args,**kwargs)
     
     def search(self,pattern):
-        f = '[DicExtractor] plugins.multitran.get.TypeIn.search'
+        f = '[DicConverter] plugins.multitran.get.TypeIn.search'
         if self.Success:
             if pattern:
                 coded  = bytes(pattern,CODING)
@@ -1597,7 +1597,7 @@ class TypeIn(UPage):
             sh.com.cancel(f)
     
     def run_reader(self,poses):
-        f = '[DicExtractor] plugins.multitran.get.TypeIn.reader'
+        f = '[DicConverter] plugins.multitran.get.TypeIn.reader'
         if self.Success:
             if poses:
                 stream = self.read(poses[0],poses[1])
@@ -1644,7 +1644,7 @@ class AllDics:
     def get_langs(self):
         # Return all available languages
         files = []
-        f = '[DicExtractor] plugins.multitran.get.AllDics.langs'
+        f = '[DicConverter] plugins.multitran.get.AllDics.langs'
         if self.Success:
             #TODO: elaborate
             # Relative paths are already lowercased
@@ -1656,7 +1656,7 @@ class AllDics:
         return files
     
     def get(self,search):
-        f = '[DicExtractor] plugins.multitran.get.AllDics.get'
+        f = '[DicConverter] plugins.multitran.get.AllDics.get'
         if self.Success:
             if search:
                 pass
@@ -1677,14 +1677,14 @@ class AllDics:
         self.Success = sh.Directory(self.path).Success
     
     def walk(self):
-        f = '[DicExtractor] plugins.multitran.get.AllDics.walk'
+        f = '[DicConverter] plugins.multitran.get.AllDics.walk'
         if self.Success:
             pass
         else:
             sh.com.cancel(f)
     
     def locate(self):
-        f = '[DicExtractor] plugins.multitran.get.AllDics.locate'
+        f = '[DicConverter] plugins.multitran.get.AllDics.locate'
         if self.Success:
             if not self.dics:
                 if self.walk():
@@ -1700,7 +1700,7 @@ class AllDics:
             sh.com.cancel(f)
     
     def load(self):
-        f = '[DicExtractor] plugins.multitran.get.AllDics.load'
+        f = '[DicConverter] plugins.multitran.get.AllDics.load'
         if self.Success:
             pass
         else:
@@ -1715,7 +1715,7 @@ class Glue(UPage):
     
     def search(self,coded):
         # Do not fail the whole class upon a failed search
-        f = '[DicExtractor] plugins.multitran.get.Glue.search'
+        f = '[DicConverter] plugins.multitran.get.Glue.search'
         if self.Success:
             if coded:
                 poses = self.searchu(coded)
@@ -1741,7 +1741,7 @@ class Glue(UPage):
             sh.com.cancel(f)
     
     def parse(self,chunk):
-        f = '[DicExtractor] plugins.multitran.get.Glue.parse'
+        f = '[DicConverter] plugins.multitran.get.Glue.parse'
         if self.Success:
             if chunk:
                 if (len(chunk) - 2) % 3 == 0 and len(chunk) != 2:
@@ -1768,7 +1768,7 @@ class Glue(UPage):
 class Commands:
     
     def parse3(self,chunks):
-        f = '[DicExtractor] plugins.multitran.get.Commands.parse3'
+        f = '[DicConverter] plugins.multitran.get.Commands.parse3'
         xplain = []
         if chunks:
             for chunk in chunks:
@@ -1797,7 +1797,7 @@ class Commands:
         return pattern
     
     def report_status(self,pos,stream):
-        f = '[DicExtractor] plugins.multitran.get.Commands.report_status'
+        f = '[DicConverter] plugins.multitran.get.Commands.report_status'
         if DEBUG:
             if stream:
                 mes = _('{}/{} bytes have been processed')
@@ -1815,7 +1815,7 @@ class Commands:
     
     def overflowh(self,no):
         # Limits: -32768 <= no <= 32767
-        f = '[DicExtractor] plugins.multitran.get.Commands.overflowh'
+        f = '[DicConverter] plugins.multitran.get.Commands.overflowh'
         if no < 0:
             result = 32768 + no
             if DEBUG:
@@ -1826,7 +1826,7 @@ class Commands:
             return no
     
     def overflowb(self,no):
-        f = '[DicExtractor] plugins.multitran.get.Commands.overflowb'
+        f = '[DicConverter] plugins.multitran.get.Commands.overflowb'
         if no < 0:
             ''' Byte format requires -128 <= no <= 127, so it looks
                 like, when a page size value is negative, it has just
@@ -1842,7 +1842,7 @@ class Commands:
             return no
     
     def unpack(self,chno,mode='<L'):
-        f = '[DicExtractor] plugins.multitran.get.Commands.unpack'
+        f = '[DicConverter] plugins.multitran.get.Commands.unpack'
         if chno:
             if mode == '<L':
                 chno += b'\x00'
@@ -1862,7 +1862,7 @@ class Commands:
         ''' Only raw strings should be used in GUI (otherwise,
             for example, '\x00' will be treated like b'\x00').
         '''
-        f = '[DicExtractor] plugins.multitran.get.Commands.get_string'
+        f = '[DicConverter] plugins.multitran.get.Commands.get_string'
         result = ''
         if chunk:
             try:
@@ -1882,7 +1882,7 @@ class Commands:
         ''' - Divide an iterable in a consecutive order.
             - Output chunks may have different lengths.
         '''
-        f = '[DicExtractor] plugins.multitran.get.Commands.get_chunks'
+        f = '[DicConverter] plugins.multitran.get.Commands.get_chunks'
         if iterable:
             return [iterable[i:i+limit] \
                     for i in range(0,len(iterable),limit)
@@ -1949,7 +1949,7 @@ class Files:
         return self.glue2
     
     def open(self):
-        f = '[DicExtractor] plugins.multitran.get.Files.open'
+        f = '[DicConverter] plugins.multitran.get.Files.open'
         if self.Success:
             self.get_typein1()
             self.get_typein2()
@@ -1961,7 +1961,7 @@ class Files:
             sh.com.cancel(f)
     
     def close(self):
-        f = '[DicExtractor] plugins.multitran.get.Files.close'
+        f = '[DicConverter] plugins.multitran.get.Files.close'
         if self.Success:
             self.get_typein1().close()
             self.get_typein2().close()
@@ -2019,7 +2019,7 @@ class Stems(UPage):
         self.speech = {}
     
     def get_speech(self,chno):
-        f = '[DicExtractor] plugins.multitran.get.Stems.get_speech'
+        f = '[DicConverter] plugins.multitran.get.Stems.get_speech'
         if self.Success:
             if chno in self.speech:
                 result = self.speech[chno]
@@ -2041,7 +2041,7 @@ class Stems(UPage):
             2 bytes - sik (terminations)
             2 bytes - lgk (speech part codes)
         '''
-        f = '[DicExtractor] plugins.multitran.get.Stems.parse'
+        f = '[DicConverter] plugins.multitran.get.Stems.parse'
         if self.Success:
             if chunk:
                 nos   = []
@@ -2097,7 +2097,7 @@ class Stems(UPage):
     
     def search(self,stem,end=''):
         # Do not fail the whole class upon a failed search
-        f = '[DicExtractor] plugins.multitran.get.Stems.search'
+        f = '[DicConverter] plugins.multitran.get.Stems.search'
         if self.Success:
             ''' MT demo does not comprise stem #3 ('-') at all,
                 so we use this workaround.
@@ -2170,7 +2170,7 @@ class Get:
         self.maxstems = maxstems
     
     def set_speech(self):
-        f = '[DicExtractor] plugins.multitran.get.Get.set_speech'
+        f = '[DicConverter] plugins.multitran.get.Get.set_speech'
         if self.Success:
             if self.stemnos:
                 chno = self.stemnos[0][0:3]
@@ -2260,7 +2260,7 @@ class Get:
             sh.com.cancel(f)
     
     def get_combos(self):
-        f = '[DicExtractor] plugins.multitran.get.Get.get_combos'
+        f = '[DicConverter] plugins.multitran.get.Get.get_combos'
         if self.Success:
             self.stemnos = list(itertools.product(*self.stemnos))
             self.stemnos = [b''.join(item) for item in self.stemnos]
@@ -2270,13 +2270,13 @@ class Get:
             sh.com.cancel(f)
     
     def check(self):
-        f = '[DicExtractor] plugins.multitran.get.Get.check'
+        f = '[DicConverter] plugins.multitran.get.Get.check'
         if not self.pattern:
             self.Success = False
             sh.com.rep_empty(f)
     
     def strip(self):
-        f = '[DicExtractor] plugins.multitran.get.Get.strip'
+        f = '[DicConverter] plugins.multitran.get.Get.strip'
         if self.Success:
             # Split hyphened words as if they were separate words
             self.pattern = self.pattern.replace('-',' - ')
@@ -2285,7 +2285,7 @@ class Get:
             sh.com.cancel(f)
     
     def get_stems(self):
-        f = '[DicExtractor] plugins.multitran.get.Get.get_stems'
+        f = '[DicConverter] plugins.multitran.get.Get.get_stems'
         if self.Success:
             words = self.pattern.split(' ')
             for word in words:
@@ -2330,7 +2330,7 @@ class Get:
         self.stemnos = []
     
     def search(self):
-        f = '[DicExtractor] plugins.multitran.get.Get.search'
+        f = '[DicConverter] plugins.multitran.get.Get.search'
         if self.Success:
             art_nos = []
             for combo in self.stemnos:

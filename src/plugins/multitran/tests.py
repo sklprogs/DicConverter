@@ -66,7 +66,7 @@ class Ending(gt.Ending):
         super().__init__(*args,**kwargs)
     
     def debug(self):
-        f = '[DicExtractor] plugins.multitran.tests.Ending.debug'
+        f = '[DicConverter] plugins.multitran.tests.Ending.debug'
         if self.Success:
             ends = list(self.ends)
             ends = [str(end) for end in ends]
@@ -89,7 +89,7 @@ class Subject(gt.Subject):
         super().__init__(*args,**kwargs)
     
     def debug(self):
-        f = '[DicExtractor] plugins.multitran.tests.Subject.debug'
+        f = '[DicConverter] plugins.multitran.tests.Subject.debug'
         if self.Success:
             headers  = ('#','FULL (1)','ABBR (1)','FULL (2)','ABBR (2)')
             iterable = (self.dic_nos,self.en_dicf
@@ -118,7 +118,7 @@ class Binary(gt.Binary):
                    returns a narrower range works fine, so I use
                    the present function for testing purposes only.
         '''
-        f = '[DicExtractor] plugins.multitran.tests.Binary.get_max_limits'
+        f = '[DicConverter] plugins.multitran.tests.Binary.get_max_limits'
         if self.Success:
             if page_no is None or not self.get_block_size():
                 sh.com.rep_empty(f)
@@ -136,7 +136,7 @@ class Binary(gt.Binary):
             sh.com.cancel(f)
     
     def show_info(self):
-        f = '[DicExtractor] plugins.multitran.tests.Binary.show_info'
+        f = '[DicConverter] plugins.multitran.tests.Binary.show_info'
         self.get_block_size()
         self.get_file_size()
         self.get_pages()
@@ -349,7 +349,7 @@ class Tests:
         sh.com.run_fast_debug(mes)
     
     def searchu_stems(self):
-        f = '[DicExtractor] plugins.multitran.tests.Tests.searchu_stems'
+        f = '[DicConverter] plugins.multitran.tests.Tests.searchu_stems'
         timer = sh.Timer(f)
         timer.start()
         #pattern = b'wol'
@@ -400,7 +400,7 @@ class Tests:
         self.translate('уборка') # has a comment
     
     def translate_many(self):
-        f = '[DicExtractor] plugins.multitran.tests.Tests.translate_many'
+        f = '[DicConverter] plugins.multitran.tests.Tests.translate_many'
         ''' MISSING IN MT DEMO:
             'преобразование случайной величины X, имеющей асимметричное распределение, в нормально распределённую величину Z'
         '''
@@ -466,7 +466,7 @@ class Tests:
         sh.objs.get_mes(f,mes,True).show_debug()
     
     def translate(self,pattern):
-        f = '[DicExtractor] plugins.multitran.tests.Tests.translate'
+        f = '[DicConverter] plugins.multitran.tests.Tests.translate'
         timer = sh.Timer(f)
         timer.start()
         result = gt.Get(pattern).run()
@@ -482,7 +482,7 @@ class UPage(gt.UPage):
         super().__init__(*args,**kwargs)
 
     def debug(self):
-        f = '[DicExtractor] plugins.multitran.tests.UPage.debug'
+        f = '[DicConverter] plugins.multitran.tests.UPage.debug'
         if self.Success:
             if self.file in (gt.objs.get_files().iwalker.get_stems1()
                             ,gt.objs.files.iwalker.get_stems2()
@@ -494,7 +494,7 @@ class UPage(gt.UPage):
             sh.com.cancel(f)
     
     def debug_glue(self):
-        f = '[DicExtractor] plugins.multitran.tests.UPage.debug_glue'
+        f = '[DicConverter] plugins.multitran.tests.UPage.debug_glue'
         if self.Success:
             if self.part2:
                 part1 = [gt.com.get_string(chunk) \
@@ -518,7 +518,7 @@ class UPage(gt.UPage):
             sh.com.cancel(f)
     
     def debug_stems(self):
-        f = '[DicExtractor] plugins.multitran.tests.UPage.debug_stems'
+        f = '[DicConverter] plugins.multitran.tests.UPage.debug_stems'
         if self.Success:
             if self.part2:
                 part1 = [chunk.decode(gt.CODING,'ignore') \
@@ -549,7 +549,7 @@ class DB(xt.DB):
         super().__init__(*args,**kwargs)
     
     def search(self,pattern='tick'):
-        f = '[DicExtractor] plugins.multitran.tests.DB.search'
+        f = '[DicConverter] plugins.multitran.tests.DB.search'
         if self.Success:
             if pattern:
                 self.dbc.execute ('select ARTNO from LANG1 \
@@ -572,8 +572,8 @@ com = Commands()
 
 
 if __name__ == '__main__':
-    f = '[DicExtractor] plugins.multitran.tests.__main__'
-    ihome = sh.Home('DicExtractor')
+    f = '[DicConverter] plugins.multitran.tests.__main__'
+    ihome = sh.Home('DicConverter')
     gt.PATH = ihome.get_conf_dir()
     dbpath = ihome.add_config('extract.db')
     gt.DEBUG = False

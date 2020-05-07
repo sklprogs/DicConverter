@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: shared\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-05-06 21:06+0300\n"
-"PO-Revision-Date: 2020-05-06 21:08+0300\n"
+"POT-Creation-Date: 2020-05-07 14:29+0300\n"
+"PO-Revision-Date: 2020-05-07 14:29+0300\n"
 "Last-Translator: Peter Sklyar <skl.progs@gmail.com>\n"
 "Language-Team: Peter Sklyar <skl.progs@gmail.com>\n"
 "Language: ru_RU\n"
@@ -49,23 +49,23 @@ msgstr "Ход извлечения"
 msgid "Prepare"
 msgstr "Подготовка"
 
-#: DicExtractor/src/plugins/multitran/extractor.py:82
+#: DicExtractor/src/plugins/multitran/extractor.py:86
 msgid "Find matches ({}/{})"
 msgstr "Поиск совпадений ({}/{})"
 
-#: DicExtractor/src/plugins/multitran/extractor.py:87
+#: DicExtractor/src/plugins/multitran/extractor.py:91
 msgid "Convert ({}/{})"
 msgstr "Конвертация ({}/{})"
 
-#: DicExtractor/src/plugins/multitran/extractor.py:99
+#: DicExtractor/src/plugins/multitran/extractor.py:104
 msgid "Processed single records (total/parsed/translated):"
 msgstr "Обработано одиночных записей (всего/разобрано/переведено):"
 
-#: DicExtractor/src/plugins/multitran/extractor.py:106
+#: DicExtractor/src/plugins/multitran/extractor.py:111
 msgid "Pairs in total/with matches/without matches:"
 msgstr "Пар всего/с совпадениями/без совпадений:"
 
-#: DicExtractor/src/plugins/multitran/extractor.py:114
+#: DicExtractor/src/plugins/multitran/extractor.py:119
 msgid "The operation has taken:"
 msgstr "Операция завершена за:"
 
@@ -73,16 +73,16 @@ msgstr "Операция завершена за:"
 msgid "Save \"{}\""
 msgstr "Сохранение \"{}\""
 
-#: DicExtractor/src/plugins/multitran/extractor.py:420
+#: DicExtractor/src/plugins/multitran/extractor.py:421
 msgid "Delete all records from {}"
 msgstr "Удаление всех записей из {}"
 
-#: DicExtractor/src/plugins/multitran/extractor.py:469
+#: DicExtractor/src/plugins/multitran/extractor.py:475
 #: DicExtractor/src/plugins/multitran/get.py:503
 msgid "Close \"{}\""
 msgstr "Закрытие \"{}\""
 
-#: DicExtractor/src/plugins/multitran/extractor.py:480
+#: DicExtractor/src/plugins/multitran/extractor.py:486
 msgid ""
 "Database \"{}\" has failed!\n"
 "\n"
@@ -92,14 +92,15 @@ msgstr ""
 "\n"
 "Подробности: {}"
 
-#: DicExtractor/src/plugins/multitran/extractor.py:487
+#: DicExtractor/src/plugins/multitran/extractor.py:493
 #: DicExtractor/src/plugins/multitran/get.py:484
 msgid "Open \"{}\""
 msgstr "Открытие \"{}\""
 
-#: DicExtractor/src/plugins/multitran/extractor.py:723
-msgid "Process single records ({}/{})"
-msgstr "Обработка отдельных записей ({}/{})"
+#: DicExtractor/src/plugins/multitran/extractor.py:710
+#: DicExtractor/src/plugins/multitran/extractor.py:717
+msgid "Process single records ({}) ({}/{})"
+msgstr "Обработка одиночных записей ({}) ({}/{})"
 
 #: DicExtractor/src/plugins/multitran/get.py:67
 msgid "Position: {}"
@@ -1564,6 +1565,9 @@ msgstr ""
 #: skl_shared/src/tests.py:1127
 msgid "Anchor: {}"
 msgstr "Привязка: {}"
+
+#~ msgid "Process single records ({}/{})"
+#~ msgstr "Обработка отдельных записей ({}/{})"
 
 #~ msgid "Processed chunks (total/parsed/translated):"
 #~ msgstr "Обработано фрагментов (всего/разобрано/переведено):"

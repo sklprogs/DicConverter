@@ -1,6 +1,6 @@
 #!/bin/bash
 
-product="DicExtractor"
+product="DicConverter"
 python="$HOME/.wine/drive_c/Python34"
 pyinstaller="$python/Scripts/pyinstaller.exe"
 binariesdir="$HOME/binaries"

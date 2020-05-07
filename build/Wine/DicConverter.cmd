@@ -1,3 +1,3 @@
 cd app
-start "" "DicExtractor.exe"
+start "" "DicConverter.exe"
 exit

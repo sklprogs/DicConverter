@@ -241,6 +241,44 @@ class DB:
         self.connect()
         self.create()
     
+    def print_not_found (self,table='LANG1'
+                        ,maxrow=50,maxrows=1000
+                        ):
+        f = '[DicConverter] plugins.multitran.extractor.DB.print_not_found'
+        if self.Success:
+            subquery = 'select * from {} where ARTNO = ? limit ?'
+            query = subquery.format(table)
+            self.dbc.execute(query,(-1,maxrows,))
+            #ARTNO,SUBJECT1,SUBJECT2,SUBJECT3,PHRASE
+            data = self.dbc.fetchall()
+            if data:
+                headers = ('NO','ARTNO','SUBJECT1','SUBJECT2'
+                          ,'SUBJECT3','PHRASE'
+                          )
+                artnos = []
+                subjects1 = []
+                subjects2 = []
+                subjects3 = []
+                phrases = []
+                for row in data:
+                    artnos.append(row[0])
+                    subjects1.append(row[1])
+                    subjects2.append(row[2])
+                    subjects3.append(row[3])
+                    phrases.append(row[4])
+                nos = [i + 1 for i in range(len(phrases))]
+                iterable = [nos,artnos,subjects,phrases]
+                mes = sh.FastTable (iterable = iterable
+                                   ,headers  = headers
+                                   ,maxrow   = maxrow
+                                   ,maxrows  = maxrows
+                                   ).run()
+                sh.com.run_fast_debug(mes)
+            else:
+                sh.com.empty(f)
+        else:
+            sh.com.cancel(f)
+    
     def create(self):
         self.create_table(self.table1)
         self.create_table(self.table2)

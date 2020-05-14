@@ -137,7 +137,7 @@ class Compare:
         self.Success = True
         self.max_ = 0
         # Number of phrases to be processed per a cycle
-        self.delta = 10000
+        self.delta = 1000
         self.data1 = None
         self.data2 = None
         self.final = []
@@ -573,7 +573,7 @@ class Extractor:
         self.parsed = 0
         self.translated = 0
         # Number of 16K pages to process at once
-        self.delta = 1000
+        self.delta = 1
         self.lang = 1
         self.start_page = 0
         self.end_page = 100000000

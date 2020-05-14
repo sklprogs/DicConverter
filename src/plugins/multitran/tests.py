@@ -3,10 +3,10 @@
 
 import io
 import struct
-import get as gt
-import extractor as xt
 import skl_shared.shared as sh
 from skl_shared.localize import _
+from . import get as gt
+from . import extractor as xt
 
 
 class Commands:

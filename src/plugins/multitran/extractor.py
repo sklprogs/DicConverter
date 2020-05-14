@@ -563,6 +563,8 @@ class Extractor:
         self.phrases = []
         self.simple = []
         self.artnos = []
+        self.iparse1.reset()
+        self.iparse2.reset()
     
     def set_values(self):
         self.Success = True
@@ -639,7 +641,6 @@ class Extractor:
                         sh.com.rep_empty(f)
             else:
                 sh.com.rep_empty(f)
-                self.Success = False
         else:
             sh.com.cancel(f)
     
@@ -726,9 +727,9 @@ class Extractor:
             sh.com.cancel(f)
     
     def run_cycle(self,start_page,end_page):
+        self.reset_cycle()
         self.run_lang(start_page,end_page)
         self.dump()
-        self.reset_cycle()
     
     def _run_loop(self,ranges):
         for range_ in ranges:

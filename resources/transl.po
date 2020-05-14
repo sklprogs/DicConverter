@@ -1,9 +1,9 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: shared\n"
+"Project-Id-Version: DicConverter\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-05-07 14:29+0300\n"
-"PO-Revision-Date: 2020-05-07 14:29+0300\n"
+"POT-Creation-Date: 2020-05-15 01:06+0300\n"
+"PO-Revision-Date: 2020-05-15 01:07+0300\n"
 "Last-Translator: Peter Sklyar <skl.progs@gmail.com>\n"
 "Language-Team: Peter Sklyar <skl.progs@gmail.com>\n"
 "Language: ru_RU\n"
@@ -16,73 +16,27 @@ msgstr ""
 "X-Generator: Poedit 2.2.1\n"
 "X-Poedit-SourceCharset: UTF-8\n"
 "X-Poedit-Basepath: ../../../../bin\n"
-"X-Poedit-SearchPath-0: DicExtractor/src\n"
+"X-Poedit-SearchPath-0: DicConverter/src\n"
 "X-Poedit-SearchPath-1: skl_shared/src\n"
 
-#: DicExtractor/src/plugins/multitran/elems.py:135
-#: DicExtractor/src/plugins/multitran/get.py:69
-#: DicExtractor/src/plugins/multitran/get.py:924
-#: DicExtractor/src/plugins/multitran/get.py:956
-#: DicExtractor/src/plugins/multitran/get.py:1010
-#: DicExtractor/src/plugins/multitran/get.py:1057
-#: DicExtractor/src/plugins/multitran/get.py:1758
-#: DicExtractor/src/plugins/multitran/get.py:2091
-#: DicExtractor/src/plugins/multitran/tags.py:169 skl_shared/src/logic.py:414
-#: skl_shared/src/logic.py:442 skl_shared/src/logic.py:2098
-#: skl_shared/src/logic.py:2565 skl_shared/src/logic.py:3829
-#: skl_shared/src/logic.py:4816 skl_shared/src/logic.py:4976
-#: skl_shared/src/logic.py:5010 skl_shared/src/logic.py:5095
-#: skl_shared/src/shared.py:2726 skl_shared/src/shared.py:2762
-msgid "Wrong input data: \"{}\"!"
-msgstr "Недопустимые входные данные: \"{}\"!"
+#: DicConverter/src/plugins/multitran/db.py:51
+msgid "Table: {}"
+msgstr "Таблица: {}"
 
-#: DicExtractor/src/plugins/multitran/elems.py:172
-#: DicExtractor/src/plugins/multitran/tags.py:77
-msgid "Debug table:"
-msgstr "Таблица для отладки:"
-
-#: DicExtractor/src/plugins/multitran/extractor.py:14
-msgid "Extraction progress"
-msgstr "Ход извлечения"
-
-#: DicExtractor/src/plugins/multitran/extractor.py:73
-msgid "Prepare"
-msgstr "Подготовка"
-
-#: DicExtractor/src/plugins/multitran/extractor.py:86
-msgid "Find matches ({}/{})"
-msgstr "Поиск совпадений ({}/{})"
-
-#: DicExtractor/src/plugins/multitran/extractor.py:91
-msgid "Convert ({}/{})"
-msgstr "Конвертация ({}/{})"
-
-#: DicExtractor/src/plugins/multitran/extractor.py:104
-msgid "Processed single records (total/parsed/translated):"
-msgstr "Обработано одиночных записей (всего/разобрано/переведено):"
-
-#: DicExtractor/src/plugins/multitran/extractor.py:111
-msgid "Pairs in total/with matches/without matches:"
-msgstr "Пар всего/с совпадениями/без совпадений:"
-
-#: DicExtractor/src/plugins/multitran/extractor.py:119
-msgid "The operation has taken:"
-msgstr "Операция завершена за:"
-
-#: DicExtractor/src/plugins/multitran/extractor.py:405
+#: DicConverter/src/plugins/multitran/db.py:221
 msgid "Save \"{}\""
 msgstr "Сохранение \"{}\""
 
-#: DicExtractor/src/plugins/multitran/extractor.py:421
+#: DicConverter/src/plugins/multitran/db.py:237
 msgid "Delete all records from {}"
 msgstr "Удаление всех записей из {}"
 
-#: DicExtractor/src/plugins/multitran/extractor.py:475
-#: DicExtractor/src/plugins/multitran/get.py:503
+#: DicConverter/src/plugins/multitran/db.py:291
+#: DicConverter/src/plugins/multitran/get.py:503
 msgid "Close \"{}\""
 msgstr "Закрытие \"{}\""
 
-#: DicExtractor/src/plugins/multitran/extractor.py:486
+#: DicConverter/src/plugins/multitran/db.py:302
 msgid ""
 "Database \"{}\" has failed!\n"
 "\n"
@@ -92,70 +46,120 @@ msgstr ""
 "\n"
 "Подробности: {}"
 
-#: DicExtractor/src/plugins/multitran/extractor.py:493
-#: DicExtractor/src/plugins/multitran/get.py:484
+#: DicConverter/src/plugins/multitran/db.py:309
+#: DicConverter/src/plugins/multitran/get.py:484
 msgid "Open \"{}\""
 msgstr "Открытие \"{}\""
 
-#: DicExtractor/src/plugins/multitran/extractor.py:710
-#: DicExtractor/src/plugins/multitran/extractor.py:717
+#: DicConverter/src/plugins/multitran/elems.py:135
+#: DicConverter/src/plugins/multitran/get.py:69
+#: DicConverter/src/plugins/multitran/get.py:924
+#: DicConverter/src/plugins/multitran/get.py:956
+#: DicConverter/src/plugins/multitran/get.py:1010
+#: DicConverter/src/plugins/multitran/get.py:1057
+#: DicConverter/src/plugins/multitran/get.py:1758
+#: DicConverter/src/plugins/multitran/get.py:2091
+#: DicConverter/src/plugins/multitran/tags.py:169 skl_shared/src/logic.py:414
+#: skl_shared/src/logic.py:442 skl_shared/src/logic.py:2098
+#: skl_shared/src/logic.py:2565 skl_shared/src/logic.py:3829
+#: skl_shared/src/logic.py:4816 skl_shared/src/logic.py:4976
+#: skl_shared/src/logic.py:5010 skl_shared/src/logic.py:5095
+#: skl_shared/src/shared.py:2726 skl_shared/src/shared.py:2762
+msgid "Wrong input data: \"{}\"!"
+msgstr "Недопустимые входные данные: \"{}\"!"
+
+#: DicConverter/src/plugins/multitran/elems.py:172
+#: DicConverter/src/plugins/multitran/tags.py:77
+msgid "Debug table:"
+msgstr "Таблица для отладки:"
+
+#: DicConverter/src/plugins/multitran/extractor.py:14
+msgid "Extraction progress"
+msgstr "Ход извлечения"
+
+#: DicConverter/src/plugins/multitran/extractor.py:73
+msgid "Prepare"
+msgstr "Подготовка"
+
+#: DicConverter/src/plugins/multitran/extractor.py:86
+msgid "Find matches ({}/{})"
+msgstr "Поиск совпадений ({}/{})"
+
+#: DicConverter/src/plugins/multitran/extractor.py:91
+msgid "Convert ({}/{})"
+msgstr "Конвертация ({}/{})"
+
+#: DicConverter/src/plugins/multitran/extractor.py:106
+msgid "Processed single records (total/parsed/translated):"
+msgstr "Обработано одиночных записей (всего/разобрано/переведено):"
+
+#: DicConverter/src/plugins/multitran/extractor.py:113
+msgid "Pairs in total/with matches/without matches:"
+msgstr "Пар всего/с совпадениями/без совпадений:"
+
+#: DicConverter/src/plugins/multitran/extractor.py:121
+msgid "The operation has taken:"
+msgstr "Операция завершена за:"
+
+#: DicConverter/src/plugins/multitran/extractor.py:437
+#: DicConverter/src/plugins/multitran/extractor.py:444
 msgid "Process single records ({}) ({}/{})"
 msgstr "Обработка одиночных записей ({}) ({}/{})"
 
-#: DicExtractor/src/plugins/multitran/get.py:67
+#: DicConverter/src/plugins/multitran/get.py:67
 msgid "Position: {}"
 msgstr "Позиция: {}"
 
-#: DicExtractor/src/plugins/multitran/get.py:85
+#: DicConverter/src/plugins/multitran/get.py:85
 msgid "U pages: {}"
 msgstr "Страницы U: {}"
 
-#: DicExtractor/src/plugins/multitran/get.py:87
+#: DicConverter/src/plugins/multitran/get.py:87
 msgid "L pages: {}"
 msgstr "Страницы L: {}"
 
-#: DicExtractor/src/plugins/multitran/get.py:89
+#: DicConverter/src/plugins/multitran/get.py:89
 msgid "Z pages: {}"
 msgstr "Страницы Z: {}"
 
-#: DicExtractor/src/plugins/multitran/get.py:164
-#: DicExtractor/src/plugins/multitran/get.py:221
-#: DicExtractor/src/plugins/multitran/get.py:2086
-#: DicExtractor/src/plugins/multitran/get.py:2153
+#: DicConverter/src/plugins/multitran/get.py:164
+#: DicConverter/src/plugins/multitran/get.py:221
+#: DicConverter/src/plugins/multitran/get.py:2086
+#: DicConverter/src/plugins/multitran/get.py:2153
 msgid "No debug info"
 msgstr "Нет информации для отладки"
 
-#: DicExtractor/src/plugins/multitran/get.py:267
+#: DicConverter/src/plugins/multitran/get.py:267
 msgid "File \"{}\" has the size of {}"
 msgstr "Файл \"{}\" имеет размер в {}"
 
-#: DicExtractor/src/plugins/multitran/get.py:273
-#: DicExtractor/src/plugins/multitran/get.py:935
-#: DicExtractor/src/plugins/multitran/get.py:1071
+#: DicConverter/src/plugins/multitran/get.py:273
+#: DicConverter/src/plugins/multitran/get.py:935
+#: DicConverter/src/plugins/multitran/get.py:1071
 msgid "Empty output is not allowed!"
 msgstr "Пустые выходные данные не допускаются!"
 
-#: DicExtractor/src/plugins/multitran/get.py:288
-#: DicExtractor/src/plugins/multitran/get.py:307
+#: DicConverter/src/plugins/multitran/get.py:288
+#: DicConverter/src/plugins/multitran/get.py:307
 msgid "Page size: {}"
 msgstr "Размер страницы: {}"
 
-#: DicExtractor/src/plugins/multitran/get.py:293
-#: DicExtractor/src/plugins/multitran/get.py:314
-#: DicExtractor/src/plugins/multitran/tests.py:132
+#: DicConverter/src/plugins/multitran/get.py:293
+#: DicConverter/src/plugins/multitran/get.py:314
+#: DicConverter/src/plugins/multitran/tests.py:90
 msgid "Page limits: [{}:{}]"
 msgstr "Пределы страницы: [{}:{}]"
 
-#: DicExtractor/src/plugins/multitran/get.py:320
-#: DicExtractor/src/plugins/multitran/get.py:325
-#: DicExtractor/src/plugins/multitran/get.py:421
-#: DicExtractor/src/plugins/multitran/get.py:445
-#: DicExtractor/src/plugins/multitran/get.py:665
-#: DicExtractor/src/plugins/multitran/get.py:844
-#: DicExtractor/src/plugins/multitran/get.py:972
-#: DicExtractor/src/plugins/multitran/get.py:1271
-#: DicExtractor/src/plugins/multitran/utils.py:463
-#: DicExtractor/src/plugins/multitran/utils.py:875 skl_shared/src/logic.py:169
+#: DicConverter/src/plugins/multitran/get.py:320
+#: DicConverter/src/plugins/multitran/get.py:325
+#: DicConverter/src/plugins/multitran/get.py:421
+#: DicConverter/src/plugins/multitran/get.py:445
+#: DicConverter/src/plugins/multitran/get.py:665
+#: DicConverter/src/plugins/multitran/get.py:844
+#: DicConverter/src/plugins/multitran/get.py:972
+#: DicConverter/src/plugins/multitran/get.py:1271
+#: DicConverter/src/plugins/multitran/utils.py:463
+#: DicConverter/src/plugins/multitran/utils.py:875 skl_shared/src/logic.py:169
 #: skl_shared/src/logic.py:968 skl_shared/src/logic.py:987
 #: skl_shared/src/logic.py:2390 skl_shared/src/logic.py:2410
 #: skl_shared/src/logic.py:4544 skl_shared/src/logic.py:4562
@@ -163,9 +167,9 @@ msgstr "Пределы страницы: [{}:{}]"
 msgid "The condition \"{}\" is not observed!"
 msgstr "Условие \"{}\" не выполнено!"
 
-#: DicExtractor/src/plugins/multitran/get.py:343
-#: DicExtractor/src/plugins/multitran/get.py:494
-#: DicExtractor/src/plugins/multitran/get.py:1852 skl_shared/src/shared.py:2294
+#: DicConverter/src/plugins/multitran/get.py:343
+#: DicConverter/src/plugins/multitran/get.py:494
+#: DicConverter/src/plugins/multitran/get.py:1852 skl_shared/src/shared.py:2294
 msgid ""
 "Third-party module has failed!\n"
 "\n"
@@ -175,45 +179,45 @@ msgstr ""
 "\n"
 "Детали: {}"
 
-#: DicExtractor/src/plugins/multitran/get.py:363
-#: DicExtractor/src/plugins/multitran/get.py:1305
+#: DicConverter/src/plugins/multitran/get.py:363
+#: DicConverter/src/plugins/multitran/get.py:1305
 msgid "The check has failed!"
 msgstr "Проверка завершилась неуспешно!"
 
-#: DicExtractor/src/plugins/multitran/get.py:412
-#: DicExtractor/src/plugins/multitran/get.py:414
+#: DicConverter/src/plugins/multitran/get.py:412
+#: DicConverter/src/plugins/multitran/get.py:414
 msgid "Part #{} length: {}"
 msgstr "Длина части №{}: {}"
 
-#: DicExtractor/src/plugins/multitran/get.py:540
-#: DicExtractor/src/plugins/multitran/get.py:550
-#: DicExtractor/src/plugins/multitran/get.py:551
-#: DicExtractor/src/plugins/multitran/get.py:598
-#: DicExtractor/src/plugins/multitran/get.py:614
-#: DicExtractor/src/plugins/multitran/get.py:700
-#: DicExtractor/src/plugins/multitran/get.py:1783
+#: DicConverter/src/plugins/multitran/get.py:540
+#: DicConverter/src/plugins/multitran/get.py:550
+#: DicConverter/src/plugins/multitran/get.py:551
+#: DicConverter/src/plugins/multitran/get.py:598
+#: DicConverter/src/plugins/multitran/get.py:614
+#: DicConverter/src/plugins/multitran/get.py:700
+#: DicConverter/src/plugins/multitran/get.py:1783
 msgid "UNKNOWN"
 msgstr "НЕИЗВЕСТНО"
 
-#: DicExtractor/src/plugins/multitran/get.py:654
-#: DicExtractor/src/plugins/multitran/tests.py:78
-#: DicExtractor/src/plugins/multitran/tests.py:102
+#: DicConverter/src/plugins/multitran/get.py:654
+#: DicConverter/src/plugins/multitran/tests.py:36
+#: DicConverter/src/plugins/multitran/tests.py:60
 msgid "File: \"{}\""
 msgstr "Файл: \"{}\""
 
-#: DicExtractor/src/plugins/multitran/get.py:745 skl_shared/src/logic.py:5115
+#: DicConverter/src/plugins/multitran/get.py:745 skl_shared/src/logic.py:5115
 msgid "Not implemented yet!"
 msgstr "Еще не реализовано!"
 
-#: DicExtractor/src/plugins/multitran/get.py:801
+#: DicConverter/src/plugins/multitran/get.py:801
 msgid "Position: {}; vector: {}"
 msgstr "Позиция: {}; вектор: {}"
 
-#: DicExtractor/src/plugins/multitran/get.py:819
+#: DicConverter/src/plugins/multitran/get.py:819
 msgid "Overflow: {} -> {}"
 msgstr "Переполнение: {} -> {}"
 
-#: DicExtractor/src/plugins/multitran/get.py:834
+#: DicConverter/src/plugins/multitran/get.py:834
 msgid ""
 "Original byte: \"{}\"; original position: {}; vector: {}; final byte: "
 "\"{}\"; final position: {}"
@@ -221,41 +225,41 @@ msgstr ""
 "Первоначальный байт: \"{}\"; первоначальная позиция: {}; вектор: {}; "
 "конечный байт: \"{}\"; конечная позиция: {}"
 
-#: DicExtractor/src/plugins/multitran/get.py:915 skl_shared/src/shared.py:4247
+#: DicConverter/src/plugins/multitran/get.py:915 skl_shared/src/shared.py:4247
 msgid "Yes"
 msgstr "Да"
 
-#: DicExtractor/src/plugins/multitran/get.py:917 skl_shared/src/shared.py:4248
+#: DicConverter/src/plugins/multitran/get.py:917 skl_shared/src/shared.py:4248
 msgid "No"
 msgstr "Нет"
 
-#: DicExtractor/src/plugins/multitran/get.py:919
+#: DicConverter/src/plugins/multitran/get.py:919
 msgid "#: {}; Pattern: \"{}\"; Match: {}"
 msgstr "№: {}; Образец: \"{}\"; Совпадение: {}"
 
-#: DicExtractor/src/plugins/multitran/get.py:1075
-#: DicExtractor/src/plugins/multitran/get.py:1331
-#: DicExtractor/src/plugins/multitran/get.py:1347
-#: DicExtractor/src/plugins/multitran/get.py:1364
-#: DicExtractor/src/plugins/multitran/get.py:1381
-#: DicExtractor/src/plugins/multitran/get.py:1412
-#: DicExtractor/src/plugins/multitran/get.py:1429
-#: DicExtractor/src/plugins/multitran/get.py:1446
-#: DicExtractor/src/plugins/multitran/get.py:1489
-#: DicExtractor/src/plugins/multitran/get.py:1505
+#: DicConverter/src/plugins/multitran/get.py:1075
+#: DicConverter/src/plugins/multitran/get.py:1331
+#: DicConverter/src/plugins/multitran/get.py:1347
+#: DicConverter/src/plugins/multitran/get.py:1364
+#: DicConverter/src/plugins/multitran/get.py:1381
+#: DicConverter/src/plugins/multitran/get.py:1412
+#: DicConverter/src/plugins/multitran/get.py:1429
+#: DicConverter/src/plugins/multitran/get.py:1446
+#: DicConverter/src/plugins/multitran/get.py:1489
+#: DicConverter/src/plugins/multitran/get.py:1505
 msgid "File \"{}\" does not exist!"
 msgstr "Файл \"{}\" не существует!"
 
-#: DicExtractor/src/plugins/multitran/get.py:1098
-#: DicExtractor/src/plugins/multitran/get.py:1114
-#: DicExtractor/src/plugins/multitran/get.py:1518
-#: DicExtractor/src/plugins/multitran/tags.py:153
-#: DicExtractor/src/plugins/multitran/tests.py:175
-#: DicExtractor/src/plugins/multitran/utils.py:514
-#: DicExtractor/src/plugins/multitran/utils.py:570
-#: DicExtractor/src/plugins/multitran/utils.py:756
-#: DicExtractor/src/plugins/multitran/utils.py:929
-#: DicExtractor/src/plugins/multitran/utils.py:1051 skl_shared/src/logic.py:910
+#: DicConverter/src/plugins/multitran/get.py:1098
+#: DicConverter/src/plugins/multitran/get.py:1114
+#: DicConverter/src/plugins/multitran/get.py:1518
+#: DicConverter/src/plugins/multitran/tags.py:153
+#: DicConverter/src/plugins/multitran/tests.py:133
+#: DicConverter/src/plugins/multitran/utils.py:514
+#: DicConverter/src/plugins/multitran/utils.py:570
+#: DicConverter/src/plugins/multitran/utils.py:756
+#: DicConverter/src/plugins/multitran/utils.py:929
+#: DicConverter/src/plugins/multitran/utils.py:1051 skl_shared/src/logic.py:910
 #: skl_shared/src/logic.py:1090 skl_shared/src/logic.py:1185
 #: skl_shared/src/logic.py:1859 skl_shared/src/logic.py:2321
 #: skl_shared/src/logic.py:2987 skl_shared/src/logic.py:3054
@@ -266,291 +270,291 @@ msgstr "Файл \"{}\" не существует!"
 msgid "Wrong input data!"
 msgstr "Недопустимые входные данные!"
 
-#: DicExtractor/src/plugins/multitran/get.py:1110
+#: DicConverter/src/plugins/multitran/get.py:1110
 msgid "#{}: {}"
 msgstr "№{}: {}"
 
-#: DicExtractor/src/plugins/multitran/get.py:1133
+#: DicConverter/src/plugins/multitran/get.py:1133
 msgid "Start"
 msgstr "Начало"
 
-#: DicExtractor/src/plugins/multitran/get.py:1135
-#: DicExtractor/src/plugins/multitran/get.py:1140
+#: DicConverter/src/plugins/multitran/get.py:1135
+#: DicConverter/src/plugins/multitran/get.py:1140
 msgid "{} (#{})"
 msgstr "{} (№{})"
 
-#: DicExtractor/src/plugins/multitran/get.py:1145
+#: DicConverter/src/plugins/multitran/get.py:1145
 msgid "End"
 msgstr "Конец"
 
-#: DicExtractor/src/plugins/multitran/get.py:1211
+#: DicConverter/src/plugins/multitran/get.py:1211
 msgid ""
 "Processing the pattern has not been completed, but the end of the file has "
 "already been reached!"
 msgstr "Обработка образца не была завершена, однако был достигнут конец файла!"
 
-#: DicExtractor/src/plugins/multitran/get.py:1695
+#: DicConverter/src/plugins/multitran/get.py:1695
 msgid "{} offline dictionaries are available"
 msgstr "Доступно {} локальных словарей"
 
-#: DicExtractor/src/plugins/multitran/get.py:1803
+#: DicConverter/src/plugins/multitran/get.py:1803
 msgid "{}/{} bytes have been processed"
 msgstr "{}/{} байтов обработано"
 
-#: DicExtractor/src/plugins/multitran/get.py:1808
+#: DicConverter/src/plugins/multitran/get.py:1808
 msgid "Unprocessed fragment: \"{}\""
 msgstr "Необработанный фрагмент: \"{}\""
 
-#: DicExtractor/src/plugins/multitran/get.py:2187
+#: DicConverter/src/plugins/multitran/get.py:2187
 msgid "Phrase"
 msgstr "Фраза"
 
-#: DicExtractor/src/plugins/multitran/get.py:2188
+#: DicConverter/src/plugins/multitran/get.py:2188
 msgid "phrase"
 msgstr "фраза"
 
-#: DicExtractor/src/plugins/multitran/get.py:2191
+#: DicConverter/src/plugins/multitran/get.py:2191
 msgid "Abbreviation"
 msgstr "Сокращение"
 
-#: DicExtractor/src/plugins/multitran/get.py:2192
+#: DicConverter/src/plugins/multitran/get.py:2192
 msgid "abbr."
 msgstr "сокр."
 
-#: DicExtractor/src/plugins/multitran/get.py:2195
+#: DicConverter/src/plugins/multitran/get.py:2195
 msgid "Adverb"
 msgstr "Наречие"
 
-#: DicExtractor/src/plugins/multitran/get.py:2196
+#: DicConverter/src/plugins/multitran/get.py:2196
 msgid "adv."
 msgstr "нареч."
 
-#: DicExtractor/src/plugins/multitran/get.py:2200
+#: DicConverter/src/plugins/multitran/get.py:2200
 msgid "Interjection"
 msgstr "Междометие"
 
-#: DicExtractor/src/plugins/multitran/get.py:2201
+#: DicConverter/src/plugins/multitran/get.py:2201
 msgid "interj."
 msgstr "межд."
 
-#: DicExtractor/src/plugins/multitran/get.py:2205
+#: DicConverter/src/plugins/multitran/get.py:2205
 msgid "Conjunction"
 msgstr "Союз"
 
-#: DicExtractor/src/plugins/multitran/get.py:2206
+#: DicConverter/src/plugins/multitran/get.py:2206
 msgid "conj."
 msgstr "союз"
 
-#: DicExtractor/src/plugins/multitran/get.py:2210
+#: DicConverter/src/plugins/multitran/get.py:2210
 msgid "Article"
 msgstr "Артикль"
 
-#: DicExtractor/src/plugins/multitran/get.py:2211
+#: DicConverter/src/plugins/multitran/get.py:2211
 msgid "art."
 msgstr "арт."
 
-#: DicExtractor/src/plugins/multitran/get.py:2215
+#: DicConverter/src/plugins/multitran/get.py:2215
 msgid "Numeral"
 msgstr "Числительное"
 
-#: DicExtractor/src/plugins/multitran/get.py:2216
+#: DicConverter/src/plugins/multitran/get.py:2216
 msgid "num."
 msgstr "числ."
 
-#: DicExtractor/src/plugins/multitran/get.py:2220
+#: DicConverter/src/plugins/multitran/get.py:2220
 msgid "Ordinal Numeral"
 msgstr "Порядковое числительное"
 
-#: DicExtractor/src/plugins/multitran/get.py:2221
+#: DicConverter/src/plugins/multitran/get.py:2221
 msgid "ord.num."
 msgstr "поряд.числ."
 
-#: DicExtractor/src/plugins/multitran/get.py:2224
+#: DicConverter/src/plugins/multitran/get.py:2224
 msgid "Preposition"
 msgstr "Предлог"
 
-#: DicExtractor/src/plugins/multitran/get.py:2225
+#: DicConverter/src/plugins/multitran/get.py:2225
 msgid "prepos."
 msgstr "предл."
 
-#: DicExtractor/src/plugins/multitran/get.py:2229
+#: DicConverter/src/plugins/multitran/get.py:2229
 msgid "Form"
 msgstr "Форма"
 
-#: DicExtractor/src/plugins/multitran/get.py:2230
+#: DicConverter/src/plugins/multitran/get.py:2230
 msgid "form"
 msgstr "форма"
 
-#: DicExtractor/src/plugins/multitran/get.py:2234
+#: DicConverter/src/plugins/multitran/get.py:2234
 msgid "Particle"
 msgstr "Частица"
 
-#: DicExtractor/src/plugins/multitran/get.py:2235
+#: DicConverter/src/plugins/multitran/get.py:2235
 msgid "part."
 msgstr "част."
 
-#: DicExtractor/src/plugins/multitran/get.py:2239
+#: DicConverter/src/plugins/multitran/get.py:2239
 msgid "Predicative"
 msgstr "Предикатив"
 
-#: DicExtractor/src/plugins/multitran/get.py:2240
+#: DicConverter/src/plugins/multitran/get.py:2240
 msgid "predic."
 msgstr "предик."
 
-#: DicExtractor/src/plugins/multitran/get.py:2243
+#: DicConverter/src/plugins/multitran/get.py:2243
 msgid "Pronoun"
 msgstr "Местоимение"
 
-#: DicExtractor/src/plugins/multitran/get.py:2244
+#: DicConverter/src/plugins/multitran/get.py:2244
 msgid "pron"
 msgstr "мест."
 
-#: DicExtractor/src/plugins/multitran/get.py:2247
+#: DicConverter/src/plugins/multitran/get.py:2247
 msgid "Adjective"
 msgstr "Прилагательное"
 
-#: DicExtractor/src/plugins/multitran/get.py:2248
+#: DicConverter/src/plugins/multitran/get.py:2248
 msgid "adj"
 msgstr "прил."
 
-#: DicExtractor/src/plugins/multitran/get.py:2251
+#: DicConverter/src/plugins/multitran/get.py:2251
 msgid "Noun"
 msgstr "Существительное"
 
-#: DicExtractor/src/plugins/multitran/get.py:2252
+#: DicConverter/src/plugins/multitran/get.py:2252
 msgid "n"
 msgstr "сущ."
 
-#: DicExtractor/src/plugins/multitran/get.py:2255
+#: DicConverter/src/plugins/multitran/get.py:2255
 msgid "Verb"
 msgstr "Глагол"
 
-#: DicExtractor/src/plugins/multitran/get.py:2256
+#: DicConverter/src/plugins/multitran/get.py:2256
 msgid "v"
 msgstr "гл."
 
-#: DicExtractor/src/plugins/multitran/get.py:2299
+#: DicConverter/src/plugins/multitran/get.py:2301
 msgid "Try for \"{}|{}\""
 msgstr "Тест \"{}|{}\""
 
-#: DicExtractor/src/plugins/multitran/get.py:2306
+#: DicConverter/src/plugins/multitran/get.py:2308
 msgid "Found stem: \"{}\""
 msgstr "Найдена основа: \"{}\""
 
-#: DicExtractor/src/plugins/multitran/gui.py:20
+#: DicConverter/src/plugins/multitran/gui.py:20
 msgid "Read single records"
 msgstr "Чтение одиночных записей"
 
-#: DicExtractor/src/plugins/multitran/tags.py:48 skl_shared/src/shared.py:4464
+#: DicConverter/src/plugins/multitran/tags.py:48 skl_shared/src/shared.py:4464
 msgid "Wrong input data: \"{}\""
 msgstr "Недопустимые входные данные: \"{}\"!"
 
-#: DicExtractor/src/plugins/multitran/tags.py:70
+#: DicConverter/src/plugins/multitran/tags.py:70
 msgid "Unknown type \"{}\"!"
 msgstr "Неизвестный тип \"{}\"!"
 
-#: DicExtractor/src/plugins/multitran/tests.py:126
+#: DicConverter/src/plugins/multitran/tests.py:84
 msgid "Page #: {}"
 msgstr "Номер страницы: {}"
 
-#: DicExtractor/src/plugins/multitran/tests.py:145
-#: DicExtractor/src/plugins/multitran/tests.py:511
-#: DicExtractor/src/plugins/multitran/tests.py:535
+#: DicConverter/src/plugins/multitran/tests.py:103
+#: DicConverter/src/plugins/multitran/tests.py:439
+#: DicConverter/src/plugins/multitran/tests.py:463
 msgid "File: {}"
 msgstr "Файл: {}"
 
-#: DicExtractor/src/plugins/multitran/tests.py:149
+#: DicConverter/src/plugins/multitran/tests.py:107
 msgid "File size: {}"
 msgstr "Размер файла: {}"
 
-#: DicExtractor/src/plugins/multitran/tests.py:153
+#: DicConverter/src/plugins/multitran/tests.py:111
 msgid "Block size: {}"
 msgstr "Размер блока: {}"
 
-#: DicExtractor/src/plugins/multitran/tests.py:156
+#: DicConverter/src/plugins/multitran/tests.py:114
 msgid "Pages:"
 msgstr "Страниц:"
 
-#: DicExtractor/src/plugins/multitran/tests.py:174
-#: DicExtractor/src/plugins/multitran/tests.py:186
-#: DicExtractor/src/plugins/multitran/tests.py:187
-#: DicExtractor/src/plugins/multitran/tests.py:188
+#: DicConverter/src/plugins/multitran/tests.py:132
+#: DicConverter/src/plugins/multitran/tests.py:144
+#: DicConverter/src/plugins/multitran/tests.py:145
+#: DicConverter/src/plugins/multitran/tests.py:146
 msgid "N/A"
 msgstr "Н/Д"
 
-#: DicExtractor/src/plugins/multitran/tests.py:459
+#: DicConverter/src/plugins/multitran/tests.py:387
 msgid "Total: {}"
 msgstr "Всего: {}"
 
-#: DicExtractor/src/plugins/multitran/tests.py:461
+#: DicConverter/src/plugins/multitran/tests.py:389
 msgid "Successful: {}"
 msgstr "Успешно: {}"
 
-#: DicExtractor/src/plugins/multitran/tests.py:463
+#: DicConverter/src/plugins/multitran/tests.py:391
 msgid "Failed: {}"
 msgstr "Неуспешно: {}"
 
-#: DicExtractor/src/plugins/multitran/utils.py:49
+#: DicConverter/src/plugins/multitran/utils.py:49
 msgid "Warning: this step will be skipped!"
 msgstr "Предупреждение: данный шаг будет пропущен!"
 
-#: DicExtractor/src/plugins/multitran/utils.py:53
+#: DicConverter/src/plugins/multitran/utils.py:53
 msgid "Pattern: \"{}\""
 msgstr "Образец: \"{}\""
 
-#: DicExtractor/src/plugins/multitran/utils.py:56
+#: DicConverter/src/plugins/multitran/utils.py:56
 msgid "Make changes to the dictionary and press any key"
 msgstr "Внесите изменения в словарь и нажмите любую клавишу"
 
-#: DicExtractor/src/plugins/multitran/utils.py:68
+#: DicConverter/src/plugins/multitran/utils.py:68
 msgid "Original positions:"
 msgstr "Первоначальные позиции:"
 
-#: DicExtractor/src/plugins/multitran/utils.py:71
+#: DicConverter/src/plugins/multitran/utils.py:71
 msgid "Final positions:"
 msgstr "Конечные позиции:"
 
-#: DicExtractor/src/plugins/multitran/utils.py:92
+#: DicConverter/src/plugins/multitran/utils.py:92
 msgid "Restore the damaged file?"
 msgstr "Восстановить поврежденный файл?"
 
-#: DicExtractor/src/plugins/multitran/utils.py:99
-#: DicExtractor/src/plugins/multitran/utils.py:457 skl_shared/src/logic.py:2009
+#: DicConverter/src/plugins/multitran/utils.py:99
+#: DicConverter/src/plugins/multitran/utils.py:457 skl_shared/src/logic.py:2009
 #: skl_shared/src/logic.py:2056 skl_shared/src/logic.py:2270
 #: skl_shared/src/shared.py:2307
 msgid "Operation has been canceled by the user."
 msgstr "Операция отменена пользователем."
 
-#: DicExtractor/src/plugins/multitran/utils.py:194
-#: DicExtractor/src/plugins/multitran/utils.py:304
-#: DicExtractor/src/plugins/multitran/utils.py:309
-#: DicExtractor/src/plugins/multitran/utils.py:324
-#: DicExtractor/src/plugins/multitran/utils.py:334
-#: DicExtractor/src/plugins/multitran/utils.py:347
-#: DicExtractor/src/plugins/multitran/utils.py:384 skl_shared/src/shared.py:627
+#: DicConverter/src/plugins/multitran/utils.py:194
+#: DicConverter/src/plugins/multitran/utils.py:304
+#: DicConverter/src/plugins/multitran/utils.py:309
+#: DicConverter/src/plugins/multitran/utils.py:324
+#: DicConverter/src/plugins/multitran/utils.py:334
+#: DicConverter/src/plugins/multitran/utils.py:347
+#: DicConverter/src/plugins/multitran/utils.py:384 skl_shared/src/shared.py:627
 #: skl_shared/src/shared.py:726 skl_shared/src/shared.py:749
 msgid "No matches!"
 msgstr "Совпадений нет!"
 
-#: DicExtractor/src/plugins/multitran/utils.py:227
-#: DicExtractor/src/plugins/multitran/utils.py:229
+#: DicConverter/src/plugins/multitran/utils.py:227
+#: DicConverter/src/plugins/multitran/utils.py:229
 msgid "List {}:"
 msgstr "Список {}:"
 
-#: DicExtractor/src/plugins/multitran/utils.py:393
+#: DicConverter/src/plugins/multitran/utils.py:393
 msgid "Enter text to search for: "
 msgstr "Введите текст для поиска:"
 
-#: DicExtractor/src/plugins/multitran/utils.py:402
+#: DicConverter/src/plugins/multitran/utils.py:402
 msgid "Enter bytes to search for: "
 msgstr "Введите байты для поиска:"
 
-#: DicExtractor/src/plugins/multitran/utils.py:408
-#: DicExtractor/src/plugins/multitran/utils.py:451
-#: DicExtractor/src/plugins/multitran/utils.py:496
-#: DicExtractor/src/plugins/multitran/utils.py:785
-#: DicExtractor/src/plugins/multitran/utils.py:868
-#: DicExtractor/src/plugins/multitran/utils.py:911 skl_shared/src/logic.py:4846
+#: DicConverter/src/plugins/multitran/utils.py:408
+#: DicConverter/src/plugins/multitran/utils.py:451
+#: DicConverter/src/plugins/multitran/utils.py:496
+#: DicConverter/src/plugins/multitran/utils.py:785
+#: DicConverter/src/plugins/multitran/utils.py:868
+#: DicConverter/src/plugins/multitran/utils.py:911 skl_shared/src/logic.py:4846
 msgid ""
 "Operation has failed!\n"
 "\n"
@@ -560,97 +564,97 @@ msgstr ""
 "\n"
 "Подробности: {}"
 
-#: DicExtractor/src/plugins/multitran/utils.py:418
+#: DicConverter/src/plugins/multitran/utils.py:418
 msgid "Search for text instead of bytes? Y/n "
 msgstr "Искать текст вместо байтов? Y/n"
 
-#: DicExtractor/src/plugins/multitran/utils.py:432
+#: DicConverter/src/plugins/multitran/utils.py:432
 msgid "This will extract data from the binary file from set positions"
 msgstr "Данное действие извлечет данные из двоичного файла с заданных позиций"
 
-#: DicExtractor/src/plugins/multitran/utils.py:434
-#: DicExtractor/src/plugins/multitran/utils.py:435
-#: DicExtractor/src/plugins/multitran/utils.py:850
-#: DicExtractor/src/plugins/multitran/utils.py:851
+#: DicConverter/src/plugins/multitran/utils.py:434
+#: DicConverter/src/plugins/multitran/utils.py:435
+#: DicConverter/src/plugins/multitran/utils.py:850
+#: DicConverter/src/plugins/multitran/utils.py:851
 msgid "Position {}: "
 msgstr "Позиция {}: "
 
-#: DicExtractor/src/plugins/multitran/utils.py:439
+#: DicConverter/src/plugins/multitran/utils.py:439
 msgid "An output file: "
 msgstr "Выходной файл:"
 
-#: DicExtractor/src/plugins/multitran/utils.py:446
-#: DicExtractor/src/plugins/multitran/utils.py:859
-#: DicExtractor/src/plugins/multitran/utils.py:863
+#: DicConverter/src/plugins/multitran/utils.py:446
+#: DicConverter/src/plugins/multitran/utils.py:859
+#: DicConverter/src/plugins/multitran/utils.py:863
 msgid "Write \"{}\""
 msgstr "Запись \"{}\""
 
-#: DicExtractor/src/plugins/multitran/utils.py:505
-#: DicExtractor/src/plugins/multitran/utils.py:920
+#: DicConverter/src/plugins/multitran/utils.py:505
+#: DicConverter/src/plugins/multitran/utils.py:920
 msgid "Enter a position to go or press Return to keep the current one ({}): "
 msgstr ""
 "Введите позицию для перехода или нажмите Return для сохранения текущего "
 "значения ({}): "
 
-#: DicExtractor/src/plugins/multitran/utils.py:561
-#: DicExtractor/src/plugins/multitran/utils.py:1040
+#: DicConverter/src/plugins/multitran/utils.py:561
+#: DicConverter/src/plugins/multitran/utils.py:1040
 msgid "Enter a buffer size or press Return to keep the current one ({}): "
 msgstr ""
 "Введите размер буфера или нажмите Return для сохранения текущего значения "
 "({}): "
 
-#: DicExtractor/src/plugins/multitran/utils.py:580
-#: DicExtractor/src/plugins/multitran/utils.py:1061
+#: DicConverter/src/plugins/multitran/utils.py:580
+#: DicConverter/src/plugins/multitran/utils.py:1061
 msgid "Available commands: {}"
 msgstr "Доступные команды: {}"
 
-#: DicExtractor/src/plugins/multitran/utils.py:591
-#: DicExtractor/src/plugins/multitran/utils.py:1072
+#: DicConverter/src/plugins/multitran/utils.py:591
+#: DicConverter/src/plugins/multitran/utils.py:1072
 msgid "Enter a command: "
 msgstr "Введите команду: "
 
-#: DicExtractor/src/plugins/multitran/utils.py:649
-#: DicExtractor/src/plugins/multitran/utils.py:1124
+#: DicConverter/src/plugins/multitran/utils.py:649
+#: DicConverter/src/plugins/multitran/utils.py:1124
 msgid "An unknown command! Enter \"help\" to get help."
 msgstr "Незивестная команда! Введите \"help\" для получения справки."
 
-#: DicExtractor/src/plugins/multitran/utils.py:659
-#: DicExtractor/src/plugins/multitran/utils.py:1134
+#: DicConverter/src/plugins/multitran/utils.py:659
+#: DicConverter/src/plugins/multitran/utils.py:1134
 msgid "Goodbye!"
 msgstr "До свидания!"
 
-#: DicExtractor/src/plugins/multitran/utils.py:677
-#: DicExtractor/src/plugins/multitran/utils.py:1176
+#: DicConverter/src/plugins/multitran/utils.py:677
+#: DicConverter/src/plugins/multitran/utils.py:1176
 msgid "Current position: {}"
 msgstr "Текущая позиция: {}"
 
-#: DicExtractor/src/plugins/multitran/utils.py:771
+#: DicConverter/src/plugins/multitran/utils.py:771
 msgid "Replace bytes \"{}\" with \"{}\" (file: {}, position: {})"
 msgstr "Замена байтов \"{}\" на \"{}\" (файл: {}, позиция: {})"
 
-#: DicExtractor/src/plugins/multitran/utils.py:795
+#: DicConverter/src/plugins/multitran/utils.py:795
 msgid "Input a string: "
 msgstr "Введите строку: "
 
-#: DicExtractor/src/plugins/multitran/utils.py:804
+#: DicConverter/src/plugins/multitran/utils.py:804
 msgid "Input an integer: "
 msgstr "Введите целое число: "
 
-#: DicExtractor/src/plugins/multitran/utils.py:822
-#: DicExtractor/src/plugins/multitran/utils.py:823
+#: DicConverter/src/plugins/multitran/utils.py:822
+#: DicConverter/src/plugins/multitran/utils.py:823
 msgid "File {}: "
 msgstr "Файл {}: "
 
-#: DicExtractor/src/plugins/multitran/utils.py:848
+#: DicConverter/src/plugins/multitran/utils.py:848
 msgid "This will extract binary data from both files from set positions"
 msgstr ""
 "Данное действие извлечет двоичные данные из обоих файлов с заданных позиций"
 
-#: DicExtractor/src/plugins/multitran/utils.py:1150
+#: DicConverter/src/plugins/multitran/utils.py:1150
 msgid "Chunk 1:"
 msgstr "Фрагмент 1:"
 
-#: DicExtractor/src/plugins/multitran/utils.py:1159
+#: DicConverter/src/plugins/multitran/utils.py:1159
 msgid "Chunk 2:"
 msgstr "Фрагмент 2:"
 

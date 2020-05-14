@@ -94,8 +94,10 @@ class Runner:
         sh.STOP_MES = False
         self.Success = self.iextract.Success and self.icompare.Success
         self.report()
-        self.icompare.debug()
-        objs.get_db().close()
+        objs.db.print_not_found(objs.db.table1)
+        objs.db.print_not_found(objs.db.table2)
+        objs.db.print_final()
+        objs.db.close()
     
     def report(self):
         f = '[DicConverter] plugins.multitran.extractor.Runner.report'
@@ -148,13 +150,6 @@ class Compare:
         self.data1 = None
         self.data2 = None
         self.final = []
-    
-    def debug(self):
-        f = '[DicConverter] plugins.multitran.extractor.Compare.debug'
-        if self.Success:
-            objs.get_db().print_final()
-        else:
-            sh.com.cancel(f)
     
     def dump(self):
         f = '[DicConverter] plugins.multitran.extractor.Compare.dump'

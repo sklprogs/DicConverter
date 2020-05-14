@@ -48,6 +48,8 @@ class DB:
                                    ,maxrow   = maxrow
                                    ,maxrows  = maxrows
                                    ).run()
+                sub = _('Table: {}').format(table)
+                mes = f + '\n' + sub + '\n\n' + mes
                 sh.com.run_fast_debug(mes)
             else:
                 sh.com.empty(f)
@@ -135,6 +137,7 @@ class DB:
                                ,maxrow   = maxrow
                                ,maxrows  = maxrows
                                ).run()
+            mes = f + '\n\n' + mes
             sh.com.run_fast_debug(mes)
         else:
             sh.com.cancel(f)

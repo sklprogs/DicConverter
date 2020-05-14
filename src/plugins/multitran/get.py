@@ -2287,7 +2287,9 @@ class Get:
     def get_stems(self):
         f = '[DicConverter] plugins.multitran.get.Get.get_stems'
         if self.Success:
-            words = self.pattern.split(' ')
+            pattern = self.pattern.replace('-',' ')
+            pattern = pattern.replace('&',' ')
+            words = pattern.split(' ')
             for word in words:
                 word_stems = []
                 i = len(word)

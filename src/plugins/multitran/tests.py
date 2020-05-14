@@ -7,6 +7,7 @@ import skl_shared.shared as sh
 from skl_shared.localize import _
 from . import get as gt
 from . import extractor as xt
+from . import db
 
 
 class Commands:
@@ -470,7 +471,7 @@ class UPage(gt.UPage):
 
 
 
-class DB(xt.DB):
+class DB(db.DB):
     
     def __init__(self,*args,**kwargs):
         super().__init__(*args,**kwargs)

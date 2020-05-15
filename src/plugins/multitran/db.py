@@ -14,39 +14,61 @@ class DB:
         self.connect()
         self.create()
     
+    def print_simple (self,table='LANG1'
+                     ,maxrow=45,maxrows=1000
+                     ):
+        f = '[DicConverter] plugins.multitran.db.DB.print_simple'
+        if self.Success:
+            subquery = 'select ARTNO,SIMPLE,PHRASE from {} \
+                        order by ARTNO,SIMPLE limit ?'
+            query = subquery.format(table)
+            self.dbc.execute(query,(maxrows,))
+            data = self.dbc.fetchall()
+            if data:
+                headers = ('NO','ARTNO','SIMPLE','PHRASE')
+                rows = []
+                for i in range(len(data)):
+                    row = [i+1,data[i][0],data[i][1],data[i][2]]
+                    rows.append(row)
+                mes = sh.FastTable (iterable  = rows
+                                   ,headers   = headers
+                                   ,maxrow    = maxrow
+                                   ,maxrows   = maxrows
+                                   ,Transpose = True
+                                   ).run()
+                sub = _('Table: {}').format(table)
+                mes = f + '\n' + sub + '\n\n' + mes
+                sh.com.run_fast_debug(mes)
+            else:
+                sh.com.empty(f)
+        else:
+            sh.com.cancel(f)
+    
     def print_not_found (self,table='LANG1'
                         ,maxrow=50,maxrows=1000
                         ):
         f = '[DicConverter] plugins.multitran.db.DB.print_not_found'
         if self.Success:
-            subquery = 'select * from {} where ARTNO = ? limit ?'
+            subquery = 'select ARTNO,SUBJECT1,SUBJECT2,SUBJECT3,PHRASE \
+                        from {} where ARTNO = ? order by PHRASE limit ?'
             query = subquery.format(table)
             self.dbc.execute(query,(-1,maxrows,))
-            #ARTNO,SUBJECT1,SUBJECT2,SUBJECT3,PHRASE
             data = self.dbc.fetchall()
             if data:
                 headers = ('NO','ARTNO','SUBJECT1','SUBJECT2'
                           ,'SUBJECT3','PHRASE'
                           )
-                artnos = []
-                subjects1 = []
-                subjects2 = []
-                subjects3 = []
-                phrases = []
-                for row in data:
-                    artnos.append(row[0])
-                    subjects1.append(row[1])
-                    subjects2.append(row[2])
-                    subjects3.append(row[3])
-                    phrases.append(row[4])
-                nos = [i + 1 for i in range(len(phrases))]
-                iterable = [nos,artnos,subjects1,subjects2,subjects3
-                           ,phrases
-                           ]
-                mes = sh.FastTable (iterable = iterable
-                                   ,headers  = headers
-                                   ,maxrow   = maxrow
-                                   ,maxrows  = maxrows
+                rows = []
+                for i in range(len(data)):
+                    row = [i+1,data[i][0],data[i][1],data[i][2]
+                          ,data[i][3],data[i][4]
+                          ]
+                    rows.append(row)
+                mes = sh.FastTable (iterable  = rows
+                                   ,headers   = headers
+                                   ,maxrow    = maxrow
+                                   ,maxrows   = maxrows
+                                   ,Transpose = True
                                    ).run()
                 sub = _('Table: {}').format(table)
                 mes = f + '\n' + sub + '\n\n' + mes
@@ -205,7 +227,7 @@ class DB:
             else:
                 table = self.table2
             try:
-                query = 'insert into {} values (?,?,?,?,?)'
+                query = 'insert into {} values (?,?,?,?,?,?)'
                 query = query.format(table)
                 self.dbc.execute(query,data)
                 return True
@@ -270,11 +292,13 @@ class DB:
     def create_table(self,lang):
         f = '[DicConverter] plugins.multitran.db.DB.create_table'
         if self.Success:
+            # 6 columns for now
             query = 'create table if not exists {} (\
                      ARTNO    integer \
                     ,SUBJECT1 integer \
                     ,SUBJECT2 integer \
                     ,SUBJECT3 integer \
+                    ,SIMPLE   text \
                     ,PHRASE   text \
                                                    )'
             query = query.format(lang)

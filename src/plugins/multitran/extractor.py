@@ -369,7 +369,7 @@ class Extractor:
                         subject3 = -1
                     
                     data = (artno,subject1,subject2,subject3
-                           ,self.phrases[i]
+                           ,self.simple[i],self.phrases[i]
                            ,
                            )
                     if not objs.get_db().add(data,self.lang):
@@ -381,6 +381,8 @@ class Extractor:
                         mes = 'SUBJECT2: "{}"'.format(subject2)
                         messages.append(mes)
                         mes = 'SUBJECT3: "{}"'.format(subject3)
+                        messages.append(mes)
+                        mes = 'SIMPLE: "{}"'.format(self.simple[i])
                         messages.append(mes)
                         mes = 'PHRASE: "{}"'.format(self.phrases[i])
                         messages.append(mes)

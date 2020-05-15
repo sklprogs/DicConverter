@@ -19,4 +19,15 @@ if __name__ == '__main__':
     f = '[DicConverter] tests.__main__'
     mg.PATH = sh.Home('DicConverter').get_conf_dir()
     #mx.objs.get_db().print_not_found()
-    print(mt.Tests().translate('tree wart'))
+    #mx.objs.get_db().print_simple()
+    mx.objs.get_db().print_final()
+    #print(mt.Tests().translate('tree wart'))
+    '''
+    Failed to translate:
+    cable drill
+    close in
+    cloud chamber
+    due
+    tree wart
+    variable choke
+    '''

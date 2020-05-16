@@ -287,6 +287,7 @@ class Navigate(gt.Binary):
         self.coms = ['buffer','help','load','quit','pgup','pgdn'
                     ,'pos','clear','exit','dump','find','findprev'
                     ,'findnext','findtext','findbytes','same','q'
+                    ,'file'
                     ]
         self.buffer = round(BUFFER * 2.5)
         self.border = 20
@@ -295,6 +296,13 @@ class Navigate(gt.Binary):
         self.coded = b''
         self.lastcom = ''
         self.coms.sort()
+    
+    def show_file(self):
+        f = '[DicConverter] plugins.multitran.utils.Navigate.show_file'
+        if self.Success:
+            print(self.file)
+        else:
+            sh.com.cancel(f)
     
     def find_prev(self):
         f = '[DicConverter] plugins.multitran.utils.Navigate.find_prev'
@@ -608,6 +616,9 @@ class Navigate(gt.Binary):
                 self.show_menu()
             elif command == 'end':
                 self.go_end()
+                self.show_menu()
+            elif command == 'file':
+                self.show_file()
                 self.show_menu()
             elif command == 'find':
                 self.find_nav()

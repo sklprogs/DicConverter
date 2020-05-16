@@ -18,7 +18,7 @@ class Tests:
 if __name__ == '__main__':
     f = '[DicConverter] tests.__main__'
     mg.PATH = sh.Home('DicConverter').get_conf_dir()
-    #mg.DEBUG = True
+    mg.DEBUG = True
     #mx.objs.get_db().print_not_found()
     #mx.objs.get_db().print_simple()
     #mx.objs.get_db().print_final()
@@ -30,5 +30,13 @@ if __name__ == '__main__':
             variable choke
         Failed to translate:
             cloud chamber
+            training
+            банда наёмных громил
+            безусловно сходящаяся последовательность
+            проходной разъём
+            струиться
+            убраться восвояси
+            являться
+            щебёночное покрытие c поливкой водой перед укаткой
     '''
-    print(mt.Tests().translate('cloud chamber'))    
+    print(mt.Tests().translate('training'))

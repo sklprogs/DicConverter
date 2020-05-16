@@ -7,7 +7,7 @@ import skl_shared.shared as sh
 from skl_shared.localize import _
 from . import get as gt
 from . import extractor as xt
-from . import db
+from . import db as db
 
 
 class Commands:
@@ -393,11 +393,13 @@ class Tests:
         mes = '\n' + '\n'.join(messages)
         sh.objs.get_mes(f,mes,True).show_debug()
     
-    def translate(self,pattern):
+    def translate(self,pattern,maxstems=2):
         f = '[DicConverter] plugins.multitran.tests.Tests.translate'
         timer = sh.Timer(f)
         timer.start()
         result = gt.Get(pattern).run()
+        if not result:
+            result = gt.Get(pattern,maxstems).run()
         sh.objs.get_mes(f,result,True).show_debug()
         timer.end()
         return result
@@ -502,9 +504,7 @@ com = Commands()
 if __name__ == '__main__':
     f = '[DicConverter] plugins.multitran.tests.__main__'
     ihome = sh.Home('DicConverter')
-    gt.PATH = ihome.get_conf_dir()
     dbpath = ihome.add_config('extract.db')
     gt.DEBUG = False
-    idb = DB(dbpath)
-    idb.search()
-    idb.close()
+    gt.PATH = ihome.get_conf_dir()
+    

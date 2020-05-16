@@ -18,16 +18,17 @@ class Tests:
 if __name__ == '__main__':
     f = '[DicConverter] tests.__main__'
     mg.PATH = sh.Home('DicConverter').get_conf_dir()
+    #mg.DEBUG = True
     #mx.objs.get_db().print_not_found()
     #mx.objs.get_db().print_simple()
-    mx.objs.get_db().print_final()
-    #print(mt.Tests().translate('tree wart'))
+    #mx.objs.get_db().print_final()
+    ''' Successful:
+            tree wart
+            cable drill
+            close in
+            due
+            variable choke
+        Failed to translate:
+            cloud chamber
     '''
-    Failed to translate:
-    cable drill
-    close in
-    cloud chamber
-    due
-    tree wart
-    variable choke
-    '''
+    print(mt.Tests().translate('cloud chamber'))    

@@ -1222,11 +1222,12 @@ if __name__ == '__main__':
     #Navigate('/home/pete/tmp/unknown').show_menu()
     #file = '/home/pete/tmp/dump_zerah'
     #file = '/home/pete/.wine/drive_c/mt_demo_mln/Network/eng_rus/dict.ert'
-    #Navigate(file).show_menu()
+    file = gt.objs.get_files().iwalker.get_glue1()
+    Navigate(file).show_menu()
     #Tests().corrupt()
     #Tests().compare()
     #Tests().show_dumps()
-    Tests().get_patch()
+    #Tests().get_patch()
     #Tests().gen_patterns()
     #Tests().analyze_xor()
     #file1 = '/tmp/dict.ert'

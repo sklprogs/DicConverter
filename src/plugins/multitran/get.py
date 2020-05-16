@@ -2291,6 +2291,7 @@ class Get:
             pattern = pattern.replace('&',' ')
             words = pattern.split(' ')
             for word in words:
+                count = 0
                 word_stems = []
                 i = len(word)
                 # Zero-length stems should be allowed
@@ -2315,7 +2316,8 @@ class Get:
                             performance, we allow only 2 valid stems
                             of the same word.
                         '''
-                        if len(word_stems) >= self.maxstems:
+                        count += 1
+                        if count == self.maxstems:
                             break
                     i -= 1
                 self.stemnos.append(word_stems)

@@ -335,13 +335,11 @@ class Extractor:
     def translate(self,pattern):
         f = '[DicConverter] plugins.multitran.extractor.Extractor.translate'
         if self.Success:
-            iget = gt.Get(pattern)
-            result = iget.run()
+            result = gt.Get(pattern).run()
             if result:
                 return result
             else:
-                iget = gt.Get(pattern,2)
-                return iget.run()
+                return gt.Get(pattern,2).run()
         else:
             sh.com.cancel(f)
     

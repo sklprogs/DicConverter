@@ -1233,7 +1233,7 @@ if __name__ == '__main__':
     #Navigate('/home/pete/tmp/unknown').show_menu()
     #file = '/home/pete/tmp/dump_zerah'
     #file = '/home/pete/.wine/drive_c/mt_demo_mln/Network/eng_rus/dict.ert'
-    file = gt.objs.get_files().iwalker.get_glue1()
+    file = gt.objs.get_files().iwalker.get_glue2()
     Navigate(file).show_menu()
     #Tests().corrupt()
     #Tests().compare()

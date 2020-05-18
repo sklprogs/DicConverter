@@ -39,4 +39,8 @@ if __name__ == '__main__':
             являться
             щебёночное покрытие c поливкой водой перед укаткой
     '''
-    print(mt.Tests().translate('training'))
+    #print(mt.Tests().translate('training'))
+    #mt.Tests().get_by_artnos()
+    mt.Tests().search()
+    #mt.Tests().search_like()
+    #mx.objs.get_db().print(mx.objs.db.table1)

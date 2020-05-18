@@ -40,7 +40,7 @@ class DB:
                 mes = f + '\n' + sub + '\n\n' + mes
                 sh.com.run_fast_debug(mes)
             else:
-                sh.com.empty(f)
+                sh.com.rep_empty(f)
         else:
             sh.com.cancel(f)
     
@@ -74,7 +74,7 @@ class DB:
                 mes = f + '\n' + sub + '\n\n' + mes
                 sh.com.run_fast_debug(mes)
             else:
-                sh.com.empty(f)
+                sh.com.rep_empty(f)
         else:
             sh.com.cancel(f)
     

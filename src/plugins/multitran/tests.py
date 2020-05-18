@@ -161,6 +161,73 @@ class Binary(gt.Binary):
 
 class Tests:
     
+    def search_like(self):
+        f = '[DicConverter] plugins.multitran.tests.Tests.search_like'
+        table = objs.get_db().table1
+        #pattern = 'train'
+        pattern = 'tre'
+        data = objs.db.search(table,pattern)
+        mes = _('Search results for "{}" in "{}": {}')
+        mes = mes.format(pattern,table,data)
+        sh.objs.get_mes(f,mes,True).show_debug()
+    
+    def _search(self,table,pattern):
+        f = '[DicConverter] plugins.multitran.tests.Tests._search'
+        artnos = objs.get_db().search(table,pattern)
+        mes = _('Search results for "{}" in "{}": {}')
+        mes = mes.format(pattern,table,artnos)
+        sh.objs.get_mes(f,mes,True).show_debug()
+    
+    def search(self):
+        f = '[DicConverter] plugins.multitran.tests.Tests.search'
+        self._search(objs.get_db().table1,'offer')
+        self._search(objs.db.table2,'offer')
+        self._search(objs.db.table3,'offer')
+        '''
+        table = objs.get_db().table1
+        self._search(table,'study')
+        self._search(table,'training')
+        self._search(table,'tick')
+        self._search(table,'offer')
+        table = objs.db.table2
+        self._search(table,'учёба')
+        '''
+    
+    def get_by_artnos(self):
+        f = '[DicConverter] plugins.multitran.tests.Tests.get_by_artnos'
+        ids = [78,79]
+        
+        data1 = objs.get_db().get_by_artnos(objs.db.table1,ids)
+        data2 = objs.db.get_by_artnos(objs.db.table2,ids)
+        
+        artnos = []
+        phrases = []
+        if data1:
+            mes = 'len(data1): {}'.format(len(data1))
+            sh.objs.get_mes(f,mes,True).show_debug()
+            print(data1)
+            for row in data1:
+                artnos.append(row[0])
+                phrases.append(row[1])
+        if data2:
+            mes = 'len(data2): {}'.format(len(data2))
+            sh.objs.get_mes(f,mes,True).show_debug()
+            for row in data2:
+                artnos.append(row[0])
+                phrases.append(row[1])
+        headers = ('ARTNO','PHRASE')
+        iterable = [artnos,phrases]
+        mes = sh.FastTable (headers  = headers
+                           ,iterable = iterable
+                           ,maxrows  = 1000
+                           ).run()
+        if mes:
+            mes = f + '\n\n' + mes
+            sh.com.run_fast_debug(f)
+        else:
+            sh.com.rep_lazy(f)
+        objs.db.close()
+    
     def get_speech(self,pattern):
         ''' 'absolut'  -> 176     -> 32
             'absolute' -> 31,123  -> 2 ('absolutely')
@@ -478,27 +545,69 @@ class DB(db.DB):
     def __init__(self,*args,**kwargs):
         super().__init__(*args,**kwargs)
     
-    def search(self,pattern='tick'):
+    def get_by_artnos(self,table,artnos):
+        f = '[DicConverter] plugins.multitran.db.DB.get_by_artnos'
+        if self.Success:
+            if table and artnos:
+                subquery = 'select ARTNO,PHRASE from {} \
+                            where ARTNO in ({})'
+                query = subquery.format(table,','.join('?'*len(artnos)))
+                self.dbc.execute(query,artnos)
+                return self.dbc.fetchall()
+            else:
+                sh.com.rep_empty(f)
+        else:
+            sh.com.cancel(f)
+    
+    def search_like(self,table='LANG1',pattern='tick'):
+        f = '[DicConverter] plugins.multitran.tests.DB.search_like'
+        if self.Success:
+            if pattern:
+                pattern = '%' + pattern + '%'
+                query = 'select ARTNO,PHRASE from {} where PHRASE like ? \
+                         order by ARTNO'
+                query = query.format(table)
+                self.dbc.execute(query,(pattern,))
+                return self.dbc.fetchall()
+            else:
+                sh.com.rep_empty(f)
+        else:
+            sh.com.cancel(f)
+    
+    def search(self,table='LANG1',pattern='tick'):
         f = '[DicConverter] plugins.multitran.tests.DB.search'
         if self.Success:
             if pattern:
-                self.dbc.execute ('select ARTNO from LANG1 \
-                                   where  PHRASE = ? order by ARTNO'
-                                 ,(pattern,)
-                                 )
+                query = 'select ARTNO from {} where PHRASE = ? \
+                         order by ARTNO'
+                query = query.format(table)
+                self.dbc.execute(query,(pattern,))
                 artnos = self.dbc.fetchall()
                 if artnos:
                     artnos = [artno[0] for artno in artnos]
                 else:
                     artnos = []
-                sh.com.run_fast_debug(artnos)
             else:
-                sh.com.empty(f)
+                sh.com.rep_empty(f)
         else:
             sh.com.cancel(f)
 
 
+
+class Objects:
+    
+    def __init__(self):
+        self.db = None
+    
+    def get_db(self):
+        if self.db is None:
+            path = sh.Home('DicConverter').add_config('extract.db')
+            self.db = DB(path)
+        return self.db
+
+
 com = Commands()
+objs = Objects()
 
 
 if __name__ == '__main__':
@@ -507,4 +616,3 @@ if __name__ == '__main__':
     dbpath = ihome.add_config('extract.db')
     gt.DEBUG = False
     gt.PATH = ihome.get_conf_dir()
-    

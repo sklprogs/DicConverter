@@ -161,6 +161,13 @@ class Binary(gt.Binary):
 
 class Tests:
     
+    def __init__(self):
+        self.count = 0
+        self.nos = []
+        self.artnos = []
+        self.tables = []
+        self.patterns = []
+    
     def search_like(self):
         f = '[DicConverter] plugins.multitran.tests.Tests.search_like'
         table = objs.get_db().table1
@@ -172,18 +179,14 @@ class Tests:
         sh.objs.get_mes(f,mes,True).show_debug()
     
     def _search(self,table,pattern):
-        f = '[DicConverter] plugins.multitran.tests.Tests._search'
-        artnos = objs.get_db().search(table,pattern)
-        mes = _('Search results for "{}" in "{}": {}')
-        mes = mes.format(pattern,table,artnos)
-        sh.objs.get_mes(f,mes,True).show_debug()
+        self.count += 1
+        self.nos.append(self.count)
+        self.tables.append(table)
+        self.patterns.append(pattern)
+        self.artnos.append(objs.get_db().search(table,pattern))
     
     def search(self):
         f = '[DicConverter] plugins.multitran.tests.Tests.search'
-        self._search(objs.get_db().table1,'offer')
-        self._search(objs.db.table2,'offer')
-        self._search(objs.db.table3,'offer')
-        '''
         table = objs.get_db().table1
         self._search(table,'study')
         self._search(table,'training')
@@ -191,7 +194,10 @@ class Tests:
         self._search(table,'offer')
         table = objs.db.table2
         self._search(table,'учёба')
-        '''
+        headers = ('NO','ARTNO','TABLE','PATTERN')
+        iterable = [self.nos,self.artnos,self.tables,self.patterns]
+        mes = sh.FastTable(iterable,headers).run()
+        sh.com.run_fast_debug(mes)
     
     def get_by_artnos(self):
         f = '[DicConverter] plugins.multitran.tests.Tests.get_by_artnos'
@@ -584,9 +590,7 @@ class DB(db.DB):
                 self.dbc.execute(query,(pattern,))
                 artnos = self.dbc.fetchall()
                 if artnos:
-                    artnos = [artno[0] for artno in artnos]
-                else:
-                    artnos = []
+                    return [artno[0] for artno in artnos]
             else:
                 sh.com.rep_empty(f)
         else:

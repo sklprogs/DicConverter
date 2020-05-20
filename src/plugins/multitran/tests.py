@@ -168,15 +168,34 @@ class Tests:
         self.tables = []
         self.patterns = []
     
+    def _search_like(self,table,pattern):
+        data = objs.get_db().search_like(table,pattern)
+        if data:
+            for row in data:
+                self.count += 1
+                self.nos.append(self.count)
+                self.tables.append(table)
+                self.artnos.append(row[0])
+                self.patterns.append(row[1])
+        else:
+            self.count += 1
+            self.nos.append(self.count)
+            self.tables.append(table)
+            self.artnos.append(_('N/A'))
+            self.patterns.append(pattern)
+    
     def search_like(self):
         f = '[DicConverter] plugins.multitran.tests.Tests.search_like'
         table = objs.get_db().table1
-        #pattern = 'train'
-        pattern = 'tre'
-        data = objs.db.search(table,pattern)
-        mes = _('Search results for "{}" in "{}": {}')
-        mes = mes.format(pattern,table,data)
-        sh.objs.get_mes(f,mes,True).show_debug()
+        self._search_like(table,'train')
+        table = objs.db.table2
+        self._search_like(table,'учёб')
+        self._search_like(table,'учеб')
+        self._search_like(table,'режим')
+        headers = ('NO','ARTNO','TABLE','PATTERN')
+        iterable = [self.nos,self.artnos,self.tables,self.patterns]
+        mes = sh.FastTable(iterable,headers).run()
+        sh.com.run_fast_debug(mes)
     
     def _search(self,table,pattern):
         self.count += 1

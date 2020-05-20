@@ -41,6 +41,6 @@ if __name__ == '__main__':
     '''
     #print(mt.Tests().translate('training'))
     #mt.Tests().get_by_artnos()
-    mt.Tests().search()
-    #mt.Tests().search_like()
-    #mx.objs.get_db().print(mx.objs.db.table1)
+    #mt.Tests().search()
+    mt.Tests().search_like()
+    #mx.objs.get_db().print(mx.objs.db.table2)

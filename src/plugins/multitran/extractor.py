@@ -306,7 +306,7 @@ class Extractor:
                                ,maxrow   = 50
                                ,maxrows  = 1000
                                ).run()
-            sh.com.run_fast_debug(mes)
+            sh.com.run_fast_debug(f,mes)
         else:
             sh.com.cancel(f)
     

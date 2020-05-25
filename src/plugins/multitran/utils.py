@@ -29,7 +29,7 @@ class Tests:
                                   ,length = len_
                                   ,table  = table
                                   )
-        sh.com.run_fast_debug(str(result))
+        sh.com.run_fast_debug(f,str(result))
     
     def get_patch(self):
         f = '[DicConverter] plugins.multitran.utils.Tests.get_patch'
@@ -73,7 +73,7 @@ class Tests:
         messages.append(str(ints2))
         mes = '\n'.join(messages)
         sh.Clipboard().copy(str(ints2))
-        #sh.com.run_fast_debug(mes)
+        #sh.com.run_fast_debug(f,mes)
         filew = '/tmp/result.txt'
         sh.WriteTextFile(filew,True).write(mes)
         sh.Launch(filew).launch_default()
@@ -136,12 +136,12 @@ class Tests:
             mes = sh.FastTable (headers  = headers
                                ,iterable = iterable
                                ).run()
-            sh.com.run_fast_debug(mes)
+            sh.com.run_fast_debug(f,mes)
             mes  = 'len11: {}'.format(len11) + '\n'
             mes += 'len12: {}'.format(len12) + '\n'
             mes += 'len21: {}'.format(len21) + '\n'
             mes += 'len22: {}'.format(len22) + '\n'
-            sh.com.run_fast_debug(mes)
+            sh.com.run_fast_debug(f,mes)
             '''
             lens11 = sorted(set(lens11))
             lens12 = sorted(set(lens12))
@@ -164,7 +164,7 @@ class Tests:
             lens22 = [item for item in lens22 if item in lens12]
             mes  = 'SHARED lens21:\n' + str(lens21) + '\n\n'
             mes += 'SHARED lens22:\n' + str(lens22) + '\n\n'
-            sh.com.run_fast_debug(mes)
+            sh.com.run_fast_debug(f,mes)
         else:
             sh.com.rep_empty(f)
         iparse1.close()
@@ -189,7 +189,7 @@ class Tests:
                     for i in range(len(matches)):
                         matches[i] = '{}: {}'.format(i,matches[i])
                     mes = '\n'.join(matches)
-                    sh.com.run_fast_debug(mes)
+                    sh.com.run_fast_debug(f,mes)
                 else:
                     mes = _('No matches!')
                     sh.objs.get_mes(f,mes).show_info()
@@ -228,7 +228,7 @@ class Tests:
             mes += '\n' + str(shared1) + '\n'
             mes += _('List {}:').format(2)
             mes += '\n' + str(shared2)
-            sh.com.run_fast_debug(mes)
+            sh.com.run_fast_debug(f,mes)
         else:
             sh.com.rep_empty(f)
     

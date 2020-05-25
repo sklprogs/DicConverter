@@ -37,8 +37,8 @@ class DB:
                                    ,Transpose = True
                                    ).run()
                 sub = _('Table: {}').format(table)
-                mes = f + '\n' + sub + '\n\n' + mes
-                sh.com.run_fast_debug(mes)
+                mes = sub + '\n\n' + mes
+                sh.com.run_fast_debug(f,mes)
             else:
                 sh.com.rep_empty(f)
         else:
@@ -71,8 +71,8 @@ class DB:
                                    ,Transpose = True
                                    ).run()
                 sub = _('Table: {}').format(table)
-                mes = f + '\n' + sub + '\n\n' + mes
-                sh.com.run_fast_debug(mes)
+                mes = sub + '\n\n' + mes
+                sh.com.run_fast_debug(f,mes)
             else:
                 sh.com.rep_empty(f)
         else:
@@ -159,8 +159,7 @@ class DB:
                                ,maxrow   = maxrow
                                ,maxrows  = maxrows
                                ).run()
-            mes = f + '\n\n' + mes
-            sh.com.run_fast_debug(mes)
+            sh.com.run_fast_debug(f,mes)
         else:
             sh.com.cancel(f)
     
@@ -202,7 +201,7 @@ class DB:
                                ,maxrow   = maxrow
                                ,maxrows  = maxrows
                                ).run()
-            sh.com.run_fast_debug(mes)
+            sh.com.run_fast_debug(f,mes)
         else:
             sh.com.cancel(f)
     

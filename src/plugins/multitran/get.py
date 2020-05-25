@@ -654,7 +654,7 @@ class Parser(Binary):
                         sub = _('File: "{}"').format(self.file)
                         sub += '\n\n'
                         mes = sub + mes
-                        sh.com.run_fast_debug(mes)
+                        sh.com.run_fast_debug(f,mes)
                     else:
                         sh.com.rep_empty(f)
                 else:

@@ -100,7 +100,7 @@ class Tags:
         message = ''
         for i in range(len(self.tags)):
             message += '{}:{}\n'.format(i,self.tags[i])
-        sh.com.run_fast_debug(message)
+        sh.com.run_fast_debug(f,message)
     
     def decode(self):
         f = '[DicConverter] plugins.multitran.tags.Tags.decode'

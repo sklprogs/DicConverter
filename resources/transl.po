@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: DicConverter\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-06-11 15:13+0300\n"
-"PO-Revision-Date: 2020-06-11 15:14+0300\n"
+"POT-Creation-Date: 2020-06-11 21:43+0300\n"
+"PO-Revision-Date: 2020-06-11 21:43+0300\n"
 "Last-Translator: Peter Sklyar <skl.progs@gmail.com>\n"
 "Language-Team: Peter Sklyar <skl.progs@gmail.com>\n"
 "Language: ru_RU\n"
@@ -19,24 +19,44 @@ msgstr ""
 "X-Poedit-SearchPath-0: DicConverter/src\n"
 "X-Poedit-SearchPath-1: skl_shared/src\n"
 
-#: DicConverter/src/plugins/lingvo/extractor.py:16
+#: DicConverter/src/plugins/lingvo/extractor.py:27
+#: DicConverter/src/plugins/multitran/utils.py:416
+#: DicConverter/src/plugins/multitran/utils.py:459
+#: DicConverter/src/plugins/multitran/utils.py:504
+#: DicConverter/src/plugins/multitran/utils.py:796
+#: DicConverter/src/plugins/multitran/utils.py:879
+#: DicConverter/src/plugins/multitran/utils.py:922 skl_shared/src/logic.py:4849
+msgid ""
+"Operation has failed!\n"
+"\n"
+"Details: {}"
+msgstr ""
+"Операция завершилась неудачно!\n"
+"\n"
+"Подробности: {}"
+
+#: DicConverter/src/plugins/lingvo/extractor.py:68
 msgid "Conversion progress"
 msgstr "Ход конвертации"
 
-#: DicConverter/src/plugins/lingvo/extractor.py:64
+#: DicConverter/src/plugins/lingvo/extractor.py:114
+msgid "Convert \"{}\" to \"{}\""
+msgstr "Преобразование \"{}\" в \"{}\""
+
+#: DicConverter/src/plugins/lingvo/extractor.py:152
 #: DicConverter/src/plugins/lingvo/gui.py:20
 msgid "Process dictionaries"
 msgstr "Обработка словарей"
 
-#: DicConverter/src/plugins/lingvo/extractor.py:87
+#: DicConverter/src/plugins/lingvo/extractor.py:175
 msgid "Processed dictionaries (total/successful):"
 msgstr "Обработано словарей (всего/успешно):"
 
-#: DicConverter/src/plugins/lingvo/extractor.py:94
+#: DicConverter/src/plugins/lingvo/extractor.py:182
 msgid "Files:"
 msgstr "Файлы:"
 
-#: DicConverter/src/plugins/lingvo/extractor.py:99
+#: DicConverter/src/plugins/lingvo/extractor.py:187
 #: DicConverter/src/plugins/multitran/extractor.py:121
 msgid "The operation has taken:"
 msgstr "Операция завершена за:"
@@ -568,21 +588,6 @@ msgstr "Введите текст для поиска:"
 #: DicConverter/src/plugins/multitran/utils.py:410
 msgid "Enter bytes to search for: "
 msgstr "Введите байты для поиска:"
-
-#: DicConverter/src/plugins/multitran/utils.py:416
-#: DicConverter/src/plugins/multitran/utils.py:459
-#: DicConverter/src/plugins/multitran/utils.py:504
-#: DicConverter/src/plugins/multitran/utils.py:796
-#: DicConverter/src/plugins/multitran/utils.py:879
-#: DicConverter/src/plugins/multitran/utils.py:922 skl_shared/src/logic.py:4849
-msgid ""
-"Operation has failed!\n"
-"\n"
-"Details: {}"
-msgstr ""
-"Операция завершилась неудачно!\n"
-"\n"
-"Подробности: {}"
 
 #: DicConverter/src/plugins/multitran/utils.py:426
 msgid "Search for text instead of bytes? Y/n "

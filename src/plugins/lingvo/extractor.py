@@ -2,12 +2,64 @@
 # -*- coding: UTF-8 -*-
 
 import os
+import io
+import lingvoreader.lsdfile as lf
 import skl_shared.shared as sh
 from skl_shared.localize import _
 from . import gui as gi
 
 PATH = ''
 DEBUG = False
+
+
+class LsdFile(lf.LsdFile):
+    
+    def __init__(self,*args,**kwargs):
+        super().__init__(*args,**kwargs)
+    
+    def run(self):
+        f = '[DicConverter] plugins.lingvo.extractor.LsdFile.run'
+        try:
+            self.parse()
+            self.dump()
+            return self.extract()
+        except Exception as e:
+            mes = _('Operation has failed!\n\nDetails: {}')
+            mes = mes.format(e)
+            sh.objs.get_mes(f,mes,True).show_warning()
+        
+    def extract(self):
+        iwrite = io.StringIO()
+        iwrite.write('#NAME\t\"')
+        iwrite.write(self.name)
+        iwrite.write('\"\n')
+        iwrite.write('#INDEX_LANGUAGE\t\"')
+        iwrite.write(lf.tools.lang_map[self.header.source_language])
+        iwrite.write('\"\n')
+        iwrite.write('#CONTENTS_LANGUAGE\t\"')
+        iwrite.write(lf.tools.lang_map[self.header.target_language])
+        iwrite.write('\"\n')
+        if self.icon_size > 0:
+            base, orig_ext = os.path.splitext(os.path.basename(self.filename))
+            iwrite.write('#ICON_FILE\t\"')
+            iwrite.write(base)
+            iwrite.write('.bmp\"\n"')
+        iwrite.write('\n')
+        for h, r in self.dict:
+            if h.simple:
+                iwrite.write(h.get_first_ext_text())
+                iwrite.write('\n\t')
+            else:
+                for item in h.headings:
+                    iwrite.write(item.ext_text)
+                    iwrite.write('\n')
+                iwrite.write('\t')
+            iwrite.write(self.normalize_article(r))
+            iwrite.write('\n')
+        text = iwrite.getvalue()
+        iwrite.close()
+        return text
+
 
 
 class ProgressBar:
@@ -40,15 +92,51 @@ class ProgressBar:
 
 class Extractor:
     
-    def __init__(self):
+    def __init__(self,files):
         self.set_values()
+        self.files = files
     
     def set_values(self):
         self.dics = []
+        self.files = []
         self.Success = True
     
+    def decompile(self):
+        f = '[DicConverter] plugins.lingvo.extractor.Extractor.decompile'
+        if self.Success:
+            #cur #TODO: del
+            self.files = self.files[:1]
+            for i in range(len(self.files)):
+                ipath = sh.Path(self.files[i])
+                dirname = ipath.get_dirname()
+                basename = ipath.get_basename()
+                filew = os.path.join(dirname,basename+'.dsl')
+                mes = _('Convert "{}" to "{}"')
+                mes = mes.format(self.files[i],filew)
+                sh.objs.get_mes(f,mes,True).show_info()
+                objs.get_progress().update(i,len(self.files))
+                self.dics.append(LsdFile(self.files[i]).run())
+            self.dics = [dic for dic in self.dics if dic]
+        else:
+            sh.com.cancel(f)
+    
+    def check(self):
+        f = '[DicConverter] plugins.lingvo.extractor.Extractor.check'
+        if not self.files:
+            self.Success = False
+            sh.com.rep_empty(f)
+    
+    def debug(self):
+        f = '[DicConverter] plugins.lingvo.extractor.Extractor.debug'
+        if self.Success:
+            sh.com.run_fast_debug(f,'\n\n'.join(self.dics))
+        else:
+            sh.com.cancel(f)
+    
     def run(self):
-        pass
+        self.check()
+        self.decompile()
+        self.debug()
 
 
 
@@ -69,7 +157,7 @@ class Runner:
         #objs.db.save()
         self.Success = self.iwalker.Success
         if self.Success:
-            self.iextract = Extractor()
+            self.iextract = Extractor(self.iwalker.files)
             self.iextract.run()
             self.Success = self.iextract.Success
         else:

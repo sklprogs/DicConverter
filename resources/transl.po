@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: DicConverter\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-06-11 21:43+0300\n"
-"PO-Revision-Date: 2020-06-11 21:43+0300\n"
+"POT-Creation-Date: 2020-06-14 16:55+0300\n"
+"PO-Revision-Date: 2020-06-14 16:55+0300\n"
 "Last-Translator: Peter Sklyar <skl.progs@gmail.com>\n"
 "Language-Team: Peter Sklyar <skl.progs@gmail.com>\n"
 "Language: ru_RU\n"
@@ -18,6 +18,20 @@ msgstr ""
 "X-Poedit-Basepath: ../../../../bin\n"
 "X-Poedit-SearchPath-0: DicConverter/src\n"
 "X-Poedit-SearchPath-1: skl_shared/src\n"
+
+#: DicConverter/src/DicConverter.py:41
+#: DicConverter/src/plugins/multitran/utils.py:670
+#: DicConverter/src/plugins/multitran/utils.py:1145
+msgid "Goodbye!"
+msgstr "До свидания!"
+
+#: DicConverter/src/gui.py:18
+msgid "Convert dictionaries:"
+msgstr "Конвертировать словари:"
+
+#: DicConverter/src/gui.py:66
+msgid "Quit"
+msgstr "Выйти"
 
 #: DicConverter/src/plugins/lingvo/extractor.py:27
 #: DicConverter/src/plugins/multitran/utils.py:416
@@ -39,24 +53,24 @@ msgstr ""
 msgid "Conversion progress"
 msgstr "Ход конвертации"
 
-#: DicConverter/src/plugins/lingvo/extractor.py:114
+#: DicConverter/src/plugins/lingvo/extractor.py:112
 msgid "Convert \"{}\" to \"{}\""
 msgstr "Преобразование \"{}\" в \"{}\""
 
-#: DicConverter/src/plugins/lingvo/extractor.py:152
+#: DicConverter/src/plugins/lingvo/extractor.py:155
 #: DicConverter/src/plugins/lingvo/gui.py:20
 msgid "Process dictionaries"
 msgstr "Обработка словарей"
 
-#: DicConverter/src/plugins/lingvo/extractor.py:175
+#: DicConverter/src/plugins/lingvo/extractor.py:181
 msgid "Processed dictionaries (total/successful):"
 msgstr "Обработано словарей (всего/успешно):"
 
-#: DicConverter/src/plugins/lingvo/extractor.py:182
+#: DicConverter/src/plugins/lingvo/extractor.py:188
 msgid "Files:"
 msgstr "Файлы:"
 
-#: DicConverter/src/plugins/lingvo/extractor.py:187
+#: DicConverter/src/plugins/lingvo/extractor.py:193
 #: DicConverter/src/plugins/multitran/extractor.py:121
 msgid "The operation has taken:"
 msgstr "Операция завершена за:"
@@ -642,11 +656,6 @@ msgstr "Введите команду: "
 #: DicConverter/src/plugins/multitran/utils.py:1135
 msgid "An unknown command! Enter \"help\" to get help."
 msgstr "Незивестная команда! Введите \"help\" для получения справки."
-
-#: DicConverter/src/plugins/multitran/utils.py:670
-#: DicConverter/src/plugins/multitran/utils.py:1145
-msgid "Goodbye!"
-msgstr "До свидания!"
 
 #: DicConverter/src/plugins/multitran/utils.py:688
 #: DicConverter/src/plugins/multitran/utils.py:1187
@@ -1660,9 +1669,6 @@ msgstr "Привязка: {}"
 
 #~ msgid "Text:"
 #~ msgstr "Текст:"
-
-#~ msgid "Quit"
-#~ msgstr "Выйти"
 
 #~ msgid "Title:"
 #~ msgstr "Заголовок:"

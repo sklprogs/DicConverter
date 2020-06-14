@@ -104,13 +104,11 @@ class Extractor:
     def decompile(self):
         f = '[DicConverter] plugins.lingvo.extractor.Extractor.decompile'
         if self.Success:
-            #cur #TODO: del
-            self.files = self.files[:1]
             for i in range(len(self.files)):
                 ipath = sh.Path(self.files[i])
                 dirname = ipath.get_dirname()
-                basename = ipath.get_basename()
-                filew = os.path.join(dirname,basename+'.dsl')
+                filename = ipath.get_filename()
+                filew = os.path.join(dirname,filename+'.dsl')
                 mes = _('Convert "{}" to "{}"')
                 mes = mes.format(self.files[i],filew)
                 sh.objs.get_mes(f,mes,True).show_info()
@@ -129,14 +127,19 @@ class Extractor:
     def debug(self):
         f = '[DicConverter] plugins.lingvo.extractor.Extractor.debug'
         if self.Success:
-            sh.com.run_fast_debug(f,'\n\n'.join(self.dics))
+            mes = []
+            for i in range(len(self.dics)):
+                sub = self.files[i] + ':'
+                mes.append(sub)
+                mes.append(self.dics[i])
+                mes.append('')
+            sh.com.run_fast_debug(f,'\n\n'.join(mes))
         else:
             sh.com.cancel(f)
     
     def run(self):
         self.check()
         self.decompile()
-        self.debug()
 
 
 
@@ -167,6 +170,9 @@ class Runner:
         #sh.STOP_MES = False
         #objs.db.close()
         self.report()
+        #cur #TODO: del
+        if self.Success:
+            self.iextract.debug()
     
     def report(self):
         f = '[DicConverter] plugins.lingvo.extractor.Runner.report'

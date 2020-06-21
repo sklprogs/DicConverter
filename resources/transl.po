@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: DicConverter\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-06-14 16:55+0300\n"
-"PO-Revision-Date: 2020-06-14 16:55+0300\n"
+"POT-Creation-Date: 2020-06-22 02:01+0300\n"
+"PO-Revision-Date: 2020-06-22 02:02+0300\n"
 "Last-Translator: Peter Sklyar <skl.progs@gmail.com>\n"
 "Language-Team: Peter Sklyar <skl.progs@gmail.com>\n"
 "Language: ru_RU\n"
@@ -34,6 +34,19 @@ msgid "Quit"
 msgstr "Выйти"
 
 #: DicConverter/src/plugins/lingvo/extractor.py:27
+#: DicConverter/src/plugins/multitran/get.py:343
+#: DicConverter/src/plugins/multitran/get.py:494
+#: DicConverter/src/plugins/multitran/get.py:1852 skl_shared/src/shared.py:2294
+msgid ""
+"Third-party module has failed!\n"
+"\n"
+"Details: {}"
+msgstr ""
+"Ошибка модуля третьей стороны!\n"
+"\n"
+"Детали: {}"
+
+#: DicConverter/src/plugins/lingvo/extractor.py:42
 #: DicConverter/src/plugins/multitran/utils.py:416
 #: DicConverter/src/plugins/multitran/utils.py:459
 #: DicConverter/src/plugins/multitran/utils.py:504
@@ -49,28 +62,46 @@ msgstr ""
 "\n"
 "Подробности: {}"
 
-#: DicConverter/src/plugins/lingvo/extractor.py:68
+#: DicConverter/src/plugins/lingvo/extractor.py:46
+#: DicConverter/src/plugins/multitran/elems.py:135
+#: DicConverter/src/plugins/multitran/get.py:69
+#: DicConverter/src/plugins/multitran/get.py:924
+#: DicConverter/src/plugins/multitran/get.py:956
+#: DicConverter/src/plugins/multitran/get.py:1010
+#: DicConverter/src/plugins/multitran/get.py:1057
+#: DicConverter/src/plugins/multitran/get.py:1758
+#: DicConverter/src/plugins/multitran/get.py:2091
+#: DicConverter/src/plugins/multitran/tags.py:169 skl_shared/src/logic.py:414
+#: skl_shared/src/logic.py:442 skl_shared/src/logic.py:2098
+#: skl_shared/src/logic.py:2568 skl_shared/src/logic.py:3832
+#: skl_shared/src/logic.py:4819 skl_shared/src/logic.py:4979
+#: skl_shared/src/logic.py:5013 skl_shared/src/logic.py:5098
+#: skl_shared/src/shared.py:2726 skl_shared/src/shared.py:2762
+msgid "Wrong input data: \"{}\"!"
+msgstr "Недопустимые входные данные: \"{}\"!"
+
+#: DicConverter/src/plugins/lingvo/extractor.py:58
 msgid "Conversion progress"
 msgstr "Ход конвертации"
 
-#: DicConverter/src/plugins/lingvo/extractor.py:112
+#: DicConverter/src/plugins/lingvo/extractor.py:102
 msgid "Convert \"{}\" to \"{}\""
 msgstr "Преобразование \"{}\" в \"{}\""
 
-#: DicConverter/src/plugins/lingvo/extractor.py:155
+#: DicConverter/src/plugins/lingvo/extractor.py:138
 #: DicConverter/src/plugins/lingvo/gui.py:20
 msgid "Process dictionaries"
 msgstr "Обработка словарей"
 
-#: DicConverter/src/plugins/lingvo/extractor.py:181
+#: DicConverter/src/plugins/lingvo/extractor.py:161
 msgid "Processed dictionaries (total/successful):"
 msgstr "Обработано словарей (всего/успешно):"
 
-#: DicConverter/src/plugins/lingvo/extractor.py:188
+#: DicConverter/src/plugins/lingvo/extractor.py:168
 msgid "Files:"
 msgstr "Файлы:"
 
-#: DicConverter/src/plugins/lingvo/extractor.py:193
+#: DicConverter/src/plugins/lingvo/extractor.py:173
 #: DicConverter/src/plugins/multitran/extractor.py:121
 msgid "The operation has taken:"
 msgstr "Операция завершена за:"
@@ -107,23 +138,6 @@ msgstr ""
 #: DicConverter/src/plugins/multitran/get.py:484
 msgid "Open \"{}\""
 msgstr "Открытие \"{}\""
-
-#: DicConverter/src/plugins/multitran/elems.py:135
-#: DicConverter/src/plugins/multitran/get.py:69
-#: DicConverter/src/plugins/multitran/get.py:924
-#: DicConverter/src/plugins/multitran/get.py:956
-#: DicConverter/src/plugins/multitran/get.py:1010
-#: DicConverter/src/plugins/multitran/get.py:1057
-#: DicConverter/src/plugins/multitran/get.py:1758
-#: DicConverter/src/plugins/multitran/get.py:2091
-#: DicConverter/src/plugins/multitran/tags.py:169 skl_shared/src/logic.py:414
-#: skl_shared/src/logic.py:442 skl_shared/src/logic.py:2098
-#: skl_shared/src/logic.py:2568 skl_shared/src/logic.py:3832
-#: skl_shared/src/logic.py:4819 skl_shared/src/logic.py:4979
-#: skl_shared/src/logic.py:5013 skl_shared/src/logic.py:5098
-#: skl_shared/src/shared.py:2726 skl_shared/src/shared.py:2762
-msgid "Wrong input data: \"{}\"!"
-msgstr "Недопустимые входные данные: \"{}\"!"
 
 #: DicConverter/src/plugins/multitran/elems.py:172
 #: DicConverter/src/plugins/multitran/tags.py:77
@@ -219,18 +233,6 @@ msgstr "Пределы страницы: [{}:{}]"
 #: skl_shared/src/logic.py:4609 skl_shared/src/shared.py:4420
 msgid "The condition \"{}\" is not observed!"
 msgstr "Условие \"{}\" не выполнено!"
-
-#: DicConverter/src/plugins/multitran/get.py:343
-#: DicConverter/src/plugins/multitran/get.py:494
-#: DicConverter/src/plugins/multitran/get.py:1852 skl_shared/src/shared.py:2294
-msgid ""
-"Third-party module has failed!\n"
-"\n"
-"Details: {}"
-msgstr ""
-"Ошибка модуля третьей стороны!\n"
-"\n"
-"Детали: {}"
 
 #: DicConverter/src/plugins/multitran/get.py:363
 #: DicConverter/src/plugins/multitran/get.py:1305
@@ -691,6 +693,10 @@ msgstr "Фрагмент 1:"
 #: DicConverter/src/plugins/multitran/utils.py:1170
 msgid "Chunk 2:"
 msgstr "Фрагмент 2:"
+
+#: DicConverter/src/utils.py:44
+msgid "Lacking DSL files ({} in total):"
+msgstr "Недостающие файлы DSL ({} всего):"
 
 #: skl_shared/src/gui.py:1260 skl_shared/src/logic.py:265
 #: skl_shared/src/logic.py:310 skl_shared/src/logic.py:833

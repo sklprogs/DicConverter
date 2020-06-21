@@ -15,50 +15,40 @@ DEBUG = False
 class LsdFile(lf.LsdFile):
     
     def __init__(self,*args,**kwargs):
-        super().__init__(*args,**kwargs)
-    
-    def run(self):
-        f = '[DicConverter] plugins.lingvo.extractor.LsdFile.run'
+        ''' Sometimes a "utf-8 codec can't decode" message is raised
+            here when calling 'lingvoreader.lsdfile.__init__'.
+        '''
+        f = '[DicConverter] plugins.lingvo.LsdFile.__init__'
         try:
-            self.parse()
-            self.dump()
-            return self.extract()
+            super().__init__(*args,**kwargs)
+            self.Success = True
         except Exception as e:
-            mes = _('Operation has failed!\n\nDetails: {}')
+            self.Success = False
+            mes = _('Third-party module has failed!\n\nDetails: {}')
             mes = mes.format(e)
-            sh.objs.get_mes(f,mes,True).show_warning()
-        
-    def extract(self):
-        iwrite = io.StringIO()
-        iwrite.write('#NAME\t\"')
-        iwrite.write(self.name)
-        iwrite.write('\"\n')
-        iwrite.write('#INDEX_LANGUAGE\t\"')
-        iwrite.write(lf.tools.lang_map[self.header.source_language])
-        iwrite.write('\"\n')
-        iwrite.write('#CONTENTS_LANGUAGE\t\"')
-        iwrite.write(lf.tools.lang_map[self.header.target_language])
-        iwrite.write('\"\n')
-        if self.icon_size > 0:
-            base, orig_ext = os.path.splitext(os.path.basename(self.filename))
-            iwrite.write('#ICON_FILE\t\"')
-            iwrite.write(base)
-            iwrite.write('.bmp\"\n"')
-        iwrite.write('\n')
-        for h, r in self.dict:
-            if h.simple:
-                iwrite.write(h.get_first_ext_text())
-                iwrite.write('\n\t')
+            sh.objs.get_mes(f,mes,True).show_error()
+    
+    def decompile(self,dirw):
+        f = '[DicConverter] plugins.lingvo.extractor.LsdFile.decompile'
+        if self.Success:
+            if dirw:
+                if sh.Directory(dirw).Success:
+                    try:
+                        self.parse()
+                        self.dump()
+                        self.write_dsl(dirw)
+                        return True
+                    except Exception as e:
+                        mes = _('Operation has failed!\n\nDetails: {}')
+                        mes = mes.format(e)
+                        sh.objs.get_mes(f,mes,True).show_warning()
+                else:
+                    mes = _('Wrong input data: "{}"!').format(dirw)
+                    sh.objs.get_mes(f,mes).show_warning()
             else:
-                for item in h.headings:
-                    iwrite.write(item.ext_text)
-                    iwrite.write('\n')
-                iwrite.write('\t')
-            iwrite.write(self.normalize_article(r))
-            iwrite.write('\n')
-        text = iwrite.getvalue()
-        iwrite.close()
-        return text
+                sh.com.rep_empty(f)
+        else:
+            sh.com.cancel(f)
 
 
 
@@ -97,8 +87,8 @@ class Extractor:
         self.files = files
     
     def set_values(self):
-        self.dics = []
         self.files = []
+        self.okcount = 0
         self.Success = True
     
     def decompile(self):
@@ -113,8 +103,14 @@ class Extractor:
                 mes = mes.format(self.files[i],filew)
                 sh.objs.get_mes(f,mes,True).show_info()
                 objs.get_progress().update(i,len(self.files))
-                self.dics.append(LsdFile(self.files[i]).run())
-            self.dics = [dic for dic in self.dics if dic]
+                if os.path.exists(filew):
+                    sh.com.rep_lazy(f)
+                else:
+                    ''' The library requests a writable directory
+                        at input, not a full path.
+                    '''
+                    if LsdFile(self.files[i]).decompile(dirname):
+                        self.okcount += 1
         else:
             sh.com.cancel(f)
     
@@ -123,19 +119,6 @@ class Extractor:
         if not self.files:
             self.Success = False
             sh.com.rep_empty(f)
-    
-    def debug(self):
-        f = '[DicConverter] plugins.lingvo.extractor.Extractor.debug'
-        if self.Success:
-            mes = []
-            for i in range(len(self.dics)):
-                sub = self.files[i] + ':'
-                mes.append(sub)
-                mes.append(self.dics[i])
-                mes.append('')
-            sh.com.run_fast_debug(f,'\n\n'.join(mes))
-        else:
-            sh.com.cancel(f)
     
     def run(self):
         self.check()
@@ -170,9 +153,6 @@ class Runner:
         #sh.STOP_MES = False
         #objs.db.close()
         self.report()
-        #cur #TODO: del
-        if self.Success:
-            self.iextract.debug()
     
     def report(self):
         f = '[DicConverter] plugins.lingvo.extractor.Runner.report'
@@ -181,7 +161,7 @@ class Runner:
             mes = _('Processed dictionaries (total/successful):')
             messages.append(mes)
             mes = '{}/{}'.format (len(self.iwalker.files)
-                                 ,len(self.iextract.dics)
+                                 ,self.iextract.okcount
                                  )
             messages.append(mes)
             messages.append('')

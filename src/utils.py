@@ -10,9 +10,9 @@ PATH = sh.Home('DicConverter').get_conf_dir()
 
 class Commands:
     
-    def delete_existent(self):
+    def delete_compiled(self):
         # Delete LSD/LOD files that have corresponding DSL files
-        f = '[DicConverter] utils.Commands.delete_existent'
+        f = '[DicConverter] utils.Commands.delete_compiled'
         files = sh.Directory(PATH).get_subfiles()
         if files:
             for file in files:
@@ -55,4 +55,4 @@ com = Commands()
 
 
 if __name__ == '__main__':
-    com.get_lacking_dsl()
+    com.delete_compiled()

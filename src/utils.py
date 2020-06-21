@@ -11,13 +11,18 @@ PATH = sh.Home('DicConverter').get_conf_dir()
 class Commands:
     
     def delete_compiled(self):
-        # Delete LSD/LOD files that have corresponding DSL files
+        # Delete LSD files that have corresponding DSL files
+        ''' #NOTE: We do not need LOD files, since they are XML
+            with some meta info, but we do not delete them since
+            they have a different naming pattern
+            (e.g., WineEnRu.lsd, Wine_(En-Ru).lod).
+        '''
         f = '[DicConverter] utils.Commands.delete_compiled'
         files = sh.Directory(PATH).get_subfiles()
         if files:
             for file in files:
                 ipath = sh.Path(file)
-                if ipath.get_ext_low() in ('.lsd','.lod'):
+                if ipath.get_ext_low() == '.lsd':
                     dirname = ipath.get_dirname()
                     fname = ipath.get_filename()
                     dsl = os.path.join(dirname,fname+'.dsl')
@@ -34,7 +39,7 @@ class Commands:
         if files:
             for file in files:
                 ipath = sh.Path(file)
-                if ipath.get_ext_low() in ('.lsd','.lod'):
+                if ipath.get_ext_low() == '.lsd':
                     dirname = ipath.get_dirname()
                     fname = ipath.get_filename()
                     dsl = os.path.join(dirname,fname+'.dsl')

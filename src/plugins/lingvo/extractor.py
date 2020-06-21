@@ -211,13 +211,12 @@ class Walker:
     def walk(self):
         f = '[DicConverter] plugins.lingvo.extractor.Walker.walk'
         if self.Success:
-            for dirpath, dirnames, filenames in os.walk(self.idir.dir):
-                for filename in filenames:
-                    low = filename.lower()
-                    if low.endswith('.lsd') or low.endswith('.lod'):
-                        self.fnames.append(filename)
-                        file = os.path.join(dirpath,filename)
-                        self.files.append(file)
+            files = self.idir.get_subfiles()
+            for file in files:
+                ipath = sh.Path(file)
+                if ipath.get_ext_low() == '.lsd':
+                    self.files.append(file)
+                    self.fnames.append(ipath.get_filename())
         else:
             sh.com.cancel(f)
         return self.files

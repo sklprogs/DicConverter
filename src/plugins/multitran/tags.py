@@ -27,13 +27,13 @@ class Tags:
                  ,MaxRows=50,lang1=1,lang2=2
                  ):
         self.set_values()
-        self.Debug   = Debug
+        self.Debug = Debug
         self.Shorten = Shorten
-        self.MaxRow  = MaxRow
+        self.MaxRow = MaxRow
         self.MaxRows = MaxRows
-        self.entry   = chunk
-        self.lang1   = lang1
-        self.lang2   = lang2
+        self.entry = chunk
+        self.lang1 = lang1
+        self.lang2 = lang2
     
     def get_types(self):
         f = '[DicConverter] plugins.multitran.tags.Tags.get_types'
@@ -84,9 +84,9 @@ class Tags:
                          ]
                         )
         sh.Table (headers = headers
-                 ,rows    = rows
+                 ,rows = rows
                  ,Shorten = self.Shorten
-                 ,MaxRow  = self.MaxRow
+                 ,MaxRow = self.MaxRow
                  ,MaxRows = self.MaxRows
                  ).print()
     
@@ -174,18 +174,18 @@ class Tags:
     
     def set_values(self):
         self.Success = True
-        self.entry   = ''
+        self.entry = ''
         # The result of 'struct.pack('<b',15)'
-        self.sepdic  = b'\x0f'
-        self.sepcom  = b'\x06'
-        self.lang1   = 0
-        self.lang2   = 0
-        self.seplg1  = b''
-        self.seplg2  = b''
+        self.sepdic = b'\x0f'
+        self.sepcom = b'\x06'
+        self.lang1 = 0
+        self.lang2 = 0
+        self.seplg1 = b''
+        self.seplg2 = b''
         self.blocks = []
-        self.tags   = []
-        self.seps    = []
-        self.types   = []
+        self.tags = []
+        self.seps = []
+        self.types = []
         self.content = []
     
     def run(self):
@@ -204,14 +204,14 @@ class Block:
 
     def __init__(self):
         self.block = -1
-        self.i     = -1
-        self.j     = -1
+        self.i = -1
+        self.j = -1
         self.first = -1
-        self.last  = -1
-        self.no    = -1
+        self.last = -1
+        self.no = -1
         # Applies to non-blocked cells only
         self.cellno = -1
-        self.same   = 0
+        self.same = 0
         ''' 'select' is an attribute of a *cell* which is valid
             if the cell has a non-blocked block of types 'term',
             'phrase' or 'transc'.
@@ -220,18 +220,18 @@ class Block:
         ''' 'wform', 'speech', 'dic', 'phrase', 'term', 'comment',
             'transc', 'invalid'
         '''
-        self.type_    = ''
-        self.text     = ''
-        self.url      = ''
-        self.urla     = ''
-        self.dica     = ''
-        self.dicaf    = ''
-        self.wforma   = ''
-        self.speecha  = ''
-        self.transca  = ''
-        self.terma    = ''
+        self.type_ = ''
+        self.text = ''
+        self.url = ''
+        self.urla = ''
+        self.dica = ''
+        self.dicaf = ''
+        self.wforma = ''
+        self.speecha = ''
+        self.transca = ''
+        self.terma = ''
         self.priority = 0
-        self.lang     = 0
+        self.lang = 0
 
 
 if __name__ == '__main__':

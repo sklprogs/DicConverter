@@ -31,7 +31,7 @@ class Ending(gt.Ending):
             headers = ('#','ENDINGS')
             iterable = (self.nos,ends)
             mes = sh.FastTable (iterable = iterable
-                               ,headers  = headers
+                               ,headers = headers
                                ).run()
             sub = _('File: "{}"').format(self.file)
             mes = sub + '\n\n' + mes
@@ -49,12 +49,12 @@ class Subject(gt.Subject):
     def debug(self):
         f = '[DicConverter] plugins.multitran.tests.Subject.debug'
         if self.Success:
-            headers  = ('#','FULL (1)','ABBR (1)','FULL (2)','ABBR (2)')
+            headers = ('#','FULL (1)','ABBR (1)','FULL (2)','ABBR (2)')
             iterable = (self.dic_nos,self.en_dicf
                        ,self.en_dic,self.ru_dicf
                        ,self.ru_dic
                        )
-            mes = sh.FastTable (headers  = headers
+            mes = sh.FastTable (headers = headers
                                ,iterable = iterable
                                ).run()
             sub = _('File: "{}"').format(self.file)
@@ -87,7 +87,7 @@ class Binary(gt.Binary):
                 pos2 = pos1 + self.bsize
                 sub1 = sh.com.set_figure_commas(pos1)
                 sub2 = sh.com.set_figure_commas(pos2)
-                mes  = _('Page limits: [{}:{}]').format(sub1,sub2)
+                mes = _('Page limits: [{}:{}]').format(sub1,sub2)
                 sh.objs.get_mes(f,mes,True).show_debug()
                 return(pos1,pos2)
         else:
@@ -104,21 +104,21 @@ class Binary(gt.Binary):
             iwrite.write(mes)
             iwrite.write('\n')
             size = sh.com.get_human_size(self.fsize)
-            mes  = _('File size: {}').format(size)
+            mes = _('File size: {}').format(size)
             iwrite.write(mes)
             iwrite.write('\n')
             size = sh.com.set_figure_commas(self.bsize)
-            mes  = _('Block size: {}').format(size)
+            mes = _('Block size: {}').format(size)
             iwrite.write(mes)
             iwrite.write('\n\n')
             mes = _('Pages:')
             iwrite.write(mes)
             iwrite.write('\n')
-            nos    = []
-            types  = []
+            nos = []
+            types = []
             poses1 = []
             poses2 = []
-            sizes  = []
+            sizes = []
             for i in range(len(self.pages)):
                 # Page #0 is actually an M area
                 nos.append(i+1)
@@ -144,9 +144,9 @@ class Binary(gt.Binary):
                     poses1.append(_('N/A'))
                     poses2.append(_('N/A'))
                     sizes.append(_('N/A'))
-            headers  = ('#','TYPE','POS1','POS2','SIZE')
+            headers = ('#','TYPE','POS1','POS2','SIZE')
             iterable = [nos,types,poses1,poses2,sizes]
-            mes = sh.FastTable (headers  = headers
+            mes = sh.FastTable (headers = headers
                                ,iterable = iterable
                                ).run()
             iwrite.write(mes)
@@ -242,9 +242,9 @@ class Tests:
                 phrases.append(row[1])
         headers = ('ARTNO','PHRASE')
         iterable = [artnos,phrases]
-        mes = sh.FastTable (headers  = headers
+        mes = sh.FastTable (headers = headers
                            ,iterable = iterable
-                           ,maxrows  = 1000
+                           ,maxrows = 1000
                            ).run()
         if mes:
             sh.com.run_fast_debug(f,mes)
@@ -290,7 +290,7 @@ class Tests:
         #pattern = b'\x04'
         #pattern = b':'
         #pattern = b'\xfc'
-        pattern  = b'\xfd'
+        pattern = b'\xfd'
         upage = UPage(gt.objs.get_files().iwalker.get_article())
         upage.get_parts()
         upage.searchu(pattern)
@@ -310,7 +310,7 @@ class Tests:
     
     def searchu_glue(self):
         #pattern = b'\x1b-\x00'
-        pattern  = b'\x00'
+        pattern = b'\x00'
         upage = UPage(gt.objs.get_files().iwalker.get_glue1())
         upage.get_parts()
         upage.searchu(pattern)
@@ -320,8 +320,8 @@ class Tests:
         f = '[DicConverter] plugins.multitran.tests.Tests.get_upage_stems'
         upage = UPage(gt.objs.get_files().iwalker.get_stems1())
         upage.get_parts()
-        part1  = list(upage.part1)
-        part2  = list(upage.part2)
+        part1 = list(upage.part1)
+        part2 = list(upage.part2)
         part1d = [item.decode(gt.CODING,'replace') for item in part1]
         part2l = []
         for i in range(len(part2)):
@@ -332,10 +332,10 @@ class Tests:
             else:
                 part2l.append('""')
         header = ('CHUNK1','CP1251','CHUNK2','<h')
-        data   = [part1,part1d,part2,part2l]
-        mes = sh.FastTable (headers  = header
+        data = [part1,part1d,part2,part2l]
+        mes = sh.FastTable (headers = header
                            ,iterable = data
-                           ,sep      = 3 * ' '
+                           ,sep = 3 * ' '
                            ).run()
         sh.com.run_fast_debug(f,mes)
     
@@ -343,8 +343,8 @@ class Tests:
         f = '[DicConverter] plugins.multitran.tests.Tests.get_upage_glue'
         upage = UPage(gt.objs.get_files().iwalker.get_glue1())
         upage.get_parts()
-        part1  = list(upage.part1)
-        part2  = list(upage.part2)
+        part1 = list(upage.part1)
+        part2 = list(upage.part2)
         part1l = []
         for i in range(len(part1)):
             if part1[i]:
@@ -362,10 +362,10 @@ class Tests:
             else:
                 part2l.append('""')
         header = ('CHUNK1','<b','CHUNK2','<h')
-        data   = [part1,part1l,part2,part2l]
-        mes = sh.FastTable (headers  = header
+        data = [part1,part1l,part2,part2l]
+        mes = sh.FastTable (headers = header
                            ,iterable = data
-                           ,sep      = 3 * ' '
+                           ,sep = 3 * ' '
                            ).run()
         sh.com.run_fast_debug(f,mes)
     
@@ -405,8 +405,8 @@ class Tests:
         #pattern = 'з'
         #pattern = 'задеть'
         #pattern = 'зашуганный'
-        pattern  = 'звезда'
-        pattern  = bytes(pattern,gt.CODING)
+        pattern = 'звезда'
+        pattern = bytes(pattern,gt.CODING)
         com.swap_langs()
         # Since we swap languages, the needed stems will always be #1
         upage = UPage(gt.objs.get_files().iwalker.get_stems1())
@@ -466,7 +466,7 @@ class Tests:
                       ,'ящичный поддон'
                       ]
         failed = 0
-        total  = len(en_patterns) + len(ru_patterns)
+        total = len(en_patterns) + len(ru_patterns)
         for pattern in en_patterns:
             if not self.translate(pattern):
                 failed += 1
@@ -526,9 +526,9 @@ class UPage(gt.UPage):
                 part2 = [struct.unpack('<h',chunk)[0] \
                          for chunk in self.part2
                         ]
-                mes = sh.FastTable (headers  = ('STEM','PAGEREF')
+                mes = sh.FastTable (headers = ('STEM','PAGEREF')
                                    ,iterable = (part1,part2)
-                                   ,sep      = 3 * ' '
+                                   ,sep = 3 * ' '
                                    ).run()
                 if mes:
                     mes = _('File: {}').format(self.file) + '\n\n' + mes
@@ -550,9 +550,9 @@ class UPage(gt.UPage):
                 part2 = [struct.unpack('<h',chunk)[0] \
                          for chunk in self.part2
                         ]
-                mes = sh.FastTable (headers  = ('STEM','PAGEREF')
+                mes = sh.FastTable (headers = ('STEM','PAGEREF')
                                    ,iterable = (part1,part2)
-                                   ,sep      = 3 * ' '
+                                   ,sep = 3 * ' '
                                    ).run()
                 if mes:
                     mes = _('File: {}').format(self.file) + '\n\n' + mes

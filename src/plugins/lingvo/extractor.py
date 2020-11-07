@@ -55,9 +55,9 @@ class LsdFile(lf.LsdFile):
 class ProgressBar:
     
     def __init__(self):
-        self.gui = gi.ProgressBar (title   = _('Conversion progress')
-                                  ,icon    = gi.ICON
-                                  ,height  = 120
+        self.gui = gi.ProgressBar (title = _('Conversion progress')
+                                  ,icon = gi.ICON
+                                  ,height = 120
                                   ,YScroll = False
                                   )
     

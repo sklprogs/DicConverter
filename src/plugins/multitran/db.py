@@ -30,10 +30,10 @@ class DB:
                 for i in range(len(data)):
                     row = [i+1,data[i][0],data[i][1],data[i][2]]
                     rows.append(row)
-                mes = sh.FastTable (iterable  = rows
-                                   ,headers   = headers
-                                   ,maxrow    = maxrow
-                                   ,maxrows   = maxrows
+                mes = sh.FastTable (iterable = rows
+                                   ,headers = headers
+                                   ,maxrow = maxrow
+                                   ,maxrows = maxrows
                                    ,Transpose = True
                                    ).run()
                 sub = _('Table: {}').format(table)
@@ -64,10 +64,10 @@ class DB:
                           ,data[i][3],data[i][4]
                           ]
                     rows.append(row)
-                mes = sh.FastTable (iterable  = rows
-                                   ,headers   = headers
-                                   ,maxrow    = maxrow
-                                   ,maxrows   = maxrows
+                mes = sh.FastTable (iterable = rows
+                                   ,headers = headers
+                                   ,maxrow = maxrow
+                                   ,maxrows = maxrows
                                    ,Transpose = True
                                    ).run()
                 sub = _('Table: {}').format(table)
@@ -155,9 +155,9 @@ class DB:
             nos = [i + 1 for i in range(len(subjects))]
             iterable = [nos,artnos,subjects,phrases1,phrases2]
             mes = sh.FastTable (iterable = iterable
-                               ,headers  = headers
-                               ,maxrow   = maxrow
-                               ,maxrows  = maxrows
+                               ,headers = headers
+                               ,maxrow = maxrow
+                               ,maxrows = maxrows
                                ).run()
             sh.com.run_fast_debug(f,mes)
         else:
@@ -197,9 +197,9 @@ class DB:
             nos = [i + 1 for i in range(len(subjects))]
             iterable = [nos,artnos,subjects,phrases]
             mes = sh.FastTable (iterable = iterable
-                               ,headers  = headers
-                               ,maxrow   = maxrow
-                               ,maxrows  = maxrows
+                               ,headers = headers
+                               ,maxrow = maxrow
+                               ,maxrows = maxrows
                                ).run()
             sh.com.run_fast_debug(f,mes)
         else:

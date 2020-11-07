@@ -11,9 +11,9 @@ from . import db
 class ProgressBar:
     
     def __init__(self):
-        self.gui = gi.ProgressBar (title   = _('Extraction progress')
-                                  ,icon    = gi.ICON
-                                  ,height  = 120
+        self.gui = gi.ProgressBar (title = _('Extraction progress')
+                                  ,icon = gi.ICON
+                                  ,height = 120
                                   ,YScroll = False
                                   )
     
@@ -79,7 +79,7 @@ class Runner:
         objs.get_db().clear()
         objs.db.save()
         self.iextract = Extractor (start_page = self.start_page
-                                  ,end_page   = self.end_page
+                                  ,end_page = self.end_page
                                   )
         self.iextract.run()
         objs.db.save()
@@ -302,9 +302,9 @@ class Extractor:
             headers = ('PHRASE','SUBJECT','ARTNO')
             iterable = [self.phrases,self.iparse.xplain2,self.artnos]
             mes = sh.FastTable (iterable = iterable
-                               ,headers  = headers
-                               ,maxrow   = 50
-                               ,maxrows  = 1000
+                               ,headers = headers
+                               ,maxrow = 50
+                               ,maxrows = 1000
                                ).run()
             sh.com.run_fast_debug(f,mes)
         else:
@@ -423,7 +423,7 @@ class Extractor:
         for range_ in ranges:
             objs.get_progress().update(range_[0],self.end_page)
             self.run_cycle (start_page = range_[0]
-                           ,end_page   = range_[1]
+                           ,end_page = range_[1]
                            )
     
     def run_loop(self):
@@ -431,7 +431,7 @@ class Extractor:
         if self.Success:
             ranges = com.calc_ranges (minlim = self.start_page
                                      ,maxlim = self.end_page
-                                     ,step   = self.delta
+                                     ,step = self.delta
                                      )
             if ranges:
                 mes = _('Process single records ({}) ({}/{})')

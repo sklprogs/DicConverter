@@ -4,9 +4,9 @@
 import skl_shared.shared as sh
 from skl_shared.localize import _
 
-import plugins.multitran.get       as mg
+import plugins.multitran.get as mg
 import plugins.multitran.extractor as mx
-import plugins.multitran.tests     as mt
+import plugins.multitran.tests as mt
 
 
 class Tests:

@@ -12,33 +12,33 @@ class Block:
     
     def __init__(self):
         self.block = -1
-        self.i     = -1
-        self.j     = -1
+        self.i = -1
+        self.j = -1
         self.first = -1
-        self.last  = -1
-        self.no    = -1
+        self.last = -1
+        self.no = -1
         # Applies to non-blocked cells only
         self.cellno = -1
-        self.same   = -1
+        self.same = -1
         ''' 'select' is an attribute of a *cell* which is valid
             if the cell has a non-blocked block of types 'term',
             'phrase' or 'transc'
         '''
-        self.select   = -1
+        self.select = -1
         self.priority = 0
         ''' 'wform', 'speech', 'dic', 'phrase', 'term', 'comment',
             'correction', 'transc', 'user', 'invalid'
         '''
-        self.type_   = 'invalid'
-        self.text    = ''
-        self.url     = ''
-        self.dica    = ''
-        self.dicaf   = ''
-        self.wforma  = ''
+        self.type_ = 'invalid'
+        self.text = ''
+        self.url = ''
+        self.dica = ''
+        self.dicaf = ''
+        self.wforma = ''
         self.speecha = ''
         self.transca = ''
-        self.terma   = ''
-        self.lang    = 0
+        self.terma = ''
+        self.lang = 0
 
 
 
@@ -50,14 +50,14 @@ class Elems:
                  ):
         f = '[DicConverter] elems.Elems.__init__'
         self.dicurls = {}
-        self.defins  = []
-        self.abbr    = iabbr
-        self.Debug   = Debug
+        self.defins = []
+        self.abbr = iabbr
+        self.Debug = Debug
         self.Shorten = Shorten
-        self.MaxRow  = MaxRow
+        self.MaxRow = MaxRow
         self.MaxRows = MaxRows
         self.pattern = search.strip()
-        self.langs   = langs
+        self.langs = langs
         if blocks:
             self.Success = True
             self.blocks = blocks
@@ -128,8 +128,8 @@ class Elems:
                                     sh.com.rep_empty(f)
                             abbr = '; '.join(abbr)
                             full = '; '.join(full)
-                            block.text  = abbr
-                            block.dica  = abbr
+                            block.text = abbr
+                            block.dica = abbr
                             block.dicaf = full
                         else:
                             mes = _('Wrong input data: "{}"!')
@@ -182,9 +182,9 @@ class Elems:
                              ]
                             )
             sh.Table (headers = headers
-                     ,rows    = rows
+                     ,rows = rows
                      ,Shorten = self.Shorten
-                     ,MaxRow  = self.MaxRow
+                     ,MaxRow = self.MaxRow
                      ,MaxRows = self.MaxRows
                      ).print()
         
@@ -220,7 +220,7 @@ class Elems:
         # Find first non-empty values and set them as default
         for block in self.blocks:
             if block.type_ == 'dic':
-                dica  = block.dica
+                dica = block.dica
                 dicaf = block.dicaf
                 break
         for block in self.blocks:
@@ -242,7 +242,7 @@ class Elems:
         
         for block in self.blocks:
             if block.type_ == 'dic':
-                dica  = block.dica
+                dica = block.dica
                 dicaf = block.dicaf
             elif block.type_ == 'wform':
                 wforma = block.text
@@ -255,9 +255,9 @@ class Elems:
                 '''
             elif block.type_ in ('term','phrase'):
                 terma = block.text
-            block.dica    = dica
-            block.dicaf   = dicaf
-            block.wforma  = wforma
+            block.dica = dica
+            block.dicaf = dicaf
+            block.wforma = wforma
             block.speecha = speecha
             block.transca = transca
             if block.same > 0:
@@ -271,57 +271,57 @@ class Elems:
             or wforma != self.blocks[i].wforma \
             or speecha != self.blocks[i].speecha:
                 
-                block         = Block()
-                block.type_   = 'speech'
-                block.text    = self.blocks[i].speecha
-                block.dica    = self.blocks[i].dica
-                block.dicaf   = self.blocks[i].dicaf
-                block.wforma  = self.blocks[i].wforma
+                block = Block()
+                block.type_ = 'speech'
+                block.text = self.blocks[i].speecha
+                block.dica = self.blocks[i].dica
+                block.dicaf = self.blocks[i].dicaf
+                block.wforma = self.blocks[i].wforma
                 block.speecha = self.blocks[i].speecha
                 block.transca = self.blocks[i].transca
-                block.terma   = self.blocks[i].terma
-                block.same    = 0
+                block.terma = self.blocks[i].terma
+                block.same = 0
                 self.blocks.insert(i,block)
                 
-                block         = Block()
-                block.type_   = 'transc'
-                block.text    = self.blocks[i].transca
-                block.dica    = self.blocks[i].dica
-                block.dicaf   = self.blocks[i].dicaf
-                block.wforma  = self.blocks[i].wforma
+                block = Block()
+                block.type_ = 'transc'
+                block.text = self.blocks[i].transca
+                block.dica = self.blocks[i].dica
+                block.dicaf = self.blocks[i].dicaf
+                block.wforma = self.blocks[i].wforma
                 block.speecha = self.blocks[i].speecha
                 block.transca = self.blocks[i].transca
-                block.terma   = self.blocks[i].terma
-                block.same    = 0
+                block.terma = self.blocks[i].terma
+                block.same = 0
                 self.blocks.insert(i,block)
 
-                block         = Block()
-                block.type_   = 'wform'
-                block.text    = self.blocks[i].wforma
-                block.dica    = self.blocks[i].dica
-                block.dicaf   = self.blocks[i].dicaf
-                block.wforma  = self.blocks[i].wforma
+                block = Block()
+                block.type_ = 'wform'
+                block.text = self.blocks[i].wforma
+                block.dica = self.blocks[i].dica
+                block.dicaf = self.blocks[i].dicaf
+                block.wforma = self.blocks[i].wforma
                 block.speecha = self.blocks[i].speecha
                 block.transca = self.blocks[i].transca
-                block.terma   = self.blocks[i].terma
-                block.same    = 0
+                block.terma = self.blocks[i].terma
+                block.same = 0
                 self.blocks.insert(i,block)
                 
-                block         = Block()
-                block.type_   = 'dic'
-                block.text    = self.blocks[i].dica
-                block.dica    = self.blocks[i].dica
-                block.dicaf   = self.blocks[i].dicaf
-                block.wforma  = self.blocks[i].wforma
+                block = Block()
+                block.type_ = 'dic'
+                block.text = self.blocks[i].dica
+                block.dica = self.blocks[i].dica
+                block.dicaf = self.blocks[i].dicaf
+                block.wforma = self.blocks[i].wforma
                 block.speecha = self.blocks[i].speecha
                 block.transca = self.blocks[i].transca
-                block.terma   = self.blocks[i].terma
-                block.same    = 0
+                block.terma = self.blocks[i].terma
+                block.same = 0
                 self.blocks.insert(i,block)
                 
-                dica    = self.blocks[i].dica
-                dicaf   = self.blocks[i].dicaf
-                wforma  = self.blocks[i].wforma
+                dica = self.blocks[i].dica
+                dicaf = self.blocks[i].dicaf
+                wforma = self.blocks[i].wforma
                 speecha = self.blocks[i].speecha
                 i += 4
             i += 1
@@ -344,9 +344,9 @@ class Elems:
 if __name__ == '__main__':
     f = '[DicConverter] elems.__main__'
     search = 'phrenosin'
-    import get  as gt
+    import get as gt
     import tags as tg
-    iget   = gt.Get(search)
+    iget = gt.Get(search)
     chunks = iget.run()
     if not chunks:
         chunks = []
@@ -358,9 +358,9 @@ if __name__ == '__main__':
         if add:
             blocks += add
     blocks = Elems (blocks = blocks
-                   ,iabbr  = None
+                   ,iabbr = None
                    ,search = search
-                   ,Debug  = True
+                   ,Debug = True
                    ).run()
     for i in range(len(blocks)):
         mes = '{}: {}: "{}"'.format (i,blocks[i].type_
